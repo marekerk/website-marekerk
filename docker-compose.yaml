@@ -1,0 +1,9 @@
+services:
+  web:
+    build: .
+    ports:
+      - "4321:4321"
+    volumes:
+      - .:/marekerk-website-poc
+      - /marekerk-website-poc/node_modules
+    command: npm run dev -- --host 0.0.0.0

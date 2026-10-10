@@ -1,0 +1,60 @@
+---
+import * as page from '../content/page.md';
+import '../styles/global.css';
+
+const { Content } = page;
+const { title, subtitle } = page.frontmatter;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={subtitle} />
+  </head>
+
+  <body>
+    <!-- Custom HTML owned by the developer -->
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href={import.meta.env.BASE_URL}>My Website</a>
+        <nav>
+          <a href={import.meta.env.BASE_URL}>Home</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- Custom HTML wrapper around the Markdown content -->
+      <section class="hero">
+        <div class="container">
+          <span class="eyebrow">Editable content demo</span>
+          <h1>{title}</h1>
+          <p>{subtitle}</p>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <div class="container content-card">
+          <article class="markdown">
+            <Content />
+          </article>
+        </div>
+      </section>
+
+      <!-- More custom HTML after Markdown -->
+      <section class="callout">
+        <div class="container">
+          <strong>Developer-controlled HTML.</strong>
+          <span>The text above came from Markdown.</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">© {new Date().getFullYear()} My Website</div>
+    </footer>
+  </body>
+</html>
