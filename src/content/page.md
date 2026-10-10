@@ -1,14 +1,18 @@
 ---
 title: Welkom bij Marekerk
-subtitle: Een gemeente waar geloof, gebed en gemeenschap centraal staan.
 ---
 
-# Welkom
+# Onze gemeente
 
-Bij Marekerk willen we elkaar ontmoeten in liefde, vertrouwen en christelijke gemeenschap.
+De Marekerk is een levendige gemeenschap. Hier
+vinden mensen van alle leeftijden een plek om samen te
+groeien in geloof en elkaar te ondersteunen in vreugde
+en verdriet.
 
-## Een plek om te groeien
+# Wat geloven wij?
 
-- We verzamelen ons om samen te bidden
-- We ontmoeten elkaar in een veilige, gastvrije sfeer
-- We willen groeien in geloof en dienstbaarheid
+De Bijbel is onze bron en we putten kracht uit onze
+gereformeerde traditie. We willen de liefde van Christus
+in woord en daad verspreiden, met een open hart en een
+gastvrije houding. Onze deuren staan daarom altijd open
+voor wie zoekt naar zingeving en gemeenschap.
