@@ -1,29 +1,14 @@
 ---
-title: Welcome to our website
-subtitle: This text is controlled by Markdown.
+title: Welkom bij Marekerk
+subtitle: Een gemeente waar geloof, gebed en gemeenschap centraal staan.
 ---
 
-# Hello 👋
+# Welkom
 
-This paragraph lives in **`src/content/page.md`**.
+Bij Marekerk willen we elkaar ontmoeten in liefde, vertrouwen en christelijke gemeenschap.
 
-Test
+## Een plek om te groeien
 
-A non-technical editor can change this file, commit the change to `main`, and GitHub Actions will rebuild the website.
-
-## What you can edit
-
-- Normal paragraphs
-- **Bold text**
-- *Italic text*
-- [Links](https://astro.build/)
-- Lists
-- Headings
-
-### A quote
-
-> This is an example of Markdown formatting.
-
----
-
-You can keep writing here without touching the website's HTML structure.
+- We verzamelen ons om samen te bidden
+- We ontmoeten elkaar in een veilige, gastvrije sfeer
+- We willen groeien in geloof en dienstbaarheid

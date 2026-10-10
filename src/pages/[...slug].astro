@@ -1,0 +1,79 @@
+---
+import Navbar from '../components/Navbar.astro';
+import '../styles/global.css';
+
+function toSlug(value) {
+  if (Array.isArray(value)) return value.join('/');
+  if (typeof value === 'string' && value.trim()) return value;
+  return 'home/landing';
+}
+
+const contentPages = Object.fromEntries(
+  Object.entries(import.meta.glob('../content/**/*.md', { eager: true })).map(([filePath, module]) => {
+    const slug = filePath
+      .replace(/\\/g, '/')
+      .replace(/^.*?content\//, '')
+      .replace(/\.md$/, '');
+
+    return [slug, module];
+  })
+);
+
+export function getStaticPaths() {
+  return Object.keys(import.meta.glob('../content/**/*.md', { eager: true }))
+    .map((filePath) => {
+      const slug = filePath
+        .replace(/\\/g, '/')
+        .replace(/^.*?content\//, '')
+        .replace(/\.md$/, '');
+
+      if (!slug || slug.includes('index')) {
+        return null;
+      }
+
+      return { params: { slug } };
+    })
+    .filter(Boolean);
+}
+
+const slug = toSlug(Astro.params.slug);
+const page = contentPages[slug] ?? contentPages['page'];
+
+if (!page) {
+  throw new Error(`No content page found for /${slug}`);
+}
+
+const { Content, frontmatter } = page;
+const { title, subtitle } = frontmatter ?? {};
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={subtitle || title} />
+  </head>
+
+  <body>
+    <Navbar />
+
+    <main>
+      <section class="hero hero-subpage">
+        <div class="container">
+          <h1>{title}</h1>
+          <p>{subtitle}</p>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <div class="container content-card">
+          <article class="markdown">
+            <Content />
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

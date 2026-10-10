@@ -7,3 +7,10 @@ services:
       - .:/marekerk-website-poc
       - /marekerk-website-poc/node_modules
     command: npm run dev -- --host 0.0.0.0
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /marekerk-website-poc/src
+        - action: rebuild
+          path: package.json
