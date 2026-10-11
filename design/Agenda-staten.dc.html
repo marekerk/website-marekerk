@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Agenda · staten</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Source Sans 3',system-ui,sans-serif;color:#09283F;background:#FFFFFF}
+a{color:#09283F;text-decoration-color:#09283F;text-decoration-thickness:2px;text-underline-offset:4px}
+.btn-goud:hover{background:#ECDFB3}
+.btn-outline:hover{background:#09283F;color:#FFFFFF}
+.lbl{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#4A5866}
+.lbl-goud{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#C9A13B}
+.note{font-size:14px;color:#4A5866;margin:0}
+.strip{background:#09283F;color:#FFFFFF;padding:20px 32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px}
+.strip p{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px}
+.strip .t{font-size:28px;line-height:1;font-weight:700}
+.strip .s{color:#DCE6EF}
+.strip a{color:#FFFFFF;text-decoration-color:#C9A13B;font-weight:700;min-height:44px;display:inline-flex;align-items:center}
+.row{display:grid;grid-template-columns:56px 1fr auto;gap:16px;align-items:center;padding:12px 0;border-bottom:1px solid #D9DEE3}
+.date{width:56px;height:56px;clip-path:{{oct}};background:#09283F;color:#FFFFFF;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.date strong{font-size:20px}.date span{font-size:11px;font-weight:600}
+.sk{background:#E6EBF0}
+.state{border:1px solid #D9DEE3;padding:24px;display:flex;flex-direction:column;gap:4px}
+.state h3{margin:0 0 8px;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#4A5866}
+.cal{display:inline-flex;align-items:center;gap:10px;min-height:44px;font-weight:600;text-decoration:none}
+</style>
+</helmet>
+<div style="padding: 48px; display: flex; flex-direction: column; gap: 40px; font-size: 17px; line-height: 1.6">
+
+<div style="display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #09283F; padding-bottom: 12px">
+<span class="lbl">Agenda · staten</span>
+<h1 style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">De agenda wordt in de browser geladen</h1>
+<p class="note" style="max-width: 60em">Astro bouwt statisch; de kerkelijke agenda (ICS) verandert vaak. Daarom laadt de pagina eerst een vaste basis en vult JavaScript die aan. Elke staat hieronder moet er af zijn vóór de bouw; geen staat verandert de lay-out van de pagina.</p>
+</div>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.01em">1 · Strip op Welkom</h2>
+<div style="display: grid; grid-template-columns: 180px 1fr; gap: 12px 24px; align-items: center">
+<span class="lbl">Basis · zonder JS, tijdens laden</span>
+<div class="strip"><p><span class="lbl-goud">Elke zondag</span><span class="t">10.00</span><span class="s">morgendienst</span><span class="t">17.00</span><span class="s">middagdienst</span></p><a href="#live">Kijk of luister live mee</a></div>
+<span class="lbl">Geladen</span>
+<div class="strip"><p><span class="lbl-goud">Zondag [DD mnd]</span><span style="display: inline-flex; align-items: baseline; gap: 8px"><span class="t">10.00</span><span class="s">Ds. [naam]</span></span><span style="display: inline-flex; align-items: baseline; gap: 8px"><span class="t">17.00</span><span class="s">Ds. [naam]</span></span></p><a href="#live">Kijk of luister live mee</a></div>
+<span class="lbl">Nu live · zondag tijdens de dienst</span>
+<div class="strip"><p><span class="lbl-goud" style="display: inline-flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 10px; height: 10px; clip-path: {{oct}}; background: #C9A13B; display: inline-block"></span>Nu live</span><span class="t">10.00</span><span class="s">Morgendienst · Ds. [naam]</span></p><a href="#youtube" class="btn-goud" style="background: #C9A13B; color: #09283F; min-height: 48px; padding: 0 22px; text-decoration: none">Kijk live mee</a></div>
+<span class="lbl">Fout</span>
+<div class="strip"><p><span class="lbl-goud">Elke zondag</span><span class="t">10.00</span><span class="s">morgendienst</span><span class="t">17.00</span><span class="s">middagdienst</span></p><a href="#live">Kijk of luister live mee</a></div>
+</div>
+<p class="note">Bij een fout valt de strip stil terug op de basis; er is geen foutmelding op de homepage.</p>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.01em">2 · Agendalijst (Welkom en Kerkdiensten)</h2>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px">
+
+<div class="state" aria-busy="true">
+<h3>Laden</h3>
+<div class="row"><span class="date sk"></span><span style="display: flex; flex-direction: column; gap: 8px"><span class="sk" style="height: 16px; width: 55%"></span><span class="sk" style="height: 12px; width: 35%"></span></span><span class="sk" style="height: 16px; width: 44px"></span></div>
+<div class="row"><span class="date sk"></span><span style="display: flex; flex-direction: column; gap: 8px"><span class="sk" style="height: 16px; width: 40%"></span><span class="sk" style="height: 12px; width: 50%"></span></span><span class="sk" style="height: 16px; width: 44px"></span></div>
+<div class="row" style="border-bottom: 0"><span class="date sk"></span><span style="display: flex; flex-direction: column; gap: 8px"><span class="sk" style="height: 16px; width: 60%"></span><span class="sk" style="height: 12px; width: 30%"></span></span><span class="sk" style="height: 16px; width: 44px"></span></div>
+<p class="note" style="margin-top: 12px">Zelfde rijhoogte als geladen, dus geen verspringen. Grijze vlakken zonder animatie.</p>
+</div>
+
+<div class="state">
+<h3>Geladen</h3>
+<div class="row"><span class="date"><strong>[DD]</strong><span>[mnd]</span></span><span><strong>Morgendienst</strong><br><span style="font-size: 14px; color: #4A5866">Ds. [naam] · met crèche en kinderkerk</span></span><strong>10.00</strong></div>
+<div class="row"><span class="date"><strong>[DD]</strong><span>[mnd]</span></span><span><strong>Kennismakingsavond</strong><br><span style="font-size: 14px; color: #4A5866">Marehuis</span></span><strong>[tijd]</strong></div>
+<div class="row" style="border-bottom: 0"><span class="date"><strong>[DD]</strong><span>[mnd]</span></span><span><strong>Concert in de kerk</strong><br><span style="font-size: 14px; color: #4A5866">Zaterdagmiddag</span></span><strong>[tijd]</strong></div>
+<p class="note" style="margin-top: 12px">Titel = ICS-samenvatting, regel eronder = locatie of omschrijving, rechts de begintijd. Welkom toont de eerste 4, Kerkdiensten de komende 6 weken.</p>
+</div>
+
+<div class="state">
+<h3>Leeg</h3>
+<div style="padding: 24px 0 12px; display: flex; flex-direction: column; gap: 10px"><strong style="font-size: 20px">Er staat nu niets in de agenda.</strong><span style="color: #1A2733">Elke zondag zijn er diensten om 10.00 en 17.00.</span></div>
+</div>
+
+<div class="state">
+<h3>Fout</h3>
+<div style="padding: 24px 0 12px; display: flex; flex-direction: column; gap: 10px"><strong style="font-size: 20px">De agenda kon niet worden geladen.</strong><span style="color: #1A2733">Elke zondag zijn er diensten om 10.00 en 17.00.</span><div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px"><button type="button" class="btn-outline" style="font: inherit; font-weight: 700; min-height: 48px; padding: 0 22px; border: 1.5px solid #09283F; background: #FFFFFF; color: #09283F; cursor: pointer">Probeer opnieuw</button><a href="#agenda-extern" style="min-height: 48px; display: inline-flex; align-items: center">Open de agenda</a></div></div>
+</div>
+
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.01em">3 · Abonneren</h2>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; border-top: 1px solid #D9DEE3; padding-top: 12px"><a href="#ics" class="cal"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>Zet de agenda in je eigen agenda-app</a><span class="note">Diensten en activiteiten uit de kerkelijke agenda</span></div>
+<p class="note">Onder elke agendalijst en in de footer. Linkt naar de ICS-feed (webcal://), zodat de agenda in Apple/Google/Outlook blijft meelopen.</p>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 8px; background: #E6EBF0; padding: 24px">
+<span class="lbl">Techniek voor de bouw</span>
+<p style="margin: 0; color: #1A2733; max-width: 60em">De ICS-feed wordt bij elk bezoek opgehaald. Omdat agenda-aanbieders geen CORS-headers sturen, gaat dat via een kleine proxy (bijv. een gratis Cloudflare Worker die de feed doorgeeft en een paar minuten cachet). Zonder JavaScript blijft de basisstaat staan; de pagina's zijn dus nooit leeg.</p>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { oct: 'polygon(29.3% 0, 70.7% 0, 100% 29.3%, 100% 70.7%, 70.7% 100%, 29.3% 100%, 0 70.7%, 0 29.3%)' };
+  }
+}
+</script>
+</body>
+</html>

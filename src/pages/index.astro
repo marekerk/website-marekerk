@@ -1,41 +1,97 @@
 ---
-import Navbar from '../components/Navbar.astro';
-import * as page from '../content/page.md';
-import '../styles/global.css';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import AgendaStrip from '../components/AgendaStrip.astro';
+import AgendaList from '../components/AgendaList.astro';
+import Ribben from '../components/Ribben.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { href } from '../lib/url';
+import { CONTACT, KERKOMROEP_URL, YOUTUBE_URL } from '../lib/links';
+import gracht from '../assets/photos/gracht.jpg';
+import kerkzaal from '../assets/photos/kerkzaal.jpg';
+import gevel from '../assets/photos/gevel.jpg';
 
-const { Content } = page;
-const { title, subtitle } = page.frontmatter;
+const halfWidths = [480, 720, 960, 1280];
+const halfSizes = '(min-width: 1000px) 556px, 100vw';
 ---
+<Base
+  title="Welkom"
+  description="De Marekerk is een levendige gemeenschap. Hier vinden mensen van alle leeftijden een plek om samen te groeien in geloof en elkaar te ondersteunen in vreugde en verdriet."
+  current="welkom"
+  photos={['gracht', 'gevel', 'kerkzaal']}
+>
+  <section aria-labelledby="welkom" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: center">
+    <div style="display: flex; flex-direction: column; gap: 24px">
+      <p class="label" style="margin: 0">Protestantse gemeente Leiden</p>
+      <h1 id="welkom" style="margin: 0; font-size: clamp(56px, 7vw, 72px); font-weight: 700; letter-spacing: -0.03em; line-height: 0.95">Welkom</h1>
+      <p style="margin: 0; font-size: 20px; line-height: 1.5; color: #1A2733; max-width: 28em">De Marekerk is een levendige gemeenschap. Hier vinden mensen van alle leeftijden een plek om samen te groeien in geloof en elkaar te ondersteunen in vreugde en verdriet.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px"><a href={href('/kerkdiensten/')} class="btn btn-primary">Zo zien onze kerkdiensten eruit</a><a href={href('/geven/')} class="btn btn-outline">Geven</a></div>
+    </div>
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+      <Image src={gracht} width={1280} widths={halfWidths} sizes={halfSizes} loading="eager" fetchpriority="high" alt="De Marekerk met haar koepel boven de gracht in de Leidse binnenstad" style="width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; object-position: 50% 42%; display: block" />
+      <figcaption style="font-size: 14px; color: #4A5866">De Marekerk aan de Lange Mare</figcaption>
+    </figure>
+  </section>
 
-<!doctype html>
-<html lang="nl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{title}</title>
-    <meta name="description" content={subtitle} />
-  </head>
+  <AgendaStrip />
 
-  <body>
-    <Navbar />
+  <section aria-labelledby="agenda" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px">
+    <AgendaList heading="Agenda" headingId="agenda" limit={4} moreHref={href('/kerkdiensten/#agenda')} subscribe={false} />
+    <div style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #09283F; padding-top: 16px">
+      <span class="label">Kerkdiensten</span>
+      <h3 style="margin: 0; font-size: 22px; font-weight: 700; line-height: 1.25">In de Marekerk hebben we elke zondag twee keer een dienst.</h3>
+      <p style="margin: 0; color: #1A2733">De morgendienst is om 10.00 uur en de middagdienst om 17.00 uur. Loop gerust eens binnen als je benieuwd hiernaar bent. Tijdens de morgendienst staan bij de ingang gemeenteleden waar je al je vragen aan kunt stellen.</p>
+      <p style="margin: 0; color: #1A2733">Daarnaast kan je de diensten live en naderhand via <a href={YOUTUBE_URL}>YouTube</a> bekijken en via <a href={KERKOMROEP_URL}>Kerkomroep</a> beluisteren.</p>
+    </div>
+  </section>
 
-    <main>
-      <section class="hero hero-homepage">
-        <div class="container">
-          <h1>{title}</h1>
-          <p>{subtitle}</p>
+  <section aria-labelledby="geloof" style="margin-top: clamp(48px, 7vw, 96px); background: #09283F; color: #FFFFFF; position: relative; overflow: hidden">
+    <Ribben />
+    <div style="position: relative; margin: 0 auto; padding: clamp(56px, 8vw, 112px) clamp(20px, 4vw, 40px); display: flex; flex-direction: column; gap: 20px; max-width: min(1200px, 100%); box-sizing: border-box">
+      <h2 id="geloof" class="label label-goud" style="margin: 0">Wat geloven wij?</h2>
+      <p style="margin: 0; font-size: clamp(28px, 3.6vw, 44px); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; max-width: 20em">De Bijbel is onze bron en we putten kracht uit onze gereformeerde traditie.</p>
+      <p style="margin: 0; font-size: 18px; color: #DCE6EF; max-width: 34em">We willen de liefde van Christus in woord en daad verspreiden, met een open hart en een gastvrije houding. Onze deuren staan daarom altijd open voor wie zoekt naar zingeving en gemeenschap.</p>
+      <a href={href('/onze-gemeente/')} class="link-licht" style="align-self: flex-start; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">Meer over onze identiteit</a>
+    </div>
+  </section>
+
+  <section aria-labelledby="kennis" class="container section" style="display: flex; flex-direction: column; gap: 24px">
+    <h2 id="kennis" style="margin: 0; font-size: clamp(36px, 4vw, 48px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">Kennis maken?</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr)); grid-auto-rows: minmax(220px, auto); gap: 8px">
+      <a href={href('/kerkdiensten/')} class="module-link" style="background: #FFFFFF; border: 1px solid #D9DEE3">
+        <span class="module-link-tekst"><strong>Kerkdiensten</strong><span>Elke zondag om 10.00 en 17.00 uur. Loop gerust eens binnen.</span></span>
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </a>
+      <a href={href('/kerkdiensten/#kinderen')} class="module-link" style="background: #E6EBF0">
+        <span class="module-link-tekst"><strong>Creche en kinderkerk</strong><span>Tijdens de morgendienst, voor kinderen van 0 tot 4 en voor de basisschool.</span></span>
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </a>
+      <a href={href('/kerkdiensten/#alpha')} class="module-link" style="background: #FFFFFF; border: 1px solid #D9DEE3">
+        <span class="module-link-tekst"><strong>Alphadiensten</strong><span>Acht keer per seizoen een laagdrempelige dienst om kennis te maken met het geloof en met de gemeente.</span></span>
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </a>
+      <Placeholder label="koffie na de dienst" />
+      <div style="position: relative; overflow: hidden; min-height: 220px">
+        <Image src={kerkzaal} width={800} widths={[400, 600, 800]} sizes="(min-width: 900px) 300px, 100vw" alt="De kerkzaal met zuilen, galerij en banken" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block" />
+      </div>
+      <div style="grid-column: 1 / -1; background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 16px">
+        <span class="label label-goud">Neem gerust contact op</span>
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+          <span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 22px">{CONTACT.naam}</strong><span style="color: #DCE6EF">Heb je een vraag over onze gemeente of over het christelijk geloof? <a href={`mailto:${CONTACT.email}`} class="link-licht">{CONTACT.email}</a> of <a href={CONTACT.telefoonHref} class="link-licht">{CONTACT.telefoon}</a></span></span>
+          <a href={href('/ik-ben-nieuw/')} class="btn btn-goud" style="flex: none">Meer informatie voor als je nieuw bent</a>
         </div>
-      </section>
+      </div>
+    </div>
+  </section>
 
-      <section class="content-section">
-        <div class="container content-card">
-          <article class="markdown">
-            <Content />
-          </article>
-        </div>
-      </section>
-
-    </main>
-
-  </body>
-</html>
+  <section aria-labelledby="gebouw" class="container section section-end" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: center">
+    <Image src={gevel} width={1280} widths={halfWidths} sizes={halfSizes} alt="De achtkantige gevel van de Marekerk met koepel en lantaarn" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; display: block" />
+    <div style="display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #09283F; padding-top: 20px">
+      <span class="label">Het gebouw</span>
+      <span style="font-size: clamp(72px, 9vw, 104px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.85; border-bottom: 3px solid #C9A13B; align-self: flex-start; padding-bottom: 8px">1649</span>
+      <h2 id="gebouw" style="margin: 0; font-size: 22px; font-weight: 700; line-height: 1.25">De 17e eeuwse Marekerk is een uniek kerkgebouw met haar ronde koepel.</h2>
+      <p style="margin: 0; color: #1A2733">Het is een van de eerste kerken in Nederland die in een Protestantse traditie is gebouwd.</p>
+      <a href={href('/gebouw/')} style="font-weight: 700; display: inline-flex; align-items: center; gap: 8px; min-height: 44px">Meer informatie over het gebouw <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+    </div>
+  </section>
+</Base>

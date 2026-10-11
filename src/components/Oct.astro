@@ -1,0 +1,24 @@
+---
+/**
+ * Achthoek-marker. Alleen als marker gebruiken (design language):
+ * 10 = opsomming, 24 = nummer/menu, 32 = sectienummer, 40 = icoon, 56 = datum.
+ *
+ * <Oct size={24}>1</Oct>
+ * <Oct size={10} />                       (bullet, aria-hidden)
+ * <Oct size={32} tone="goud">3</Oct>      (op navy)
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'span'> {
+  size?: 10 | 24 | 32 | 40 | 56;
+  tone?: 'navy' | 'goud' | 'wit';
+}
+
+const { size = 24, tone = 'navy', class: className, ...rest } = Astro.props;
+const hasContent = Astro.slots.has('default');
+---
+<span
+  class:list={['oct', `oct-${size}`, `oct-${tone}`, className]}
+  aria-hidden={hasContent ? undefined : 'true'}
+  {...rest}
+><slot /></span>

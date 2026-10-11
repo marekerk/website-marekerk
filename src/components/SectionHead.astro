@@ -1,0 +1,24 @@
+---
+/**
+ * Genummerde sectiekop: achthoek 32 + h2 (40px), zoals in Gemeente/Gebouw.
+ *
+ * <SectionHead number={1} id="missie-kop">Missie en visie</SectionHead>
+ * <SectionHead number={3} id="bakkerij-kop" tone="goud">…</SectionHead>   (op navy)
+ * <SectionHead number={4} id="activiteiten-kop" rule>…</SectionHead>      (met lijn erboven)
+ *
+ * `id` komt op de h2 (voor aria-labelledby op de <section>).
+ */
+interface Props {
+  number: number | string;
+  id: string;
+  tone?: 'navy' | 'goud';
+  /** 1px navy lijn erboven + 20px lucht (als de kop zelf de sectie opent). */
+  rule?: boolean;
+}
+
+const { number, id, tone = 'navy', rule = false } = Astro.props;
+---
+<div class:list={['section-head', { 'section-head-rule': rule }]}>
+  <span class:list={['oct', 'oct-32', `oct-${tone}`]}>{number}</span>
+  <h2 id={id}><slot /></h2>
+</div>
