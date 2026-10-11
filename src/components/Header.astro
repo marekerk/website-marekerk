@@ -1,0 +1,55 @@
+---
+import logo from '../assets/logo.svg';
+import { href } from '../lib/url';
+
+export type NavKey = 'welkom' | 'kerkdiensten' | 'gemeente' | 'gebouw' | 'geven' | 'nieuw';
+
+interface Props {
+  /** Actieve pagina in het hoofdmenu (aria-current="page"). Leeg = geen (bijv. 404). */
+  current?: NavKey;
+}
+
+const { current } = Astro.props;
+
+const items: { key: NavKey; label: string; path: string; button?: boolean }[] = [
+  { key: 'welkom', label: 'Welkom', path: '/' },
+  { key: 'kerkdiensten', label: 'Kerkdiensten', path: '/kerkdiensten/' },
+  { key: 'gemeente', label: 'Onze gemeente', path: '/onze-gemeente/' },
+  { key: 'gebouw', label: 'Gebouw', path: '/gebouw/' },
+  { key: 'geven', label: 'Geven', path: '/geven/' },
+  { key: 'nieuw', label: 'Ik ben nieuw', path: '/ik-ben-nieuw/', button: true },
+];
+---
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href={href('/')} aria-label="Marekerk gemeente, naar de homepage" style="display: block"><img src={logo.src} width={logo.width} height={logo.height} alt="Marekerk gemeente" style="display: block; height: 48px; width: auto"></a>
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="hoofdmenu"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>Menu</button>
+    <nav id="hoofdmenu" aria-label="Hoofdmenu" class="nav-list">
+      {items.map((item) => (
+        <a
+          href={href(item.path)}
+          class={item.button ? 'btn btn-primary' : undefined}
+          aria-current={item.key === current ? 'page' : undefined}
+        >{item.label}</a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+  const menu = document.getElementById('hoofdmenu');
+  if (toggle && menu) {
+    const setOpen = (open: boolean) => {
+      menu.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+    toggle.addEventListener('click', () => setOpen(!menu.classList.contains('open')));
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.classList.contains('open')) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+  }
+</script>

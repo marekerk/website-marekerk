@@ -1,0 +1,101 @@
+---
+/**
+ * Agendalijst (Welkom en Kerkdiensten). Statisch: kop, skeleton, templates en abonneerregel.
+ * De agenda-runtime vervangt de inhoud van [data-agenda-slot="body"] in de container
+ * [data-agenda="list"] door óf een <ul class="agenda-list"> met klonen van "rij", óf "leeg"/"fout":
+ *
+ *   data-template="rij"   <li> met [data-field="dag"], [data-field="maand"], [data-field="titel"],
+ *                         [data-field="omschrijving"], [data-field="tijd"]
+ *   data-template="leeg"  leegstaat
+ *   data-template="fout"  foutstaat met [data-action="opnieuw"]-knop
+ *
+ * Instellingen staan als data-attributen op de container: data-limit, data-weeks.
+ * Zonder JS: geen skeleton (html:not(.js)), wél de leegstaat uit <noscript>.
+ * Tijdens laden: aria-busy="true" op de body; de runtime haalt dat weg.
+ * Staten: design/Agenda-staten.dc.html, sectie 2 en 3.
+ */
+import { AGENDA_EXTERN_URL, AGENDA_WEBCAL_URL } from '../lib/links';
+
+interface Props {
+  /** Kop boven de lijst. */
+  heading?: string;
+  /** id van de h2 (voor aria-labelledby). */
+  headingId?: string;
+  /** Kopgrootte: 32 (Welkom) of 40 (Kerkdiensten). */
+  headingSize?: 32 | 40;
+  /** Maximaal aantal items (Welkom: 4). Ook het aantal skeleton-rijen. */
+  limit?: number;
+  /** Periode in weken (Kerkdiensten: 6). */
+  weeks?: number;
+  /** Link "Hele agenda" rechts in de kop. Zonder: "Diensten en activiteiten". */
+  moreHref?: string;
+  /** Abonneerregel onder de lijst tonen. */
+  subscribe?: boolean;
+  /** id op de abonneerlink (Kerkdiensten: "ics"). */
+  subscribeId?: string;
+}
+
+const {
+  heading = 'Agenda',
+  headingId = 'agenda',
+  headingSize = 32,
+  limit,
+  weeks,
+  moreHref,
+  subscribe = true,
+  subscribeId,
+} = Astro.props;
+
+const skeletonRows = limit ?? 3;
+// Breedtes uit het ontwerp, zodat de skeleton niet als een blok oogt
+const widths = [
+  ['55%', '35%'],
+  ['40%', '50%'],
+  ['60%', '30%'],
+];
+---
+<div class="agenda" data-agenda="list" data-limit={limit} data-weeks={weeks}>
+  <div class:list={['agenda-head', { 'agenda-head-lg': headingSize === 40 }]}>
+    <h2 id={headingId}>{heading}</h2>
+    {moreHref
+      ? <a href={moreHref} style="font-weight: 700; white-space: nowrap">Hele agenda</a>
+      : <span style="font-size: 14px; color: #4A5866">Diensten en activiteiten</span>}
+  </div>
+
+  <div class="js-only" data-agenda-slot="body" aria-busy="true">
+  <ul class="agenda-list">
+    {Array.from({ length: skeletonRows }, (_, i) => {
+      const [w1, w2] = widths[i % widths.length];
+      return (
+        <li class="agenda-row" aria-hidden="true">
+          <span class="oct oct-56 sk"></span>
+          <span class="sk-lines"><span class="sk" style={`height: 16px; width: ${w1}`}></span><span class="sk" style={`height: 12px; width: ${w2}`}></span></span>
+          <span class="sk" style="height: 16px; width: 44px"></span>
+        </li>
+      );
+    })}
+  </ul>
+  </div>
+  <noscript>
+    <div class="agenda-melding"><strong>Er staat nu niets in de agenda.</strong><span>Elke zondag zijn er diensten om 10.00 en 17.00.</span></div>
+  </noscript>
+
+  <template data-template="rij">
+    <li class="agenda-row"><span class="oct oct-56 oct-navy oct-date"><strong data-field="dag">[DD]</strong><span data-field="maand">[mnd]</span></span><span><strong data-field="titel"></strong><br><span class="agenda-sub" data-field="omschrijving"></span></span><strong data-field="tijd"></strong></li>
+  </template>
+
+  <template data-template="leeg">
+    <div class="agenda-melding"><strong>Er staat nu niets in de agenda.</strong><span>Elke zondag zijn er diensten om 10.00 en 17.00.</span></div>
+  </template>
+
+  <template data-template="fout">
+    <div class="agenda-melding"><strong>De agenda kon niet worden geladen.</strong><span>Elke zondag zijn er diensten om 10.00 en 17.00.</span><div class="agenda-melding-acties"><button type="button" class="btn btn-outline" data-action="opnieuw">Probeer opnieuw</button><a href={AGENDA_EXTERN_URL}>Open de agenda</a></div></div>
+  </template>
+
+  {subscribe && (
+    <div class="agenda-abo">
+      <a id={subscribeId} href={AGENDA_WEBCAL_URL}><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>Zet de agenda in je eigen agenda-app</a>
+      <span>Diensten en activiteiten uit de kerkelijke agenda</span>
+    </div>
+  )}
+</div>

@@ -1,0 +1,69 @@
+---
+/**
+ * Sticky "Op deze pagina"-navigatie met scroll-spy.
+ * Het eerste item is actief bij laden; daarna volgt aria-current="true" de sectie in beeld.
+ *
+ * <Subnav items={[{ href: '#missie', label: 'Missie en visie' }, …]} />
+ */
+interface Item {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  items: Item[];
+}
+
+const { items } = Astro.props;
+---
+<div class="subnav-bar">
+  <nav aria-label="Op deze pagina" class="subnav" data-subnav>
+    {items.map((item, i) => (
+      <a href={item.href} aria-current={i === 0 ? 'true' : undefined}>{item.label}</a>
+    ))}
+  </nav>
+</div>
+
+<script>
+  for (const nav of document.querySelectorAll<HTMLElement>('[data-subnav]')) {
+    const links = [...nav.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
+    const targets = links
+      .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
+      .filter((el): el is HTMLElement => el !== null);
+    if (!targets.length || !('IntersectionObserver' in window)) continue;
+
+    const setActive = (id: string) => {
+      for (const link of links) {
+        const active = link.hash === `#${id}`;
+        if (active) {
+          link.setAttribute('aria-current', 'true');
+          // Op mobiel het actieve item in de horizontale rij in beeld houden
+          const x = link.offsetLeft - nav.offsetLeft;
+          if (x < nav.scrollLeft || x + link.offsetWidth > nav.scrollLeft + nav.clientWidth) {
+            nav.scrollTo({ left: Math.max(0, x - 20), behavior: 'smooth' });
+          }
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      }
+    };
+
+    const visible = new Set<HTMLElement>();
+    const barHeight = nav.parentElement?.offsetHeight ?? 50;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const el = entry.target as HTMLElement;
+          if (entry.isIntersecting) visible.add(el);
+          else visible.delete(el);
+        }
+        // De bovenste sectie die in de zone onder de balk valt, is actief
+        const first = targets.find((t) => visible.has(t));
+        if (first) setActive(first.id);
+      },
+      // Zone: van onder de sticky balk tot 60 % van het scherm
+      { rootMargin: `-${barHeight}px 0px -40% 0px` },
+    );
+    targets.forEach((t) => observer.observe(t));
+  }
+</script>

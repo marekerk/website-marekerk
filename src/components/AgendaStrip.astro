@@ -1,0 +1,38 @@
+---
+/**
+ * Navy tijdenstrip (Welkom). Rendert statisch de basisstaat; de agenda-runtime
+ * vervangt de inhoud van [data-agenda-slot="content"] door een kloon van een template:
+ *
+ *   data-template="geladen"  label [data-field="datum"] + container [data-agenda-slot="diensten"]
+ *                            die gevuld wordt met klonen van data-template="dienst"
+ *                            ([data-field="tijd"], [data-field="voorganger"])
+ *   data-template="live"     [data-field="tijd"], [data-field="omschrijving"]
+ *
+ * Bij een fout blijft de basisstaat staan (geen foutmelding op Welkom).
+ * Staten: design/Agenda-staten.dc.html, sectie 1.
+ */
+import { href } from '../lib/url';
+import { YOUTUBE_URL } from '../lib/links';
+
+const liveHref = href('/kerkdiensten/#live');
+---
+<section aria-label="Kerkdiensten" class="strip" data-agenda="strip" style="margin-top: clamp(48px, 7vw, 96px)">
+  <div class="strip-inner" data-agenda-slot="content">
+    <p class="strip-tijden"><span class="label label-goud">Elke zondag</span><span class="strip-dienst"><strong class="strip-t">10.00</strong><span class="strip-s">morgendienst</span></span><span class="strip-dienst"><strong class="strip-t">17.00</strong><span class="strip-s">middagdienst</span></span></p>
+    <a href={liveHref} class="link-licht strip-link">Kijk of luister live mee</a>
+  </div>
+
+  <template data-template="geladen">
+    <p class="strip-tijden"><span class="label label-goud" data-field="datum">Zondag [DD mnd]</span><span data-agenda-slot="diensten" style="display: contents"></span></p>
+    <a href={liveHref} class="link-licht strip-link">Kijk of luister live mee</a>
+  </template>
+
+  <template data-template="dienst">
+    <span class="strip-dienst"><strong class="strip-t" data-field="tijd">10.00</strong><span class="strip-s" data-field="voorganger">Ds. [naam]</span></span>
+  </template>
+
+  <template data-template="live">
+    <p class="strip-tijden"><span class="label label-goud strip-live-label"><span aria-hidden="true" class="oct oct-10 oct-goud"></span>Nu live</span><strong class="strip-t" data-field="tijd">10.00</strong><span class="strip-s" data-field="omschrijving">Morgendienst · Ds. [naam]</span></p>
+    <a href={YOUTUBE_URL} class="btn btn-goud">Kijk live mee</a>
+  </template>
+</section>

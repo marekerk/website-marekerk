@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Onze gemeente – Marekerk</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Source Sans 3',system-ui,sans-serif;color:#09283F;background:#FFFFFF}
+a{color:#09283F;text-decoration-color:#09283F;text-decoration-thickness:2px;text-underline-offset:4px}
+a:hover{color:#1F4566;text-decoration-color:#C9A13B}
+a:focus-visible,button:focus-visible{outline:3px solid #C9A13B;outline-offset:3px}
+.btn{transition:background-color .15s}
+.btn-primary:hover{background:#1F4566;color:#FFFFFF}
+.btn-outline:hover{background:#09283F;color:#FFFFFF}
+.btn-goud:hover{background:#ECDFB3;color:#09283F}
+.nav-list{display:flex;flex-wrap:wrap;align-items:center;gap:4px 28px;font-weight:600;font-size:16px}
+.nav-toggle{display:none}
+.skip{position:absolute;left:-999px;top:8px;background:#09283F;color:#FFFFFF;padding:10px 16px;font-weight:700;z-index:10}
+.skip:focus{left:16px}
+.subnav{display:flex;gap:4px 24px;font-weight:600;font-size:15px;overflow-x:auto;scrollbar-width:none}
+.subnav::-webkit-scrollbar{display:none}
+.subnav a{min-height:48px;display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap;flex:none;color:#09283F}
+.subnav a[aria-current="true"]{box-shadow:inset 0 -3px 0 #C9A13B;font-weight:700}
+@media (max-width:760px){.nav-toggle{display:inline-flex}.nav-list{display:none;width:100%;flex-direction:column;align-items:stretch;gap:0;border-top:1px solid #D9DEE3;padding-top:8px;box-shadow:0 8px 24px -8px rgba(9,40,63,.25);background:#FFFFFF}.nav-list.open{display:flex}.nav-list a{min-height:48px}}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #FFFFFF; font-family: 'Source Sans 3', system-ui, sans-serif; color: #09283F; font-size: 17px; line-height: 1.6">
+<a href="#inhoud" class="skip">Direct naar de inhoud</a>
+
+<header style="border-bottom: 1px solid #D9DEE3">
+<div style="max-width: 1200px; margin: 0 auto; padding: 14px clamp(20px, 4vw, 40px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+<a href="Main.dc.html" aria-label="Marekerk gemeente, naar de homepage" style="display: block"><img src="/_blob/367eedee16132f781e3001b399288177" alt="Marekerk gemeente" style="display: block; height: 48px; width: auto"></a>
+<button type="button" class="nav-toggle" aria-expanded="{{navOpen}}" aria-controls="hoofdmenu" onClick="{{toggleNav}}" style="align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1.5px solid #09283F; background: #FFFFFF; color: #09283F; font: inherit; font-weight: 700; font-size: 15px; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>Menu</button>
+<nav id="hoofdmenu" aria-label="Hoofdmenu" class="nav-list {{navClass}}">
+<a href="Main.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; color: #1A2733">Welkom</a>
+<a href="Kerkdiensten.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; color: #1A2733">Kerkdiensten</a>
+<a href="Gemeente.dc.html" aria-current="page" style="min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; font-weight: 700; box-shadow: inset 0 -3px 0 #C9A13B">Onze gemeente</a>
+<a href="Gebouw.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; color: #1A2733">Gebouw</a>
+<a href="Geven.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; color: #1A2733">Geven</a>
+<a href="Nieuw.dc.html" class="btn btn-primary" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 20px; text-decoration: none; font-weight: 700; color: #FFFFFF; background: #09283F">Ik ben nieuw</a>
+</nav>
+</div>
+</header>
+
+<main id="inhoud">
+<section aria-labelledby="titel" style="max-width: 1200px; margin: 0 auto; padding: clamp(48px, 7vw, 96px) clamp(20px, 4vw, 40px) 0; display: flex; flex-direction: column; gap: 20px">
+<nav aria-label="Kruimelpad" style="font-size: 14px; color: #4A5866"><a href="Main.dc.html" style="color: #4A5866">Welkom</a> <span aria-hidden="true">/</span> Onze gemeente</nav>
+<h1 id="titel" style="margin: 0; font-size: clamp(48px, 6vw, 72px); font-weight: 700; letter-spacing: -0.03em; line-height: 0.95">Onze gemeente</h1>
+<p style="margin: 0; font-size: 20px; line-height: 1.5; color: #1A2733; max-width: 32em">De Marekerk is een levendige gemeenschap van Christus. Wij geloven in God de Vader, in Zijn Zoon Jezus Christus en in de Heilige Geest. Wij geloven dat de Bijbel Gods woord is en dat Hij daardoor tot ons spreekt en ons leidt. Daarom ligt de Bijbel altijd opengeslagen in ons midden.</p>
+</section>
+
+<div style="position: sticky; top: 0; z-index: 5; background: #FFFFFF; border-top: 1px solid #D9DEE3; border-bottom: 1px solid #D9DEE3; margin-top: clamp(32px, 5vw, 56px)">
+<nav aria-label="Op deze pagina" class="subnav" style="max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px)"><a aria-current="true" href="#missie">Missie en visie</a><a href="#pgl">Protestantse gemeente Leiden</a><a href="#bakkerij">De Bakkerij</a><a href="#activiteiten">Activiteiten</a><a href="#muziek">Muziek</a><a href="#vieringen">Bijzondere vieringen</a></nav>
+</div>
+
+<section id="missie" aria-labelledby="missie-kop" style="max-width: 1200px; margin: 0 auto; padding: clamp(40px, 6vw, 72px) clamp(20px, 4vw, 40px) 0; display: flex; flex-direction: column; gap: 32px">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px">
+<div style="display: flex; gap: 14px; align-items: center"><span style="width: 32px; height: 32px; flex: none; clip-path: {{oct}}; background: #09283F; color: #FFFFFF; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center">1</span><h2 id="missie-kop" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">Missie en visie</h2></div>
+<p style="margin: 0; color: #1A2733">De kerkdiensten kenmerken zich door gebed, zang en Bijbeluitleg. Vanuit onze gereformeerde traditie worden wij toegerust voor ons leven als christen in deze tijd. We leren om te leven vanuit verzoening, delen in vreugde en verdriet, en oefenen ons in het volgen van Jezus. De Marekerk is een actieve, gastvrije en open gemeenschap waar iedereen welkom is. Iedere zondagochtend worden bezoekers verwelkomd door ons welkomstteam, en op zaterdagmiddag staan de deuren van de kerk open voor bezoekers.</p>
+<p style="margin: 0; color: #1A2733">Wij streven ernaar dat iedereen zich thuis voelt, of je nu voor het eerst komt of al jarenlang lid bent. Van jong tot oud voelen we ons door de Geest verbonden in een diverse en gastvrije gemeenschap die leeft vanuit het verlangen om de liefde van Christus in woord en daad te verspreiden. De identiteit en missie van de Marekerk zijn gebaseerd op vier centrale pijlers.</p>
+</div>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px"><img src="/_blob/2bcc4b1e1728d4d00cc105aca1061243" alt="De preekstoel uit 1649 met de opengeslagen Bijbel" style="width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block"><figcaption style="font-size: 14px; color: #4A5866">De preekstoel uit 1649</figcaption></figure>
+</div>
+<ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); grid-auto-rows: minmax(180px, auto); gap: 8px">
+<li style="background: #E6EBF0; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px"><span style="width: 24px; height: 24px; clip-path: {{oct}}; background: #09283F; color: #FFFFFF; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">1</span><strong style="font-size: 20px; line-height: 1.2">Toerusting voor het leven als christen</strong></li>
+<li style="background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px"><span style="width: 24px; height: 24px; clip-path: {{oct}}; background: #C9A13B; color: #09283F; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">2</span><strong style="font-size: 20px; line-height: 1.2">Volgen van Jezus in het dagelijks leven</strong></li>
+<li style="background: #E6EBF0; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px"><span style="width: 24px; height: 24px; clip-path: {{oct}}; background: #09283F; color: #FFFFFF; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">3</span><strong style="font-size: 20px; line-height: 1.2">Missionair verlangen en zingeving</strong></li>
+<li style="background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px"><span style="width: 24px; height: 24px; clip-path: {{oct}}; background: #C9A13B; color: #09283F; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">4</span><strong style="font-size: 20px; line-height: 1.2">Van jong tot oud verbonden</strong></li>
+</ol>
+</section>
+
+<section id="pgl" aria-labelledby="pgl-kop" style="max-width: 1200px; margin: 0 auto; padding: clamp(48px, 7vw, 96px) clamp(20px, 4vw, 40px) 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px">
+<div style="display: flex; gap: 14px; align-items: center"><span style="width: 32px; height: 32px; flex: none; clip-path: {{oct}}; background: #09283F; color: #FFFFFF; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center">2</span><h2 id="pgl-kop" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">Protestantse gemeente Leiden</h2></div>
+<p style="margin: 0; color: #1A2733">Wij zijn aangesloten bij de Protestantse Kerk in Nederland (PKN) en daardoor onderdeel van de Protestantste Gemeente Leiden (PGL). Geografisch gezien behoort een groot deel van de Leidse binnenstad en Leiden-Noord tot de Marekerk. Er komen echter mensen uit de hele Leidse regio, die zich thuisvoelen in de Marekerk.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px; border-top: 1px solid #09283F; padding-top: 20px">
+<span style="font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #4A5866">De andere geloofsgemeenschappen in de PGL</span>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column"><li style="display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid #D9DEE3"><span style="width: 10px; height: 10px; clip-path: {{oct}}; background: #09283F; flex: none"></span>Hooglandse Kerk gemeente</li><li style="display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid #D9DEE3"><span style="width: 10px; height: 10px; clip-path: {{oct}}; background: #09283F; flex: none"></span>De Verbinding</li><li style="display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid #D9DEE3"><span style="width: 10px; height: 10px; clip-path: {{oct}}; background: #09283F; flex: none"></span>Leiden Zuidwest</li><li style="display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid #D9DEE3"><span style="width: 10px; height: 10px; clip-path: {{oct}}; background: #09283F; flex: none"></span>Merenwijk</li></ul>
+</div>
+</section>
+
+<section id="bakkerij" aria-labelledby="bakkerij-kop" style="margin-top: clamp(48px, 7vw, 96px); background: #09283F; color: #FFFFFF; position: relative; overflow: hidden">
+<svg aria-hidden="true" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" style="position: absolute; inset: 0; width: 100%; height: 100%"><path d="M100 100L58.6 0M100 100L141.4 0M100 100L200 58.6M100 100L200 141.4M100 100L141.4 200M100 100L58.6 200M100 100L0 141.4M100 100L0 58.6" stroke="#C9A13B" stroke-width="0.3" opacity="0.45"></path></svg>
+<div style="position: relative; max-width: 1200px; margin: 0 auto; padding: clamp(56px, 8vw, 96px) clamp(20px, 4vw, 40px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 32px 48px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 14px"><div style="display: flex; gap: 14px; align-items: center"><span style="width: 32px; height: 32px; flex: none; clip-path: {{oct}}; background: #C9A13B; color: #09283F; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center">3</span><h2 id="bakkerij-kop" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">Diaconaal centrum de Bakkerij</h2></div><p style="margin: 0; color: #DCE6EF">De diaconale activiteiten geven we als protestantse gemeente Leiden samen vorm in de Bakkerij. Daarnaast zijn er in de gemeente diverse diaconale activiteiten. Denk bijvoorbeeld aan de inzameling van de voedselbank of meedoen met diverse activiteiten zoals groentedelers.</p></div>
+<div style="display: flex; flex-direction: column; gap: 14px"><p style="margin: 0; color: #DCE6EF">Diaconaal Centrum De Bakkerij, midden in Leiden aan de Oude Rijn, is al eeuwenlang een plek waar hulp gegeven wordt aan (arme) Leidenaren, vanuit de kerken. Sinds de 17de eeuw was hier de Armenbakkerij waar brood gebakken werd voor de armen.</p><p style="margin: 0; color: #DCE6EF">Tegenwoordig is Diaconaal Centrum De Bakkerij een modern kerkelijk centrum voor hulp- en dienstverlening. De Diaconie Protestantse gemeente Leiden en de RK Diaconie Leiden geven vanuit de kerken hulp aan ieder die dat nodig heeft, dichtbij en ver weg, voor korte of langere duur.</p><a href="#bakkerij-site" style="align-self: flex-start; color: #FFFFFF; text-decoration-color: #C9A13B; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">Ga voor meer en actuele informatie naar de site van Diaconaal Centrum De Bakkerij</a></div>
+</div>
+</section>
+
+<section id="activiteiten" aria-labelledby="activiteiten-kop" style="max-width: 1200px; margin: 0 auto; padding: clamp(48px, 7vw, 96px) clamp(20px, 4vw, 40px) 0; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; gap: 14px; align-items: center; border-top: 1px solid #09283F; padding-top: 20px"><span style="width: 32px; height: 32px; flex: none; clip-path: {{oct}}; background: #09283F; color: #FFFFFF; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center">4</span><h2 id="activiteiten-kop" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">Activiteiten</h2></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 8px">
+<div style="background: #FFFFFF; border: 1px solid #D9DEE3; padding: 24px; display: flex; flex-direction: column; gap: 8px"><strong style="font-size: 22px; line-height: 1.15">Clubs</strong><span style="font-size: 15px; color: #1A2733">Voor de oudere kinderen en de tieners zijn er diverse clubs. De basiscatechese en TOV zijn op vrijdagavond (10-16 jaar) en de jongerencatechese en Alex (16+) zijn op zondag. Wil je meer weten over het jeugdwerk, neem dan contact op met onze jeugdouderlingen.</span></div>
+<div style="background: #E6EBF0; padding: 24px; display: flex; flex-direction: column; gap: 8px"><strong style="font-size: 22px; line-height: 1.15">Koningsclub</strong><span style="font-size: 15px; color: #1A2733">Op woensdagmiddag is er twee keer per maand een kinderclub in het gebouw van speeltuinvereniging ‘Noorderkwartier’. Van 13.30-15.00 uur doen we spelletjes en horen we een bijbelverhaal. Alle buurtkinderen zijn welkom!</span><span style="font-size: 15px"><a href="#koningsclub">Meer informatie</a></span></div>
+<div style="grid-column: 1 / -1; background: #FFFFFF; border: 1px solid #D9DEE3; padding: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px 32px"><strong style="font-size: 22px; line-height: 1.15; grid-column: 1 / -1">Bijbelkringen</strong><span style="font-size: 15px; color: #1A2733">Een groot deel van de gemeente zit op een bijbelkring. We komen eens per twee of drie weken bij elkaar om uit de bijbel te lezen, te zingen en de bidden. Daarnaast is een kring een gemeente in het klein, waarbij we lief en leed delen.</span><span style="font-size: 15px; color: #1A2733">Elke twee jaar worden de kringen opnieuw ingedeeld door de bijbelkringcoördinatoren. Hierdoor leer je steeds meer gemeenteleden goed kennen en voel je je sneller thuis in de gemeente. Iedereen is van harte welkom om zich aan te sluiten bij een van de kringen! Voor meer informatie of aanmelding kan je contact opnemen met de bijbelkringcoördinatoren Paul en Janneke van Kruistum (<a href="tel:0610904845">06-10904845</a>) of via <a href="mailto:bijbelkringenmarekerk@gmail.com">bijbelkringenmarekerk@gmail.com</a>.</span></div>
+</div>
+</section>
+
+<section id="muziek" aria-labelledby="muziek-kop" style="max-width: 1200px; margin: 0 auto; padding: clamp(48px, 7vw, 96px) clamp(20px, 4vw, 40px) 0; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #09283F; padding-top: 20px"><div style="display: flex; gap: 14px; align-items: center"><span style="width: 32px; height: 32px; flex: none; clip-path: {{oct}}; background: #09283F; color: #FFFFFF; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center">5</span><h2 id="muziek-kop" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">Muziek</h2></div><p style="margin: 0; color: #1A2733; max-width: 34em">In de Marekerk neemt muziek een belangrijke plaats in.</p></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); grid-auto-rows: minmax(240px, auto); gap: 8px">
+<div style="position: relative; overflow: hidden; min-height: 240px"><img src="/_blob/1ca44ac5f528a559f69dbecbd7366c5f" alt="Het Garrelsorgel" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; display: block"></div>
+<div style="background: #FFFFFF; border: 1px solid #D9DEE3; padding: 24px; display: flex; flex-direction: column; gap: 8px"><strong style="font-size: 22px; line-height: 1.15">Marevocale</strong><span style="font-size: 15px; color: #1A2733">Marevocale is onze kerkkoor dat op hoogtijdagen zingt in de dienst. Onder leiding van de cantor-organist zingt het koor klassieke kerkmuziek. Denk bijvoorbeeld aan J.S. Bach, Mendelsohn of Buxtehude. Het koor is een projectkoor, waardoor geïnteresseerden zelf kunnen kiezen voor welke uitvoering ze meedoen. Heb je een vraag hierover, stuur een mailtje aan Adriaan Hoek.</span></div>
+<div style="background: #E6EBF0; padding: 24px; display: flex; flex-direction: column; gap: 8px"><strong style="font-size: 22px; line-height: 1.15">Muziekgroep</strong><span style="font-size: 15px; color: #1A2733">De muziekgroep begeleidt de alphadiensten (8x per jaar) en de jeugddiensten (4x per jaar). Dit gaat om meer hedendaagse christelijke liederen. Gemeenteleden die een instrument spelen of goed kunnen zingen, zijn van harte welkom om mee te doen. Voor elke dienst wordt er één of meer keer geoefend.</span></div>
+<div style="background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px"><span><strong style="font-size: 22px; line-height: 1.15; display: block">Concerten in de kerk</strong><span style="font-size: 15px; color: #DCE6EF">Er zijn regelmatig concerten in de marekerk. Deze zijn in de regel op zaterdagmiddag.</span></span><a href="https://www.marekerk.nl/concertserie" style="color: #FFFFFF; text-decoration-color: #C9A13B; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">Zie hier de actuele concertserie</a></div>
+</div>
+</section>
+
+<section id="vieringen" aria-labelledby="vieringen-kop" style="max-width: 1200px; margin: 0 auto; padding: clamp(48px, 7vw, 96px) clamp(20px, 4vw, 40px); display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; gap: 14px; align-items: center; border-top: 1px solid #09283F; padding-top: 20px"><span style="width: 32px; height: 32px; flex: none; clip-path: {{oct}}; background: #09283F; color: #FFFFFF; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center">6</span><h2 id="vieringen-kop" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">Bijzondere vieringen</h2></div>
+<div style="background: #E6EBF0; color: #1A2733; padding: clamp(24px, 4vw, 40px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 24px 48px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 10px"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #4A5866">Op Palmpasen</span><strong style="font-size: 32px; line-height: 1.1; letter-spacing: -0.01em">Belijdenis</strong><p style="margin: 0; color: #1A2733">Jongeren en ouderen doen in onze gemeente belijdenis van hun geloof. Dat is een mooi persoonlijk moment en wordt tijdens de dienst van palmpasen (week voor pasen) afgelegd. Met de Belijdenis zeg je Ja tegen God en bekrachtig je jouw doop. Als je nog niet gedoopt bent, word je in deze dienst gedoopt.</p></div>
+<div style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start"><p style="margin: 0; color: #1A2733">Voordat je Belijdenis aflegt, volg je een seizoen Belijdeniscatechese. Ds. Jacobs ziet ernaar uit om de groep te begeleiden. Het seizoen is vanaf september tot Palmpasen. Aan het begin van het seizoen hoef je echt nog niet te weten of je belijdenis gaat afleggen. Weet je welkom!</p><a href="mailto:dstjacobs@gmail.com" class="btn btn-primary" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; background: #09283F; color: #FFFFFF; font-weight: 700; text-decoration: none">Mail ds. Jacobs</a></div>
+</div>
+</section>
+</main>
+
+<footer style="background: #09283F; color: #DCE6EF; font-size: 15px">
+<div style="max-width: 1200px; margin: 0 auto; padding: 48px clamp(20px, 4vw, 40px) 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 12px"><div style="display: flex; align-items: center; gap: 10px"><svg aria-hidden="true" width="36" height="36" viewBox="0 0 64 64"><path fill="#FFFFFF" d="M32.2409 8.87475C33.6841 10.8245 33.1624 12.6117 32.7214 13.2616V15.3341H33.2031V17.4052C34.935 18.4777 35.5278 20.3708 35.608 21.1833V30.2016C35.608 32.6382 35.8488 32.6386 36.2096 33.3695C38.7355 33.3695 37.7333 34.6291 37.7733 35.3196C43.5469 38.4882 45.5111 43.8504 45.8318 45.8003H48.1182L48.4789 46.1658L47.8773 46.7747V48.4816H48.5987L47.5167 49.5783V55.3052C47.7972 60.3502 50.7358 62.8957 53.3333 64H10.6667C13.2642 62.8957 16.2028 60.3502 16.4833 55.3052V49.5783L15.4013 48.4816H16.1227V46.7747L15.5211 46.1658L15.8818 45.8003H18.1682C18.4889 43.8504 20.4531 38.4882 26.2267 35.3196C26.2668 34.6291 25.2645 33.3695 27.7904 33.3695C28.1512 32.6386 28.392 32.6382 28.392 30.2016V21.1833C28.4722 20.3708 29.065 18.4777 30.7969 17.4052V15.3341H31.2787V13.2616C30.8376 12.6117 30.3159 10.8245 31.7591 8.87475L32 4L32.2409 8.87475Z"></path></svg><span style="line-height: 1.05"><strong style="display: block; font-size: 20px; color: #FFFFFF">Marekerk</strong><span style="display: block; font-size: 15px; color: #FFFFFF">gemeente</span></span></div><p style="margin: 0">[Adres], Leiden<br>Protestantse Gemeente Leiden</p></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #C9A13B">Kerkdiensten</span><span>Zondag 10.00 en 17.00</span><a href="#youtube" style="color: #FFFFFF; text-decoration-color: #C9A13B">YouTube</a><a href="#kerkomroep" style="color: #FFFFFF; text-decoration-color: #C9A13B">Kerkomroep</a><a href="#ics" style="color: #FFFFFF; text-decoration-color: #C9A13B">Agenda abonneren</a></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #C9A13B">Bezoeken</span><span>Zaterdag 14.00–16.00</span><a href="Gebouw.dc.html" style="color: #FFFFFF; text-decoration-color: #C9A13B">Huren</a></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #C9A13B">Contact</span><a href="mailto:dstjacobs@gmail.com" style="color: #FFFFFF; text-decoration-color: #C9A13B">dstjacobs@gmail.com</a><a href="tel:0718870207" style="color: #FFFFFF; text-decoration-color: #C9A13B">071-8870207</a><a href="Geven.dc.html#contact" style="color: #FFFFFF; text-decoration-color: #C9A13B">Alle contactgegevens</a><a href="Geven.dc.html" class="btn btn-goud" style="display: inline-flex; align-self: flex-start; align-items: center; min-height: 40px; padding: 0 16px; background: #C9A13B; color: #09283F; font-weight: 700; font-size: 14px; text-decoration: none; margin-top: 6px">Geven</a></div>
+</div>
+<div style="max-width: 1200px; margin: 0 auto; padding: 14px clamp(20px, 4vw, 40px) 28px; border-top: 1px solid #1F4566; font-size: 13px; color: #B9CDE0; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px"><span>© Marekerk gemeente Leiden</span><span>Foto's: Marion Golsteijn, Gerard Dukker (RCE), via Wikimedia Commons</span></div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":5300}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { navOpen: false };
+  }
+  renderVals() {
+    return {
+      oct: 'polygon(29.3% 0, 70.7% 0, 100% 29.3%, 100% 70.7%, 70.7% 100%, 29.3% 100%, 0 70.7%, 0 29.3%)',
+      navOpen: this.state.navOpen,
+      navClass: this.state.navOpen ? 'open' : '',
+      toggleNav: () => this.setState({ navOpen: !this.state.navOpen })
+    };
+  }
+}
+</script>
+</body>
+</html>
