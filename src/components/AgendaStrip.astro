@@ -36,3 +36,8 @@ const liveHref = href('/kerkdiensten/#live');
     <a href={YOUTUBE_URL} class="btn btn-goud">Kijk live mee</a>
   </template>
 </section>
+
+<script>
+  // Agenda-runtime (ICS in de browser); Astro bundelt en dedupliceert dit script.
+  import '../scripts/agenda.ts';
+</script>

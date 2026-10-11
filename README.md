@@ -14,6 +14,7 @@ npm run dev      # ontwikkelserver op http://localhost:4321
 npm run build    # statische site naar dist/
 npm run preview  # dist/ lokaal bekijken
 npm run check    # astro check (types en templates)
+npm test         # unit-tests agenda-logica (node:test)
 ```
 
 ## Omgevingsvariabelen
@@ -22,8 +23,8 @@ Allemaal optioneel; zet ze in `.env` (niet in git) of als repository-variabele i
 
 | Variabele | Waarvoor |
 |---|---|
-| `PUBLIC_AGENDA_ICS_URL` | ICS-feed van de kerkelijke agenda. Wordt in de browser opgehaald, niet tijdens de build. |
-| `PUBLIC_AGENDA_PROXY_URL` | CORS-proxy waarlangs de feed loopt (agenda-aanbieders sturen geen CORS-headers). |
+| `PUBLIC_AGENDA_PROXY_URL` | URL van de agenda-proxy (Cloudflare Worker, zie [`proxy/`](proxy/README.md)). Heeft voorrang. |
+| `PUBLIC_AGENDA_ICS_URL` | ICS-feed rechtstreeks; alleen bruikbaar als die zelf CORS-headers stuurt (of lokaal testen). |
 | `PUBLIC_AGENDA_WEBCAL_URL` | Abonneerlink (`webcal://...`) onder de agendalijst en in de footer. Zonder waarde: `#`. |
 | `SITE_URL` | Eigen domein. Zonder waarde bouwt de site voor `https://<owner>.github.io/<repo>/`. |
 
@@ -31,6 +32,7 @@ Allemaal optioneel; zet ze in `.env` (niet in git) of als repository-variabele i
 
 ```
 design/                 ontwerpen (*.dc.html) + brief; bron voor de bouw
+proxy/                  Cloudflare Worker die de agenda-feed met CORS doorgeeft
 public/                 favicon
 src/
   assets/               logo, app-icoon, foto's (+ photos/credits.json)
@@ -39,6 +41,7 @@ src/
   layouts/Base.astro    html-skelet, skip-link, header, main, footer
   lib/url.ts            href(): interne links met de base ervoor
   lib/links.ts          externe links en contactgegevens die vaker terugkomen
+  scripts/agenda.ts     agenda-runtime (DOM); scripts/agenda-core.ts = pure logica + test
   pages/                één bestand per route (index, 404, ...)
   styles/global.css     tokens en gedeelde stijlen
 ```
@@ -49,6 +52,27 @@ src/
 - Foto's via `astro:assets` (`<Image>`), met de alt-tekst uit het ontwerp. Geef per pagina in `<Base photos={[...]}>` op welke foto's erop staan; de footer maakt daar de credits-regel van.
 - Grijze "Foto · …"-vlakken zijn plaatshouders (`<Placeholder>`), geen `<img>`.
 - De agenda wordt in de browser geladen. De pagina bevat altijd een statische basis; zie `AgendaStrip.astro` en `AgendaList.astro` voor de templates en data-attributen.
+
+## Agenda
+
+De kerkelijke agenda (ICS) verandert vaak en wordt daarom **in de browser** opgehaald, niet bij de build.
+
+- `AgendaStrip` (Welkom) en `AgendaList` (Welkom, Kerkdiensten) renderen een statische basis
+  ("Elke zondag 10.00 en 17.00") en laden zelf `src/scripts/agenda.ts`; pagina's zonder agenda laden niets.
+- Het script haalt de feed één keer per pagina op (`PUBLIC_AGENDA_PROXY_URL`, anders `PUBLIC_AGENDA_ICS_URL`),
+  parset hem met `ical.js`, rolt terugkerende afspraken (RRULE, EXDATE, gewijzigde exemplaren) uit tot
+  `data-weeks` weken vooruit (standaard 8) en rekent in Europe/Amsterdam.
+- **Lijst:** komende items, max `data-limit`; titel = samenvatting, regel eronder = locatie of eerste regel
+  van de omschrijving, rechts de begintijd of "hele dag". Leeg → leegstaat, fout → foutstaat met "Probeer opnieuw".
+- **Strip:** de (resterende) diensten van de eerstvolgende zondag (samenvatting bevat "dienst"), met de
+  voorganger = samenvatting zonder "morgendienst"/"middagdienst". Van 15 minuten voor begin tot het eind
+  van een dienst: "Nu live". Bij een fout blijft de basis stil staan.
+- Geen feed-URL ingesteld: lijst toont de leegstaat (gelijk aan zonder JavaScript), strip blijft de basis.
+- Agenda-aanbieders sturen geen CORS-headers, dus in productie loopt de feed via een Cloudflare Worker
+  in [`proxy/`](proxy/README.md). Daar staat ook hoe de feed-URL wordt ingesteld en hoe
+  `PUBLIC_AGENDA_PROXY_URL` in de GitHub-build komt (repository variable + `env` in `deploy.yml`).
+- Lokaal testen: `PUBLIC_AGENDA_ICS_URL=http://localhost:<poort>/agenda.ics npm run dev`, met
+  `src/scripts/__fixtures__/agenda.ics` geserveerd met header `Access-Control-Allow-Origin: *`.
 
 ## Deploy
 
