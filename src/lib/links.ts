@@ -1,3 +1,5 @@
+import { href } from './url';
+
 /**
  * Externe links en adressen die op meerdere plekken terugkomen.
  * Waarden met '#' zijn nog plaatshouders uit het ontwerp (adres nog niet bekend).
@@ -7,8 +9,8 @@ export const KERKOMROEP_URL = '#kerkomroep';
 /** Externe agenda (knop "Open de agenda" in de foutstaat). */
 export const AGENDA_EXTERN_URL = '#agenda-extern';
 
-/** Abonneren op de ICS-feed (webcal://...). */
-export const AGENDA_WEBCAL_URL: string = import.meta.env.PUBLIC_AGENDA_WEBCAL_URL || '#';
+/** Abonneren op de ICS-feed (webcal://...). Zonder: naar de abonneerregel op Kerkdiensten (#ics). */
+export const AGENDA_WEBCAL_URL: string = import.meta.env.PUBLIC_AGENDA_WEBCAL_URL || href('/kerkdiensten/#ics');
 
 export const CONTACT = {
   naam: 'Ds. Ton Jacobs',

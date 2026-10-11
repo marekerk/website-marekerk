@@ -12,14 +12,16 @@ interface Props {
 
 const { photos = [] } = Astro.props;
 
-const names = [
-  ...new Set(
-    photos.map((key) => {
-      const c: { artist: string; credit?: string } = credits[key];
-      return c.credit ?? c.artist;
-    }),
-  ),
-];
+// Credits-regel: naam (credit of artist) met licentie; één licentie voor alles → één keer achteraan
+const fotos = photos.map((key) => {
+  const c: { artist: string; credit?: string; license: string } = credits[key];
+  return { naam: c.credit ?? c.artist, licentie: c.license };
+});
+const licenties = [...new Set(fotos.map((f) => f.licentie))];
+const names = [...new Set(fotos.map((f) => (licenties.length > 1 ? `${f.naam} (${f.licentie})` : f.naam)))];
+const creditLine = names.length
+  ? `Foto's: ${names.join(', ')}${licenties.length === 1 ? ` (${licenties[0]})` : ''}, via Wikimedia Commons`
+  : '';
 ---
 <footer class="site-footer">
   <div class="site-footer-cols">
@@ -49,6 +51,6 @@ const names = [
   </div>
   <div class="site-footer-bottom">
     <span>© Marekerk gemeente Leiden</span>
-    {names.length > 0 && <span>Foto's: {names.join(', ')}, via Wikimedia Commons</span>}
+    {creditLine && <span>{creditLine}</span>}
   </div>
 </footer>

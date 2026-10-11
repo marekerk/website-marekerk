@@ -37,8 +37,10 @@ export type StripStaat =
 
 const MINUUT = 60_000;
 const DAG = 24 * 60 * MINUUT;
-/** Veiligheidsgrens per terugkerende afspraak. */
+/** Veiligheidsgrens per terugkerende afspraak (exemplaren vanaf het begin van het venster). */
 const MAX_HERHALINGEN = 5000;
+/** Harde bovengrens op iteraties, ook vóór het venster (tegen pathologische regels zoals FREQ=MINUTELY). */
+const MAX_ITERATIES = 100000;
 
 // Feeds die naar Europe/Amsterdam verwijzen zonder VTIMEZONE mee te sturen, toch goed lezen.
 const AMSTERDAM_VTIMEZONE = [
@@ -172,10 +174,16 @@ export function parseAgenda(ics: string, van: Date, tot: Date): AgendaItem[] {
 
   for (const e of reeksen.values()) {
     const verwerkt = new Set<IcalEvent>();
+    // Niet iterator(van): dat verankert de regel opnieuw op `van` (COUNT/INTERVAL kloppen dan niet)
     const it = e.iterator();
-    for (let n = 0, volgende = it.next(); volgende && n < MAX_HERHALINGEN; n++, volgende = it.next()) {
+    let n = 0;
+    let iteraties = 0;
+    for (let volgende = it.next(); volgende && n < MAX_HERHALINGEN && iteraties++ < MAX_ITERATIES; volgende = it.next()) {
       // Afbreken op de oorspronkelijke datum; een verplaatst exemplaar telt op zijn eigen datum
-      if (naarDate(volgende).getTime() >= totMs) break;
+      const ms = naarDate(volgende).getTime();
+      if (ms >= totMs) break;
+      // Alleen exemplaren vanaf `van` tellen voor de grens, anders vallen oude reeksen weg
+      if (ms >= vanMs) n++;
       const d = e.getOccurrenceDetails(volgende);
       if (d.item !== e) verwerkt.add(d.item);
       if (geannuleerd(d.item.component)) continue;

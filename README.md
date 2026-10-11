@@ -25,7 +25,7 @@ Allemaal optioneel; zet ze in `.env` (niet in git) of als repository-variabele i
 |---|---|
 | `PUBLIC_AGENDA_PROXY_URL` | URL van de agenda-proxy (Cloudflare Worker, zie [`proxy/`](proxy/README.md)). Heeft voorrang. |
 | `PUBLIC_AGENDA_ICS_URL` | ICS-feed rechtstreeks; alleen bruikbaar als die zelf CORS-headers stuurt (of lokaal testen). |
-| `PUBLIC_AGENDA_WEBCAL_URL` | Abonneerlink (`webcal://...`) onder de agendalijst en in de footer. Zonder waarde: `#`. |
+| `PUBLIC_AGENDA_WEBCAL_URL` | Abonneerlink (`webcal://...`) onder de agendalijst en in de footer. Zonder waarde: `/kerkdiensten/#ics`. |
 | `SITE_URL` | Eigen domein. Zonder waarde bouwt de site voor `https://<owner>.github.io/<repo>/`. |
 
 ## Mapstructuur
@@ -67,10 +67,12 @@ De kerkelijke agenda (ICS) verandert vaak en wordt daarom **in de browser** opge
 - **Strip:** de (resterende) diensten van de eerstvolgende zondag (samenvatting bevat "dienst"), met de
   voorganger = samenvatting zonder "morgendienst"/"middagdienst". Van 15 minuten voor begin tot het eind
   van een dienst: "Nu live". Bij een fout blijft de basis stil staan.
-- Geen feed-URL ingesteld: lijst toont de leegstaat (gelijk aan zonder JavaScript), strip blijft de basis.
+- Geen feed-URL ingesteld: lijst toont alleen de vaste diensttijden (geen skeleton, geen leegstaat),
+  strip blijft de basis. **De lijst vult pas als de repository variable `PUBLIC_AGENDA_PROXY_URL`
+  (of `PUBLIC_AGENDA_ICS_URL`) gezet is**; `deploy.yml` geeft die (en `PUBLIC_AGENDA_WEBCAL_URL`) al door
+  aan de build. Zonder webcal-URL verwijzen de abonneerlinks naar `/kerkdiensten/#ics`.
 - Agenda-aanbieders sturen geen CORS-headers, dus in productie loopt de feed via een Cloudflare Worker
-  in [`proxy/`](proxy/README.md). Daar staat ook hoe de feed-URL wordt ingesteld en hoe
-  `PUBLIC_AGENDA_PROXY_URL` in de GitHub-build komt (repository variable + `env` in `deploy.yml`).
+  in [`proxy/`](proxy/README.md). Daar staat ook hoe de feed-URL wordt ingesteld.
 - Lokaal testen: `PUBLIC_AGENDA_ICS_URL=http://localhost:<poort>/agenda.ics npm run dev`, met
   `src/scripts/__fixtures__/agenda.ics` geserveerd met header `Access-Control-Allow-Origin: *`.
 

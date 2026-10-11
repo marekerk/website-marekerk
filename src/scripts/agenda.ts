@@ -86,6 +86,12 @@ function startLijst(root: HTMLElement): void {
         const li = kloon(root, 'rij');
         if (!li) continue;
         vul(li, { ...rij });
+        // Geen omschrijving: geen lege tweede regel
+        if (!rij.omschrijving) {
+          const sub = li.querySelector('[data-field="omschrijving"]');
+          if (sub?.previousElementSibling?.tagName === 'BR') sub.previousElementSibling.remove();
+          sub?.remove();
+        }
         ul.append(li);
       }
       toon(ul);
@@ -96,14 +102,15 @@ function startLijst(root: HTMLElement): void {
       knop?.addEventListener('click', () => {
         body.replaceChildren(...skeleton.map((n) => n.cloneNode(true)));
         body.setAttribute('aria-busy', 'true');
-        void laad(true).then(() => body.querySelector<HTMLElement>('[data-action="opnieuw"]')?.focus());
+        // Weer mislukt: focus op de nieuwe knop; gelukt: op de lijst (body, tabindex="-1")
+        void laad(true).then(() => (body.querySelector<HTMLElement>('[data-action="opnieuw"]') ?? body).focus());
       });
       toon(melding);
     }
   };
 
-  // Zonder feed-URL: dezelfde basis als zonder JavaScript
-  if (!FEED_URL) return toon(kloon(root, 'leeg'));
+  // Zonder feed-URL: geen skeleton en geen "niets in de agenda", alleen de vaste diensttijden
+  if (!FEED_URL) return toon(kloon(root, 'basis'));
   void laad();
 }
 

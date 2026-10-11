@@ -137,3 +137,13 @@ test('een ver verplaatst exemplaar stopt de uitrol van de reeks niet', () => {
   const datums = parseAgenda(feed, NU, horizon(NU, 3)).map((i) => `${i.start.toISOString().slice(0, 10)} ${i.titel}`);
   assert.deepEqual(datums, ['2026-10-18 Morgendienst', '2026-10-24 Morgendienst (naar voren)', '2026-10-25 Morgendienst']);
 });
+
+test('lange dagelijkse reeks: de veiligheidsgrens telt pas vanaf het venster', () => {
+  const feed = kal(
+    ...ev('UID:dagelijks', 'DTSTART;TZID=Europe/Amsterdam:20050101T100000', 'DTEND;TZID=Europe/Amsterdam:20050101T113000',
+      'RRULE:FREQ=DAILY', 'SUMMARY:Ochtendgebed'),
+  );
+  // 7 okt 10.00–11.30 is om 12.00 al voorbij; 8 t/m 14 okt vallen in het venster van een week
+  const datums = parseAgenda(feed, NU, horizon(NU, 1)).map((i) => i.start.toISOString().slice(0, 10));
+  assert.deepEqual(datums, ['2026-10-08', '2026-10-09', '2026-10-10', '2026-10-11', '2026-10-12', '2026-10-13', '2026-10-14']);
+});

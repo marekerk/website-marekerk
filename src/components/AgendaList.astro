@@ -7,11 +7,13 @@
  *   data-template="rij"   <li> met [data-field="dag"], [data-field="maand"], [data-field="titel"],
  *                         [data-field="omschrijving"], [data-field="tijd"]
  *   data-template="leeg"  leegstaat
+ *   data-template="basis" alleen de vaste diensttijden (geen feed-URL ingesteld)
  *   data-template="fout"  foutstaat met [data-action="opnieuw"]-knop
  *
  * Instellingen staan als data-attributen op de container: data-limit, data-weeks.
  * Zonder JS: geen skeleton (html:not(.js)), wél de leegstaat uit <noscript>.
- * Tijdens laden: aria-busy="true" op de body; de runtime haalt dat weg.
+ * Tijdens laden: aria-busy="true" op de body; de runtime haalt dat weg. De body is een
+ * aria-live-regio en krijgt na een geslaagde "Probeer opnieuw" de focus (tabindex="-1").
  * Staten: design/Agenda-staten.dc.html, sectie 2 en 3.
  */
 import { AGENDA_EXTERN_URL, AGENDA_WEBCAL_URL } from '../lib/links';
@@ -23,8 +25,10 @@ interface Props {
   headingId?: string;
   /** Kopgrootte: 32 (Welkom) of 40 (Kerkdiensten). */
   headingSize?: 32 | 40;
-  /** Maximaal aantal items (Welkom: 4). Ook het aantal skeleton-rijen. */
+  /** Maximaal aantal items (Welkom: 4). */
   limit?: number;
+  /** Aantal skeleton-rijen tijdens laden (standaard `limit`, anders 3; Kerkdiensten: 6). */
+  skeletonRows?: number;
   /** Periode in weken (Kerkdiensten: 6). */
   weeks?: number;
   /** Link "Hele agenda" rechts in de kop. Zonder: "Diensten en activiteiten". */
@@ -40,13 +44,13 @@ const {
   headingId = 'agenda',
   headingSize = 32,
   limit,
+  skeletonRows = limit ?? 3,
   weeks,
   moreHref,
   subscribe = true,
   subscribeId,
 } = Astro.props;
 
-const skeletonRows = limit ?? 3;
 // Breedtes uit het ontwerp, zodat de skeleton niet als een blok oogt
 const widths = [
   ['55%', '35%'],
@@ -62,7 +66,7 @@ const widths = [
       : <span style="font-size: 14px; color: #4A5866">Diensten en activiteiten</span>}
   </div>
 
-  <div class="js-only" data-agenda-slot="body" aria-busy="true">
+  <div class="js-only" data-agenda-slot="body" aria-busy="true" aria-live="polite" tabindex="-1">
   <ul class="agenda-list">
     {Array.from({ length: skeletonRows }, (_, i) => {
       const [w1, w2] = widths[i % widths.length];
@@ -86,6 +90,10 @@ const widths = [
 
   <template data-template="leeg">
     <div class="agenda-melding"><strong>Er staat nu niets in de agenda.</strong><span>Elke zondag zijn er diensten om 10.00 en 17.00.</span></div>
+  </template>
+
+  <template data-template="basis">
+    <div class="agenda-melding"><span>Elke zondag zijn er diensten om 10.00 en 17.00.</span></div>
   </template>
 
   <template data-template="fout">

@@ -43,13 +43,6 @@ in de JavaScript gezet, dus:
 1. GitHub → repository → Settings → Secrets and variables → Actions → tab **Variables** →
    **New repository variable**: `PUBLIC_AGENDA_PROXY_URL` = de Worker-URL.
    (Doe hetzelfde voor `PUBLIC_AGENDA_WEBCAL_URL` met de `webcal://`-link.)
-2. In `.github/workflows/deploy.yml` bij de stap *Build Astro site* onder `env:` toevoegen:
-
-   ```yaml
-   PUBLIC_AGENDA_PROXY_URL: ${{ vars.PUBLIC_AGENDA_PROXY_URL }}
-   PUBLIC_AGENDA_WEBCAL_URL: ${{ vars.PUBLIC_AGENDA_WEBCAL_URL }}
-   ```
-
-3. Opnieuw deployen (push naar `main` of *Run workflow*).
+2. Opnieuw deployen (push naar `main` of *Run workflow*).
 
 Lokaal: zet dezelfde variabele in `.env`.

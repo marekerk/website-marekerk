@@ -276,7 +276,7 @@ button.btn-outline {
     box-shadow: 0 8px 24px -8px rgba(9, 40, 63, 0.25);
     background: var(--wit);
   }
-  .nav-list.open { display: flex; }
+  html.js .nav-list.open { display: flex; }
   .nav-list a { min-height: 48px; }
 }
 
@@ -292,8 +292,10 @@ button.btn-outline {
 }
 .subnav {
   max-width: var(--container);
-  margin: 0 auto;
-  padding: 0 var(--gutter);
+  /* Ruimte voor de focusring (3px + 3px offset): overflow-x:auto clipt ook verticaal.
+     Negatieve marge houdt de balk 48px hoog. */
+  margin: -6px auto;
+  padding: 6px var(--gutter);
   display: flex;
   gap: 4px 24px;
   font-weight: 600;
