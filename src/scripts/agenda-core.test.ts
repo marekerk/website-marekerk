@@ -105,3 +105,35 @@ test('TZID=Europe/Amsterdam zonder VTIMEZONE in de feed', () => {
   const [i] = parseAgenda(zonder, NU, horizon(NU, 8));
   assert.equal(i?.start.toISOString(), '2026-11-08T09:00:00.000Z');
 });
+
+const kal = (...regels: string[]) => ['BEGIN:VCALENDAR', 'VERSION:2.0', ...regels, 'END:VCALENDAR'].join('\r\n');
+const ev = (...regels: string[]) => ['BEGIN:VEVENT', ...regels, 'END:VEVENT'];
+
+test('RECURRENCE-ID hoort alleen bij de reeks met dezelfde UID', () => {
+  const feed = kal(
+    ...ev('UID:morgen', 'DTSTART;TZID=Europe/Amsterdam:20261011T100000', 'DTEND;TZID=Europe/Amsterdam:20261011T113000',
+      'RRULE:FREQ=WEEKLY;BYDAY=SU;COUNT=2', 'SUMMARY:Morgendienst - Ds. A'),
+    ...ev('UID:kinderkerk', 'DTSTART;TZID=Europe/Amsterdam:20261011T100000', 'DTEND;TZID=Europe/Amsterdam:20261011T113000',
+      'RRULE:FREQ=WEEKLY;BYDAY=SU;COUNT=2', 'SUMMARY:Kinderkerk'),
+    ...ev('UID:morgen', 'RECURRENCE-ID;TZID=Europe/Amsterdam:20261011T100000', 'DTSTART;TZID=Europe/Amsterdam:20261011T100000',
+      'DTEND;TZID=Europe/Amsterdam:20261011T113000', 'SUMMARY:Morgendienst - Ds. B'),
+  );
+  const okt11 = parseAgenda(feed, NU, horizon(NU, 8))
+    .filter((i) => i.start.toISOString().startsWith('2026-10-11'))
+    .map((i) => i.titel)
+    .sort();
+  assert.deepEqual(okt11, ['Kinderkerk', 'Morgendienst - Ds. B']);
+});
+
+test('een ver verplaatst exemplaar stopt de uitrol van de reeks niet', () => {
+  const feed = kal(
+    ...ev('UID:reeks', 'DTSTART;TZID=Europe/Amsterdam:20261011T100000', 'DTEND;TZID=Europe/Amsterdam:20261011T113000',
+      'RRULE:FREQ=WEEKLY;BYDAY=SU', 'SUMMARY:Morgendienst'),
+    ...ev('UID:reeks', 'RECURRENCE-ID;TZID=Europe/Amsterdam:20261011T100000', 'DTSTART;TZID=Europe/Amsterdam:20261220T100000',
+      'DTEND;TZID=Europe/Amsterdam:20261220T113000', 'SUMMARY:Morgendienst (verplaatst)'),
+    ...ev('UID:reeks', 'RECURRENCE-ID;TZID=Europe/Amsterdam:20270103T100000', 'DTSTART;TZID=Europe/Amsterdam:20261024T100000',
+      'DTEND;TZID=Europe/Amsterdam:20261024T113000', 'SUMMARY:Morgendienst (naar voren)'),
+  );
+  const datums = parseAgenda(feed, NU, horizon(NU, 3)).map((i) => `${i.start.toISOString().slice(0, 10)} ${i.titel}`);
+  assert.deepEqual(datums, ['2026-10-18 Morgendienst', '2026-10-24 Morgendienst (naar voren)', '2026-10-25 Morgendienst']);
+});

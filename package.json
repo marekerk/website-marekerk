@@ -7,7 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "TZ=UTC node --test src/scripts/agenda-core.test.ts"
+    "test": "TZ=UTC node --experimental-strip-types --test src/scripts/agenda-core.test.ts"
   },
   "dependencies": {
     "@fontsource/source-sans-3": "^5.3.1",

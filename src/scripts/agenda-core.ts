@@ -144,7 +144,8 @@ export function parseAgenda(ics: string, van: Date, tot: Date): AgendaItem[] {
   const losse: IcalEvent[] = [];
   const uitzonderingen: IcalEvent[] = [];
   for (const c of vevents) {
-    const e = new ICAL.Event(c);
+    // Lege exceptions: anders koppelt ical.js álle RECURRENCE-ID's in de feed, ongeacht UID
+    const e = new ICAL.Event(c, { exceptions: [], strictExceptions: true });
     if (e.isRecurrenceException()) uitzonderingen.push(e);
     else {
       if (geannuleerd(c)) continue;
@@ -170,12 +171,21 @@ export function parseAgenda(ics: string, van: Date, tot: Date): AgendaItem[] {
   }
 
   for (const e of reeksen.values()) {
+    const verwerkt = new Set<IcalEvent>();
     const it = e.iterator();
     for (let n = 0, volgende = it.next(); volgende && n < MAX_HERHALINGEN; n++, volgende = it.next()) {
+      // Afbreken op de oorspronkelijke datum; een verplaatst exemplaar telt op zijn eigen datum
+      if (naarDate(volgende).getTime() >= totMs) break;
       const d = e.getOccurrenceDetails(volgende);
-      if (naarDate(d.startDate).getTime() >= totMs) break;
+      if (d.item !== e) verwerkt.add(d.item);
       if (geannuleerd(d.item.component)) continue;
       const i = maakItem(d.item, d.startDate, d.endDate);
+      if (binnen(i)) items.push(i);
+    }
+    // Exemplaren die van voorbij de horizon naar binnen de horizon zijn verplaatst
+    for (const u of Object.values(e.exceptions) as IcalEvent[]) {
+      if (verwerkt.has(u) || geannuleerd(u.component) || !u.startDate) continue;
+      const i = maakItem(u, u.startDate, u.endDate ?? u.startDate);
       if (binnen(i)) items.push(i);
     }
   }

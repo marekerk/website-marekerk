@@ -264,9 +264,9 @@ button.btn-outline {
   cursor: pointer;
 }
 @media (max-width: 760px) {
-  .nav-toggle { display: inline-flex; }
+  html.js .nav-toggle { display: inline-flex; }
+  html.js .nav-list { display: none; }
   .nav-list {
-    display: none;
     width: 100%;
     flex-direction: column;
     align-items: stretch;
