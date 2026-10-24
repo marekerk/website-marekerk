@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Geven en contact – Marekerk</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:'Source Sans 3',system-ui,sans-serif;color:#09283F;background:#FFFFFF}
+a{color:#09283F;text-decoration-color:#09283F;text-decoration-thickness:2px;text-underline-offset:4px}
+a:hover{color:#1F4566;text-decoration-color:#C9A13B}
+a:focus-visible,button:focus-visible{outline:3px solid #C9A13B;outline-offset:3px}
+.btn{transition:background-color .15s}
+.btn-primary:hover{background:#1F4566;color:#FFFFFF}
+.btn-outline:hover{background:#09283F;color:#FFFFFF}
+.btn-goud:hover{background:#ECDFB3;color:#09283F}
+.nav-list{display:flex;flex-wrap:wrap;align-items:center;gap:4px 28px;font-weight:600;font-size:16px}
+.nav-toggle{display:none}
+.skip{position:absolute;left:-999px;top:8px;background:#09283F;color:#FFFFFF;padding:10px 16px;font-weight:700;z-index:10}
+.skip:focus{left:16px}
+@media (max-width:760px){.nav-toggle{display:inline-flex}.nav-list{display:none;width:100%;flex-direction:column;align-items:stretch;gap:0;border-top:1px solid #D9DEE3;padding-top:8px;box-shadow:0 8px 24px -8px rgba(9,40,63,.25);background:#FFFFFF}.nav-list.open{display:flex}.nav-list a{min-height:48px}}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #FFFFFF; font-family: 'Source Sans 3', system-ui, sans-serif; color: #09283F; font-size: 17px; line-height: 1.6">
+<a href="#inhoud" class="skip">Direct naar de inhoud</a>
+
+<header style="border-bottom: 1px solid #D9DEE3">
+<div style="max-width: 1200px; margin: 0 auto; padding: 14px clamp(20px, 4vw, 40px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+<a href="Main.dc.html" aria-label="Marekerk gemeente, naar de homepage" style="display: block"><img src="/_blob/367eedee16132f781e3001b399288177" alt="Marekerk gemeente" style="display: block; height: 48px; width: auto"></a>
+<button type="button" class="nav-toggle" aria-expanded="{{navOpen}}" aria-controls="hoofdmenu" onClick="{{toggleNav}}" style="align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1.5px solid #09283F; background: #FFFFFF; color: #09283F; font: inherit; font-weight: 700; font-size: 15px; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>Menu</button>
+<nav id="hoofdmenu" aria-label="Hoofdmenu" class="nav-list {{navClass}}">
+<a href="Main.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; color: #1A2733">Welkom</a>
+<a href="Kerkdiensten.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; color: #1A2733">Kerkdiensten</a>
+<a href="Gemeente.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; color: #1A2733">Onze gemeente</a>
+<a href="Gebouw.dc.html" style="min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; color: #1A2733">Gebouw</a>
+<a href="Geven.dc.html" aria-current="page" style="min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; font-weight: 700; box-shadow: inset 0 -3px 0 #C9A13B">Geven</a>
+<a href="Nieuw.dc.html" class="btn btn-primary" style="min-height: 44px; display: inline-flex; align-items: center; padding: 0 20px; text-decoration: none; font-weight: 700; color: #FFFFFF; background: #09283F">Ik ben nieuw</a>
+</nav>
+</div>
+</header>
+
+<main id="inhoud">
+<section aria-labelledby="titel" style="max-width: 1200px; margin: 0 auto; padding: clamp(48px, 7vw, 96px) clamp(20px, 4vw, 40px) 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 20px">
+<nav aria-label="Kruimelpad" style="font-size: 14px; color: #4A5866"><a href="Main.dc.html" style="color: #4A5866">Welkom</a> <span aria-hidden="true">/</span> Geven</nav>
+<h1 id="titel" style="margin: 0; font-size: clamp(48px, 6vw, 72px); font-weight: 700; letter-spacing: -0.03em; line-height: 0.95">Geven</h1>
+<p style="margin: 0; font-size: 20px; line-height: 1.5; color: #1A2733; max-width: 28em">[Tekst over geven volgt: collecte, kerkbalans en rekeningnummer]</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(180px, auto); gap: 8px">
+<div style="background: #E6EBF0; padding: 24px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px"><strong style="font-size: 22px; line-height: 1.15">Collecte</strong><span style="font-size: 15px; color: #1A2733">[Tekst volgt]</span></div>
+<div style="background: #FFFFFF; border: 1px solid #D9DEE3; padding: 24px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px"><strong style="font-size: 22px; line-height: 1.15">Kerkbalans</strong><span style="font-size: 15px; color: #1A2733">[Tekst volgt]</span></div>
+<div style="grid-column: span 2; background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #C9A13B">Rekeningnummer</span><strong style="font-size: 26px; line-height: 1.15">[IBAN]</strong><span style="font-size: 15px; color: #DCE6EF">[t.n.v. en omschrijving]</span></div>
+</div>
+</section>
+
+<section aria-labelledby="contact" style="margin-top: clamp(48px, 7vw, 96px); background: #09283F; color: #FFFFFF; position: relative; overflow: hidden">
+<svg aria-hidden="true" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" style="position: absolute; inset: 0; width: 100%; height: 100%"><path d="M100 100L58.6 0M100 100L141.4 0M100 100L200 58.6M100 100L200 141.4M100 100L141.4 200M100 100L58.6 200M100 100L0 141.4M100 100L0 58.6" stroke="#C9A13B" stroke-width="0.3" opacity="0.45"></path></svg>
+<div style="position: relative; max-width: 1200px; margin: 0 auto; padding: clamp(56px, 8vw, 96px) clamp(20px, 4vw, 40px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 32px 48px">
+<div style="display: flex; flex-direction: column; gap: 10px"><h2 id="contact" style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #C9A13B">Contact</h2><p style="margin: 0; font-size: clamp(26px, 3vw, 36px); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em">Neem gerust contact op</p></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><strong>Ds. Ton Jacobs</strong><span style="color: #DCE6EF">predikant</span><a href="mailto:dstjacobs@gmail.com" style="color: #FFFFFF; text-decoration-color: #C9A13B">dstjacobs@gmail.com</a><a href="tel:0718870207" style="color: #FFFFFF; text-decoration-color: #C9A13B">071-8870207</a></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><strong>Bijbelkringen</strong><span style="color: #DCE6EF">Paul en Janneke van Kruistum</span><a href="tel:0610904845" style="color: #FFFFFF; text-decoration-color: #C9A13B">06-10904845</a><a href="mailto:bijbelkringenmarekerk@gmail.com" style="color: #FFFFFF; text-decoration-color: #C9A13B">bijbelkringenmarekerk@gmail.com</a></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><strong>Adres</strong><span style="color: #DCE6EF">[Adres], Leiden</span><span style="color: #DCE6EF">Marehuis: hoofdingang op 100 meter van de kerk</span><a href="#route" style="color: #FFFFFF; text-decoration-color: #C9A13B">Route</a></div>
+</div>
+</section>
+
+<section aria-labelledby="open" style="max-width: 1200px; margin: 0 auto; padding: clamp(48px, 7vw, 96px) clamp(20px, 4vw, 40px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 24px 48px; border-top: 1px solid #09283F; margin-top: 0">
+<div style="display: flex; flex-direction: column; gap: 6px"><h2 id="open" style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #4A5866">Kerk open</h2><strong style="font-size: 32px; letter-spacing: -0.02em; line-height: 1.1">Zaterdag 14.00–16.00</strong><span style="color: #1A2733">De kerk is meestal open op zaterdag van 14.00 tot 16.00 uur.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #4A5866">Zondag</span><strong style="font-size: 32px; letter-spacing: -0.02em; line-height: 1.1">10.00 – ca. 12.15</strong><span style="color: #1A2733">Inclusief koffie drinken na de dienst.</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #4A5866">Zondag</span><strong style="font-size: 32px; letter-spacing: -0.02em; line-height: 1.1">17.00 – 18.30</strong><span style="color: #1A2733">Middagdienst.</span></div>
+</section>
+</main>
+
+<footer style="background: #09283F; color: #DCE6EF; font-size: 15px">
+<div style="max-width: 1200px; margin: 0 auto; padding: 48px clamp(20px, 4vw, 40px) 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 12px"><div style="display: flex; align-items: center; gap: 10px"><svg aria-hidden="true" width="36" height="36" viewBox="0 0 64 64"><path fill="#FFFFFF" d="M32.2409 8.87475C33.6841 10.8245 33.1624 12.6117 32.7214 13.2616V15.3341H33.2031V17.4052C34.935 18.4777 35.5278 20.3708 35.608 21.1833V30.2016C35.608 32.6382 35.8488 32.6386 36.2096 33.3695C38.7355 33.3695 37.7333 34.6291 37.7733 35.3196C43.5469 38.4882 45.5111 43.8504 45.8318 45.8003H48.1182L48.4789 46.1658L47.8773 46.7747V48.4816H48.5987L47.5167 49.5783V55.3052C47.7972 60.3502 50.7358 62.8957 53.3333 64H10.6667C13.2642 62.8957 16.2028 60.3502 16.4833 55.3052V49.5783L15.4013 48.4816H16.1227V46.7747L15.5211 46.1658L15.8818 45.8003H18.1682C18.4889 43.8504 20.4531 38.4882 26.2267 35.3196C26.2668 34.6291 25.2645 33.3695 27.7904 33.3695C28.1512 32.6386 28.392 32.6382 28.392 30.2016V21.1833C28.4722 20.3708 29.065 18.4777 30.7969 17.4052V15.3341H31.2787V13.2616C30.8376 12.6117 30.3159 10.8245 31.7591 8.87475L32 4L32.2409 8.87475Z"></path></svg><span style="line-height: 1.05"><strong style="display: block; font-size: 20px; color: #FFFFFF">Marekerk</strong><span style="display: block; font-size: 15px; color: #FFFFFF">gemeente</span></span></div><p style="margin: 0">[Adres], Leiden<br>Protestantse Gemeente Leiden</p></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #C9A13B">Kerkdiensten</span><span>Zondag 10.00 en 17.00</span><a href="#youtube" style="color: #FFFFFF; text-decoration-color: #C9A13B">YouTube</a><a href="#kerkomroep" style="color: #FFFFFF; text-decoration-color: #C9A13B">Kerkomroep</a><a href="#ics" style="color: #FFFFFF; text-decoration-color: #C9A13B">Agenda abonneren</a></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #C9A13B">Bezoeken</span><span>Zaterdag 14.00–16.00</span><a href="Gebouw.dc.html" style="color: #FFFFFF; text-decoration-color: #C9A13B">Huren</a></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #C9A13B">Contact</span><a href="mailto:dstjacobs@gmail.com" style="color: #FFFFFF; text-decoration-color: #C9A13B">dstjacobs@gmail.com</a><a href="tel:0718870207" style="color: #FFFFFF; text-decoration-color: #C9A13B">071-8870207</a><a href="Geven.dc.html#contact" style="color: #FFFFFF; text-decoration-color: #C9A13B">Alle contactgegevens</a><a href="Geven.dc.html" class="btn btn-goud" style="display: inline-flex; align-self: flex-start; align-items: center; min-height: 40px; padding: 0 16px; background: #C9A13B; color: #09283F; font-weight: 700; font-size: 14px; text-decoration: none; margin-top: 6px">Geven</a></div>
+</div>
+<div style="max-width: 1200px; margin: 0 auto; padding: 14px clamp(20px, 4vw, 40px) 28px; border-top: 1px solid #1F4566; font-size: 13px; color: #B9CDE0">© Marekerk gemeente Leiden</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2400}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { navOpen: false };
+  }
+  renderVals() {
+    return {
+      navOpen: this.state.navOpen,
+      navClass: this.state.navOpen ? 'open' : '',
+      toggleNav: () => this.setState({ navOpen: !this.state.navOpen })
+    };
+  }
+}
+</script>
+</body>
+</html>

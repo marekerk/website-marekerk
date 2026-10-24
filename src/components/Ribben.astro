@@ -1,0 +1,17 @@
+---
+/**
+ * Ribben: acht lijnen uit één punt (het koepelplafond). Alleen op één navy vlak
+ * per pagina. De ouder moet `position: relative; overflow: hidden` hebben en de
+ * inhoud erboven `position: relative`.
+ *
+ * tone="goud" (standaard, 45 %) of tone="wit" (30 %, als er al goud in het vlak staat).
+ */
+interface Props {
+  tone?: 'goud' | 'wit';
+}
+
+const { tone = 'goud' } = Astro.props;
+const stroke = tone === 'goud' ? '#C9A13B' : '#FFFFFF';
+const opacity = tone === 'goud' ? '0.45' : '0.3';
+---
+<svg class="ribben" aria-hidden="true" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice"><path d="M100 100L58.6 0M100 100L141.4 0M100 100L200 58.6M100 100L200 141.4M100 100L141.4 200M100 100L58.6 200M100 100L0 141.4M100 100L0 58.6" stroke={stroke} stroke-width="0.3" opacity={opacity}></path></svg>

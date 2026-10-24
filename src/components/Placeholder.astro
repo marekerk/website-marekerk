@@ -1,0 +1,15 @@
+---
+/**
+ * Plaatshouder voor een foto die de gemeente nog aanlevert (navy 10-vlak).
+ * <Placeholder label="koffie na de dienst" />  ->  "Foto · koffie na de dienst"
+ * Maat/plaatsing via class of style, bijv. style="grid-column: span 2; min-height: 200px; padding: 20px".
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'div'> {
+  label: string;
+}
+
+const { label, class: className, ...rest } = Astro.props;
+---
+<div class:list={['placeholder', className]} {...rest}><span>Foto · {label}</span></div>
