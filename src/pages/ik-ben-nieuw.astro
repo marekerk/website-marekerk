@@ -4,9 +4,9 @@ import OctDate from '../components/OctDate.astro';
 import Placeholder from '../components/Placeholder.astro';
 import Ribben from '../components/Ribben.astro';
 import { href } from '../lib/url';
-import { CONTACT } from '../lib/links';
+import { CONTACT, WELKOM_EMAIL } from '../lib/links';
 
-const inschrijfMail = `mailto:${CONTACT.email}?subject=Inschrijven%20kennismakingsavond`;
+const inschrijfMail = `mailto:${WELKOM_EMAIL}?subject=Lid%20worden`;
 // Data volgen nog; plaatshouders uit het ontwerp
 const avonden = [
   { day: '[DD]', month: '[mnd]', tijd: '[tijd]' },
@@ -17,7 +17,16 @@ const avonden = [
   <section aria-labelledby="titel" class="container section" style="display: flex; flex-direction: column; gap: 20px">
     <nav aria-label="Kruimelpad" style="font-size: 14px; color: #4A5866"><a href={href('/')} style="color: #4A5866">Welkom</a> <span aria-hidden="true">/</span> Ik ben nieuw</nav>
     <h1 id="titel" style="margin: 0; font-size: clamp(48px, 6vw, 72px); font-weight: 700; letter-spacing: -0.03em; line-height: 0.95">Ik ben nieuw</h1>
-    <p style="margin: 0; font-size: 20px; line-height: 1.5; color: #1A2733; max-width: 30em">[Welkom heten — tekst volgt]</p>
+  </section>
+
+  <section aria-labelledby="welkom-kop" class="container section">
+    <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px; max-width: 34em">
+      <h2 id="welkom-kop" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">Welkom</h2>
+      <p style="margin: 0; font-size: 20px; line-height: 1.5; color: #1A2733">Je bent van harte welkom in de Marekerk!</p>
+      <p style="margin: 0; color: #1A2733">Iedere zondagmorgen voor de dienst staat er iemand bij de welkomsttafel bij de ingang om je welkom te heten. Na de dienst zijn we beschikbaar voor een praatje en (praktische) informatie over de gemeente.</p>
+      <p style="margin: 0; color: #1A2733">Op de welkomstavonden, die we 2x per jaar organiseren, wordt je geïnformeerd over de activiteiten in de Marekerkgemeente, hoor je waar de Marekerkgemeente voor staat en maak je kennis met andere nieuwe leden.</p>
+      <p style="margin: 0; color: #1A2733">Voor meer informatie kun je contact opnemen met de welkomscommissie via <a href={`mailto:${WELKOM_EMAIL}`} style="overflow-wrap: anywhere">{WELKOM_EMAIL}</a></p>
+    </div>
   </section>
 
   <section aria-label="Kerkdiensten" class="strip" style="margin-top: clamp(48px, 7vw, 96px)">
@@ -29,15 +38,14 @@ const avonden = [
 
   <section aria-labelledby="avonden" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start">
     <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px">
-      <h2 id="avonden" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; hyphens: auto; overflow-wrap: break-word">Kennismakingsavonden</h2>
-      <p style="margin: 0; color: #1A2733">[Tekst over de kennismakingsavonden volgt]</p>
+      <h2 id="avonden" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">Welkomstavonden</h2>
       <ul style="list-style: none; margin: 8px 0 0; padding: 0">
         {avonden.map((avond, i) => (
-          <li style={`display: grid; grid-template-columns: 56px 1fr; gap: 16px; align-items: center; padding: 12px 0; border-top: 1px solid #D9DEE3${i === avonden.length - 1 ? "; border-bottom: 1px solid #D9DEE3" : ""}`}><OctDate day={avond.day} month={avond.month} /><span><strong>Kennismakingsavond</strong><br><span style="font-size: 14px; color: #4A5866">{avond.tijd} · Marehuis</span></span></li>
+          <li style={`display: grid; grid-template-columns: 56px 1fr; gap: 16px; align-items: center; padding: 12px 0; border-top: 1px solid #D9DEE3${i === avonden.length - 1 ? "; border-bottom: 1px solid #D9DEE3" : ""}`}><OctDate day={avond.day} month={avond.month} /><span><strong>Welkomstavond</strong><br><span style="font-size: 14px; color: #4A5866">{avond.tijd} · Marehuis</span></span></li>
         ))}
       </ul>
     </div>
-    <Placeholder label="kennismakingsavond" style="min-height: 320px; padding: 20px" />
+    <Placeholder label="welkomstavond" style="min-height: 320px; padding: 20px" />
   </section>
 
   <section aria-labelledby="contact" style="margin-top: clamp(48px, 7vw, 96px); background: #09283F; color: #FFFFFF; position: relative; overflow: hidden">
@@ -55,13 +63,12 @@ const avonden = [
   <section aria-labelledby="inschrijven" class="container section section-end" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 48px; align-items: start">
     <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px">
       <h2 id="inschrijven" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">Inschrijven</h2>
-      <p style="margin: 0; color: #1A2733">[Tekst over inschrijven volgt]</p>
+      <p style="margin: 0; color: #1A2733">Wil je lid worden van de Marekerk? Vul dan het [inschrijfformulier] in.</p>
       <a href={href('/onze-gemeente/')} class="btn btn-outline" style="align-self: flex-start">Over de gemeente</a>
     </div>
     <div style="background: #E6EBF0; padding: clamp(24px, 4vw, 40px); display: flex; flex-direction: column; gap: 12px; align-self: start">
       <span class="label">Inschrijven per e-mail</span>
-      <a href={inschrijfMail} style="font-size: clamp(20px, 2.4vw, 26px); font-weight: 700; line-height: 1.2; overflow-wrap: anywhere">{CONTACT.email}</a>
-      <p style="margin: 0; color: #1A2733">Of bel ds. Ton Jacobs: <a href={CONTACT.telefoonHref}>{CONTACT.telefoon}</a>.</p>
+      <a href={inschrijfMail} style="font-size: clamp(20px, 2.4vw, 26px); font-weight: 700; line-height: 1.2; overflow-wrap: anywhere">{WELKOM_EMAIL}</a>
       <a href={inschrijfMail} class="btn btn-primary" style="align-self: flex-start; margin-top: 8px">Mail om je in te schrijven</a>
     </div>
   </section>

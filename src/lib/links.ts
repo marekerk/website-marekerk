@@ -18,3 +18,8 @@ export const CONTACT = {
   telefoon: '071-8870207',
   telefoonHref: 'tel:0718870207',
 } as const;
+
+/** Missionair ouderling (Kerkdiensten: kennismaken, Alphacursus; Onze gemeente: Koningsclub). */
+export const MISSIONAIR_EMAIL = 'marekerkmissionair@gmail.com';
+/** Welkomscommissie (Ik ben nieuw: welkom en inschrijven). */
+export const WELKOM_EMAIL = 'welkom@marekerk.nl';

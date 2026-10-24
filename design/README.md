@@ -1,11 +1,11 @@
 # Ontwerp — bron voor de bouw
 
-De `*.dc.html`-bestanden in deze map zijn de goedgekeurde ontwerpen (één bestand per pagina, plain HTML met inline styles). Ze zijn de **visuele waarheid**: bouw de Astro-pagina's zó dat ze er pixel-voor-pixel hetzelfde uitzien en gedragen. De tekst in de ontwerpen komt uit `docs/bron/260924 Teksten website (concept 0.2).docx`; verzin geen tekst, verander geen tekst, verander geen toon (geen je-vorm toevoegen waar die niet staat).
+De `*.dc.html`-bestanden in deze map zijn de goedgekeurde ontwerpen (één bestand per pagina, plain HTML met inline styles). Ze zijn de **visuele waarheid**: bouw de Astro-pagina's zó dat ze er pixel-voor-pixel hetzelfde uitzien en gedragen. De tekst in de ontwerpen komt uit `docs/bron/261012 Teksten website (concept 0.3).docx`; verzin geen tekst, verander geen tekst, verander geen toon (geen je-vorm toevoegen waar die niet staat).
 
 | Bestand | Route | Opmerking |
 |---|---|---|
 | `Main.dc.html` | `/` | Welkom |
-| `Kerkdiensten.dc.html` | `/kerkdiensten/` | met `#live #agenda #kinderen #contact #alpha` |
+| `Kerkdiensten.dc.html` | `/kerkdiensten/` | met `#live #agenda #kinderen #contact #alpha #alphacursus` |
 | `Gemeente.dc.html` | `/onze-gemeente/` | `#missie #pgl #bakkerij #activiteiten #muziek #vieringen` |
 | `Nieuw.dc.html` | `/ik-ben-nieuw/` | inschrijven = mailto |
 | `Gebouw.dc.html` | `/gebouw/` | `#geschiedenis #orgel #kunst #bezoeken #huren` |

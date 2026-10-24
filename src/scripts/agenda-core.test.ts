@@ -12,7 +12,7 @@ test('lijst: eerste vier komende items, Nederlands geformatteerd', () => {
   assert.deepEqual(lijstRijen(items(), NU, 4), [
     { dag: '11', maand: 'okt', titel: 'Morgendienst - Ds. T. Jacobs', omschrijving: 'Marekerk', tijd: '10.00' },
     { dag: '11', maand: 'okt', titel: 'Middagdienst · Ds. T. Jacobs', omschrijving: 'Leerdienst', tijd: '17.00' },
-    { dag: '15', maand: 'okt', titel: 'Kennismakingsavond', omschrijving: 'Marehuis', tijd: '20.00' },
+    { dag: '15', maand: 'okt', titel: 'Welkomstavond', omschrijving: 'Marehuis', tijd: '20.00' },
     { dag: '18', maand: 'okt', titel: 'Morgendienst - Ds. J. de Vries (Delft)', omschrijving: 'Marekerk', tijd: '10.00' },
   ]);
 });
