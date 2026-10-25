@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125" width="400" height="500" color="#C9A13B">
+<!-- Raam van de Marekerk, bovenste helft. Kleur via currentColor. -->
+
+<g fill="none" stroke="currentColor" stroke-width="0.7" stroke-linejoin="round">
+<path d="M0 125V50A50 50 0 0 1 100 50V125"/>
+<path d="M5 125V50A45 45 0 0 1 95 50V125"/>
+<path d="M5 47A15 15 0 0 1 35 47M35 47A15 15 0 0 1 65 47M65 47A15 15 0 0 1 95 47"/>
+<path d="M35 47V125M65 47V125"/>
+<path d="M35 47C38 32 42 20 46.5 13"/><path d="M65 47C62 32 58 20 53.5 13"/>
+<path d="M50 30C45 24 44.5 12 50 8C55.5 12 55 24 50 30Z"/>
+</g>
+
+</svg>

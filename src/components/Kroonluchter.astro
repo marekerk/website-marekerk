@@ -1,0 +1,25 @@
+---
+/**
+ * Kroonluchter: het enige patroon, alleen op één navy vlak per pagina.
+ * De ouder moet `position: relative; overflow: hidden` hebben en de inhoud
+ * erboven `position: relative`. Goud, dekking 45 %. Maten in global.css (.kroon-*).
+ *
+ * variant="aangesneden": groot, rechtsonder aangesneden (alleen Welkom).
+ * variant="hoek": in een bovenhoek, zodat de tekst vrij blijft (overige pagina's);
+ *   hoek="links" als de tekst van het vlak rechts staat; ver = 100px verder uit
+ *   beeld, als de kolom aan die kant tekst heeft.
+ */
+import svg from '../assets/kroonluchter.svg?raw';
+
+interface Props {
+  variant: 'aangesneden' | 'hoek';
+  hoek?: 'rechts' | 'links';
+  ver?: boolean;
+}
+
+const { variant, hoek = 'rechts', ver = false } = Astro.props;
+// Alleen de inhoud van de tekening; viewBox en klassen zetten we zelf.
+const inhoud = svg.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '').replace(/<!--[\s\S]*?-->/g, '').trim();
+const klassen = ['kroon', `kroon-${variant}`, variant === 'hoek' && hoek === 'links' && 'kroon-hoek-links', variant === 'hoek' && ver && 'kroon-hoek-ver'];
+---
+<svg class:list={klassen} aria-hidden="true" viewBox="-100 -100 200 200" set:html={inhoud}></svg>

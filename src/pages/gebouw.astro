@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Subnav from '../components/Subnav.astro';
 import SectionHead from '../components/SectionHead.astro';
-import Ribben from '../components/Ribben.astro';
+import Kroonluchter from '../components/Kroonluchter.astro';
 import { href } from '../lib/url';
 import gevel from '../assets/photos/gevel.jpg';
 import orgel from '../assets/photos/orgel.jpg';
@@ -64,7 +64,7 @@ const tijden = [
   </section>
 
   <section id="orgel" aria-labelledby="orgel-kop" style="margin-top: clamp(48px, 7vw, 96px); background: #09283F; color: #FFFFFF; position: relative; overflow: hidden">
-    <Ribben />
+    <Kroonluchter variant="hoek" />
     <div style="position: relative; max-width: 1200px; margin: 0 auto; padding: clamp(56px, 8vw, 96px) clamp(20px, 4vw, 40px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 32px 48px; align-items: center">
       <div style="display: flex; flex-direction: column; gap: 14px">
         <SectionHead number={2} id="orgel-kop" tone="goud">Het orgel</SectionHead>

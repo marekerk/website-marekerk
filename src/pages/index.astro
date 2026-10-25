@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import AgendaStrip from '../components/AgendaStrip.astro';
 import AgendaList from '../components/AgendaList.astro';
-import Ribben from '../components/Ribben.astro';
+import Kroonluchter from '../components/Kroonluchter.astro';
 import Placeholder from '../components/Placeholder.astro';
 import { href } from '../lib/url';
 import { CONTACT, KERKOMROEP_URL, YOUTUBE_URL } from '../lib/links';
@@ -46,7 +46,7 @@ const halfSizes = '(min-width: 1000px) 556px, 100vw';
   </section>
 
   <section aria-labelledby="geloof" style="margin-top: clamp(48px, 7vw, 96px); background: #09283F; color: #FFFFFF; position: relative; overflow: hidden">
-    <Ribben />
+    <Kroonluchter variant="aangesneden" />
     <div style="position: relative; margin: 0 auto; padding: clamp(56px, 8vw, 112px) clamp(20px, 4vw, 40px); display: flex; flex-direction: column; gap: 20px; max-width: min(1200px, 100%); box-sizing: border-box">
       <h2 id="geloof" class="label label-goud" style="margin: 0">Wat geloven wij?</h2>
       <p style="margin: 0; font-size: clamp(28px, 3.6vw, 44px); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; max-width: 20em">De Bijbel is onze bron en we putten kracht uit onze gereformeerde traditie.</p>

@@ -39,7 +39,7 @@ Fotocredits staan in `src/assets/photos/credits.json` en moeten in de footer bli
 - Goud alleen op navy (knop, label, onderstreping, marker) en op wit alleen als lijn/onderstreping — nooit als tekst of vlak op wit.
 - Letter: Source Sans 3, 400/600/700, geen italic. Kapitalen alleen in labels (13px, 600, letter-spacing .12em).
 - Achthoek alleen als marker: 10 (bullet), 24 (nummer/menu), 32 (sectienummer), 40 (icoon), 56 (datum). Foto's zijn gewone rechthoeken met bijschrift.
-- Ribben (8 lijnen uit één punt, SVG in de ontwerpen) alleen op één navy vlak per pagina, goud 45 % of wit 30 %.
+- Patroon: de kroonluchter (`src/assets/kroonluchter.svg`, inline in de ontwerpen; component `Kroonluchter.astro`), alleen op één navy vlak per pagina, goud 45 %. Welkom: variant *aangesneden* (groot, rechtsonder); overige pagina's: variant *hoek* (rechtsboven, of linksboven als de tekst rechts staat; op Gemeente en Geven 100px verder uit beeld omdat de rechterkolom tekst heeft). Op mobiel 60 % van de maat. De ribben zijn vervallen.
 - Toon 65/35 wit/navy, nooit twee navy secties achter elkaar; laatste sectie voor de navy footer is wit.
 - Diepte: één onderwerp → lijnen + lucht; meerdere → modules op 8px-grid (wit + 1px lijn, navy 10, navy). Schaduw alleen menu/dialoog.
 - Knoppen 48px recht; focus-ring 3px goud, offset 3px. Skip-link "Direct naar de inhoud".
