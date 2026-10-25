@@ -568,3 +568,54 @@ html:not(.js) .js-only {
   justify-content: space-between;
   gap: 8px;
 }
+
+/* ---------- Text from content/*.md (<Prose>) ---------- */
+/* display: contents puts the paragraphs in the parent's flex/grid, so its gap still applies */
+.prose {
+  display: contents;
+  --prose-color: var(--inkt);
+}
+.prose-muted { --prose-color: var(--inkt-2); }
+.prose-light { --prose-color: var(--tekst-op-navy); }
+.prose p,
+.prose ul,
+.prose ol {
+  margin: 0;
+  color: var(--prose-color);
+  font-size: var(--prose-size);
+  line-height: var(--prose-lh);
+  max-width: var(--prose-measure);
+}
+.prose ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.prose ul li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.prose ul li::before {
+  content: '';
+  flex: none;
+  width: var(--oct-10);
+  height: var(--oct-10);
+  clip-path: var(--oct);
+  background: var(--navy);
+}
+.prose-light a,
+.prose-light a:hover {
+  color: var(--wit);
+}
+.prose-light a {
+  text-decoration-color: var(--goud);
+}
+.prose-light a:hover {
+  text-decoration-color: var(--wit);
+}
+.prose-light ul li::before {
+  background: var(--goud);
+}

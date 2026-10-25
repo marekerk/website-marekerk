@@ -31,13 +31,16 @@ Allemaal optioneel; zet ze in `.env` (niet in git) of als repository-variabele i
 ## Mapstructuur
 
 ```
+content/                alle paginateksten (Markdown), zie content/README.md
 design/                 ontwerpen (*.dc.html) + brief; bron voor de bouw
 proxy/                  Cloudflare Worker die de agenda-feed met CORS doorgeeft
 public/                 favicon
 src/
   assets/               logo, app-icoon, foto's (+ photos/credits.json)
   components/           Header, Footer, Oct, OctDate, Ribben, Subnav, SectionHead,
-                        Placeholder, AgendaStrip, AgendaList
+                        Placeholder, Prose, AgendaStrip, AgendaList
+  content.config.ts     content-collectie `blocks` (leest content/)
+  lib/content.ts        block() en blocksIn(): teksten ophalen per pagina
   layouts/Base.astro    html-skelet, skip-link, header, main, footer
   lib/url.ts            href(): interne links met de base ervoor
   lib/links.ts          externe links en contactgegevens die vaker terugkomen
@@ -47,6 +50,8 @@ src/
 ```
 
 ## Afspraken
+
+- Teksten staan in [`content/`](content/README.md), niet in de pagina's. Een pagina haalt ze op met `block('<pagina>/<bestand>')` en toont de lopende tekst met `<Prose block={...} />`.
 
 - Interne links en assets altijd via `href('/pad/')` uit `src/lib/url.ts`; anders breekt de site onder `/website-marekerk/` op GitHub Pages.
 - Foto's via `astro:assets` (`<Image>`), met de alt-tekst uit het ontwerp. Geef per pagina in `<Base photos={[...]}>` op welke foto's erop staan; de footer maakt daar de credits-regel van.

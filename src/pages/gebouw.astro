@@ -4,7 +4,9 @@ import Base from '../layouts/Base.astro';
 import Subnav from '../components/Subnav.astro';
 import SectionHead from '../components/SectionHead.astro';
 import Ribben from '../components/Ribben.astro';
+import Prose from '../components/Prose.astro';
 import { href } from '../lib/url';
+import { block } from '../lib/content';
 import gevel from '../assets/photos/gevel.jpg';
 import orgel from '../assets/photos/orgel.jpg';
 import koepelplafond from '../assets/photos/koepelplafond.jpg';
@@ -13,34 +15,32 @@ import koepelBuiten from '../assets/photos/koepel-buiten.jpg';
 const halfWidths = [480, 720, 960, 1280];
 const halfSizes = '(min-width: 1000px) 556px, 100vw';
 
-const jaren = [
-  { jaar: '1639', tekst: 'Arent van ’s-Gravesande levert als stadsarchitect van Leiden het eerste ontwerp voor de Marekerk. Zijn leermeester Jacob van Campen verandert er nog het een en ander aan.', navy: false },
-  { jaar: '1649', tekst: 'De bouw van de Marekerk is klaar. De preekstoel stamt uit 1649 en is gebaseerd op de preekstoel van de Nieuwe Kerk te Haarlem.', navy: true },
-  { jaar: '1733', tekst: 'Het orgel verhuist naar de Marekerk. Het bovendeel van het Garrelsorgel is afkomstig uit het koor van de Leidse Pieterskerk.', navy: false },
-  { jaar: '1735', tekst: 'Het orgel wordt vergroot door orgelbouwer Rudolph Garrels.', navy: false },
-];
+const hero = await block('gebouw/hero');
+const history = await block('gebouw/geschiedenis');
+const organ = await block('gebouw/orgel');
+const art = await block('gebouw/kunst');
+const visit = await block('gebouw/bezoeken');
+const rent = await block('gebouw/huren');
 
-const tijden = [
-  { dag: 'Zaterdag', tijd: '14.00 – 16.00', tekst: 'De kerk is meestal open.', navy: true },
-  { dag: 'Zondag', tijd: '10.00 – ca. 12.15', tekst: 'Inclusief koffie drinken na de dienst.', navy: false },
-  { dag: 'Zondag', tijd: '17.00 – 18.30', tekst: 'Tijdens de middagdienst.', navy: false },
-];
+// Highlighted (navy) module per list, as in the design
+const navyYear = 1;
+const navyTime = 0;
 ---
 <Base
-  title="Gebouw"
-  description="De 17e eeuwse Marekerk is een uniek kerkgebouw met haar ronde koepel. Het is een van de eerste kerken in Nederland die in een Protestantse traditie is gebouwd."
+  title={hero.data.metaTitle ?? hero.data.title!}
+  description={hero.data.description}
   current="gebouw"
   photos={['gevel', 'orgel', 'koepelplafond', 'koepel-buiten']}
 >
   <section aria-labelledby="titel" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: end">
     <div style="display: flex; flex-direction: column; gap: 20px">
       <nav aria-label="Kruimelpad" style="font-size: 14px; color: #4A5866"><a href={href('/')} style="color: #4A5866">Welkom</a> <span aria-hidden="true">/</span> Gebouw</nav>
-      <h1 id="titel" style="margin: 0; font-size: clamp(48px, 6vw, 72px); font-weight: 700; letter-spacing: -0.03em; line-height: 0.95">Het gebouw</h1>
-      <p style="margin: 0; font-size: 20px; line-height: 1.5; color: #1A2733; max-width: 28em">De 17e eeuwse Marekerk is een uniek kerkgebouw met haar ronde koepel. Het is een van de eerste kerken in Nederland die in een Protestantse traditie is gebouwd.</p>
+      <h1 id="titel" style="margin: 0; font-size: clamp(48px, 6vw, 72px); font-weight: 700; letter-spacing: -0.03em; line-height: 0.95">{hero.data.title}</h1>
+      <Prose block={hero} size={20} lineHeight={1.5} measure="28em" />
     </div>
     <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
       <Image src={gevel} width={1280} widths={halfWidths} sizes={halfSizes} loading="eager" fetchpriority="high" alt="De achtkantige gevel van de Marekerk met koepel en lantaarn" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; display: block" />
-      <figcaption style="font-size: 14px; color: #4A5866">De gevel aan de Lange Mare</figcaption>
+      <figcaption style="font-size: 14px; color: #4A5866">{hero.data.caption}</figcaption>
     </figure>
   </section>
 
@@ -53,12 +53,12 @@ const tijden = [
   ]} />
 
   <section id="geschiedenis" aria-labelledby="geschiedenis-kop" class="container" style="padding-top: clamp(40px, 6vw, 72px); display: flex; flex-direction: column; gap: 24px">
-    <SectionHead number={1} id="geschiedenis-kop" rule>Geschiedenis</SectionHead>
+    <SectionHead number={1} id="geschiedenis-kop" rule>{history.data.title}</SectionHead>
     <ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); grid-auto-rows: minmax(200px, auto); gap: 8px">
-      {jaren.map((j) => j.navy ? (
-        <li style="background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px"><strong style="font-size: 48px; letter-spacing: -0.03em; line-height: 0.9; color: #C9A13B">{j.jaar}</strong><span style="font-size: 15px; color: #DCE6EF">{j.tekst}</span></li>
+      {history.data.items.map((year, i) => i === navyYear ? (
+        <li style="background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px"><strong style="font-size: 48px; letter-spacing: -0.03em; line-height: 0.9; color: #C9A13B">{year.title}</strong><span style="font-size: 15px; color: #DCE6EF">{year.text}</span></li>
       ) : (
-        <li style="background: #E6EBF0; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px"><strong style="font-size: 48px; letter-spacing: -0.03em; line-height: 0.9">{j.jaar}</strong><span style="font-size: 15px; color: #1A2733">{j.tekst}</span></li>
+        <li style="background: #E6EBF0; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px"><strong style="font-size: 48px; letter-spacing: -0.03em; line-height: 0.9">{year.title}</strong><span style="font-size: 15px; color: #1A2733">{year.text}</span></li>
       ))}
     </ol>
   </section>
@@ -67,10 +67,9 @@ const tijden = [
     <Ribben />
     <div style="position: relative; max-width: 1200px; margin: 0 auto; padding: clamp(56px, 8vw, 96px) clamp(20px, 4vw, 40px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 32px 48px; align-items: center">
       <div style="display: flex; flex-direction: column; gap: 14px">
-        <SectionHead number={2} id="orgel-kop" tone="goud">Het orgel</SectionHead>
-        <p style="margin: 0; color: #DCE6EF">Het bovendeel van het Garrelsorgel in de Marekerk is afkomstig uit het koor van de Leidse Pieterskerk. Het orgel verhuisde in 1733 naar de Marekerk en werd in 1735 vergroot door orgelbouwer Rudolph Garrels.</p>
-        <p style="margin: 0; color: #B9CDE0; font-size: 15px">[Tekst overnemen van de huidige website: marekerk.nl/go/muziek/orgel]</p>
-        <a href="https://www.marekerk.nl/go/muziek/orgel/" class="link-licht" style="align-self: flex-start; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">Huidige tekst over het orgel</a>
+        <SectionHead number={2} id="orgel-kop" tone="goud">{organ.data.title}</SectionHead>
+        <Prose block={organ} tone="light" />
+        {organ.data.buttons.map((b) => <a href={href(b.link)} class="link-licht" style="align-self: flex-start; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">{b.text}</a>)}
       </div>
       <Image src={orgel} width={1280} widths={halfWidths} sizes={halfSizes} alt="Het Garrelsorgel" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 25%; display: block" />
     </div>
@@ -78,22 +77,22 @@ const tijden = [
 
   <section id="kunst" aria-labelledby="kunst-kop" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start">
     <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px">
-      <SectionHead number={3} id="kunst-kop">Kunst in de kerk</SectionHead>
-      <p style="margin: 0; color: #4A5866">[Tekst overnemen van de huidige website: marekerk.nl/go/activiteiten/kunst — inclusief de agenda van exposities]</p>
-      <a href="https://www.marekerk.nl/go/activiteiten/kunst/" style="align-self: flex-start; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">Huidige pagina Kunst in de kerk</a>
+      <SectionHead number={3} id="kunst-kop">{art.data.title}</SectionHead>
+      <Prose block={art} />
+      {art.data.buttons.map((b) => <a href={href(b.link)} style="align-self: flex-start; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">{b.text}</a>)}
     </div>
     <Image src={koepelplafond} width={1280} widths={halfWidths} sizes={halfSizes} alt="Het achtkantige koepelplafond met de rozet" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; display: block" />
   </section>
 
   <section id="bezoeken" aria-labelledby="bezoeken-kop" class="container section" style="display: flex; flex-direction: column; gap: 24px">
-    <SectionHead number={4} id="bezoeken-kop" rule>Bezoeken</SectionHead>
+    <SectionHead number={4} id="bezoeken-kop" rule>{visit.data.title}</SectionHead>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); grid-auto-rows: minmax(170px, auto); gap: 8px">
-      {tijden.map((t) => (
-        <div style={t.navy
+      {visit.data.items.map((t, i) => (
+        <div style={i === navyTime
           ? 'background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px'
           : 'background: #E6EBF0; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px'}>
-          <span class:list={['label', { 'label-goud': t.navy }]}>{t.dag}</span>
-          <span><strong style="font-size: 36px; letter-spacing: -0.02em; line-height: 1; display: block">{t.tijd}</strong><span style={`font-size: 15px; color: ${t.navy ? '#DCE6EF' : '#1A2733'}`}>{t.tekst}</span></span>
+          <span class:list={['label', { 'label-goud': i === navyTime }]}>{t.label}</span>
+          <span><strong style="font-size: 36px; letter-spacing: -0.02em; line-height: 1; display: block">{t.title}</strong><span style={`font-size: 15px; color: ${i === navyTime ? '#DCE6EF' : '#1A2733'}`}>{t.text}</span></span>
         </div>
       ))}
     </div>
@@ -102,10 +101,9 @@ const tijden = [
   <section id="huren" aria-labelledby="huren-kop" class="container section section-end" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start">
     <Image src={koepelBuiten} width={1280} widths={halfWidths} sizes={halfSizes} alt="De koepel van de Marekerk met lantaarn en klok" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; display: block" />
     <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px">
-      <SectionHead number={5} id="huren-kop">Huren</SectionHead>
-      <p style="margin: 0; color: #1A2733">De Marekerk en het Marehuis zijn ook te huur voor particulier gebruik. Zo leent de Marekerk zich uitstekend voor concertuitvoeringen en beschikt het Marehuis over diverse vergaderruimtes. Het Marehuis grenst aan de Marekerk en is via een interne route bereikbaar. De hoofdingang van het Marehuis bevindt zich op 100 meter afstand van de ingang van de Marekerk.</p>
-      <p style="margin: 0; color: #1A2733">Informeer naar de mogelijkheden van de verhuur van de faciliteiten op de site <a href="https://www.marekerk.com">www.marekerk.com</a>. Daar kunt u ook nog meer lezen over de geschiedenis van het gebouw, het interieur en het orgel.</p>
-      <a href="https://www.marekerk.com" class="btn btn-primary" style="align-self: flex-start">Naar marekerk.com</a>
+      <SectionHead number={5} id="huren-kop">{rent.data.title}</SectionHead>
+      <Prose block={rent} />
+      {rent.data.buttons.map((b) => <a href={href(b.link)} class="btn btn-primary" style="align-self: flex-start">{b.text}</a>)}
     </div>
   </section>
 </Base>

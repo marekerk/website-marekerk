@@ -1,0 +1,29 @@
+---
+/**
+ * Body of a content block (content/<page>/<file>.md).
+ * The wrapper is `display: contents`, so the paragraphs sit directly in the
+ * parent's flex/grid and its gap keeps the spacing from the design.
+ *
+ * <Prose block={hero} size={20} lineHeight={1.5} measure="28em" />
+ * <Prose block={bakkerij} tone="light" />          (on navy)
+ */
+import { render } from 'astro:content';
+import type { Block } from '../lib/content';
+
+interface Props {
+  block: Block;
+  tone?: 'ink' | 'muted' | 'light';
+  size?: number;
+  lineHeight?: number;
+  measure?: string;
+}
+
+const { block, tone = 'ink', size, lineHeight, measure } = Astro.props;
+const { Content } = await render(block);
+const vars = [
+  size && `--prose-size: ${size}px`,
+  lineHeight && `--prose-lh: ${lineHeight}`,
+  measure && `--prose-measure: ${measure}`,
+].filter(Boolean).join('; ');
+---
+<div class:list={['prose', `prose-${tone}`]} style={vars || undefined}><Content /></div>
