@@ -1,6 +1,6 @@
 # Ontwerp — bron voor de bouw
 
-De `*.dc.html`-bestanden in deze map zijn de goedgekeurde ontwerpen (één bestand per pagina, plain HTML met inline styles). Ze zijn de **visuele waarheid**: bouw de Astro-pagina's zó dat ze er pixel-voor-pixel hetzelfde uitzien en gedragen. De tekst in de ontwerpen komt uit `docs/bron/260924 Teksten website (concept 0.2).docx`; de actuele teksten (concept 0.3) staan in [`content/`](../content/README.md) en gaan voor op de tekst in de ontwerpen. Verzin geen tekst, verander geen tekst, verander geen toon (geen je-vorm toevoegen waar die niet staat).
+De `*.dc.html`-bestanden in deze map zijn de goedgekeurde ontwerpen (**v4**, canvas "Marekerk pagina's v2") (één bestand per pagina, plain HTML met inline styles). Ze zijn de **visuele waarheid**: bouw de Astro-pagina's zó dat ze er pixel-voor-pixel hetzelfde uitzien en gedragen. De tekst in de ontwerpen komt uit `docs/bron/260924 Teksten website (concept 0.2).docx`; de actuele teksten (concept 0.3) staan in [`content/`](../content/README.md) en gaan voor op de tekst in de ontwerpen. Verzin geen tekst, verander geen tekst, verander geen toon (geen je-vorm toevoegen waar die niet staat).
 
 | Bestand | Route | Opmerking |
 |---|---|---|
@@ -12,7 +12,7 @@ De `*.dc.html`-bestanden in deze map zijn de goedgekeurde ontwerpen (één besta
 | `Geven.dc.html` | `/geven/` | `#contact #open`; footer-link "Alle contactgegevens" → `/geven/#contact` |
 | `NietGevonden.dc.html` | `404.html` | |
 | `Agenda-staten.dc.html` | — | staten van de agenda (laden / geladen / leeg / fout / nu live); geen pagina |
-| `DL-Fundament.dc.html`, `DL-Elementen.dc.html` | — | design language: tokens en elementen |
+| `DL-Fundament.dc.html`, `DL-Elementen.dc.html`, `DL-Patronen.dc.html` | — | design language v4: tokens, lockup, elementen, patronen |
 
 ## Hoe de ontwerpen te lezen
 
@@ -22,20 +22,29 @@ De `*.dc.html`-bestanden in deze map zijn de goedgekeurde ontwerpen (één besta
 
 | blob-id | bestand | alt in ontwerp |
 |---|---|---|
-| `367eedee16132f781e3001b399288177` | `logo.svg` | Marekerk gemeente (logo) |
-| `e0969b486b712ee9e2cc7e90e46f5ecc` | `photos/gevel.jpg` | gevel aan de Lange Mare |
-| `9cca867f6921b3650b76fdf24e6d9056` | `photos/koepelplafond.jpg` | koepelplafond met ribben |
-| `a8111d7969a9bda3dfd9c4c6885a4944` | `photos/gracht.jpg` | kerk aan de gracht |
-| `99bb0f884338b6f3df47ce145773ee0f` | `photos/kerkzaal.jpg` | kerkzaal |
-| `1ca44ac5f528a559f69dbecbd7366c5f` | `photos/orgel.jpg` | Garrels-orgel |
-| `2bcc4b1e1728d4d00cc105aca1061243` | `photos/preekstoel.jpg` | preekstoel 1649 |
-| `affab63259990627df63854a2f2f102b` | `photos/koepel-buiten.jpg` | koepel van buiten |
+| `b7beaf97222935b11b8cc996b49cce61` | `logo.svg` | het oude logo-plaatje; in v4 vervangen door de lockup (zie onder) |
+| `5c44065e2948fd81fb76f483134efdc4` | `photos/gevel.jpg` | gevel aan de Lange Mare |
+| `d4497b5978218940fa169158ded02954` | `photos/koepelplafond.jpg` | koepelplafond met ribben |
+| `1f521f7b46ddc171b0777ae3d7dc6afa` | `photos/gracht.jpg` | kerk aan de gracht |
+| `ceea656b5c0adc278defc725f71917ae` | `photos/kerkzaal.jpg` | kerkzaal |
+| `d3e1c14c041ed17c7b99fd328b5f39ce` | `photos/orgel.jpg` | Garrels-orgel |
+| `f812ce57ae95345cd81f632faacb1fed` | `photos/preekstoel.jpg` | preekstoel 1649 |
+| `6794b56379d1940c8b593b66bd8a89ae` | `photos/koepel-buiten.jpg` | koepel van buiten |
 
 Fotocredits staan in `src/assets/photos/credits.json` en moeten in de footer blijven zoals in het ontwerp. Grijze vlakken met "Foto · …" zijn placeholders voor foto's die de gemeente nog aanlevert: bouw ze als placeholder (navy 10-vlak met label), niet als `<img>`.
 
-## Design language (kort)
+## Design language v4 (kort)
 
-- Kleuren: navy `#09283F`, navy 80 `#1F4566`, navy 10 `#E6EBF0`, lijn `#D9DEE3`, inkt `#1A2733`, inkt 2 `#4A5866`, goud `#C9A13B`, goud licht `#ECDFB3` (hover), tekst op navy `#DCE6EF`, footer-klein `#B9CDE0`. Grond wit.
+- Kleuren: **grond off-white `#F8F7F3`**; wit `#FFFFFF` voor de menubalk en witte modules; navy `#09283F`, navy 80 `#1F4566`, navy 10 `#E6EBF0`, lijn `#D9DEE3`, inkt `#1A2733`, inkt 2 `#4A5866`, goud `#C9A13B`, goud licht `#ECDFB3` (hover), tekst op navy `#DCE6EF`, footer-klein `#B9CDE0`.
+- **Lockup uit het logo** (het ordenend principe): een Bold woord met een Light Italic (300) regel eronder.
+  - Merk in header en footer: beeldmerk (`src/assets/beeldmerk.svg`, de koepel; 46 px hoog in de header, 44 in de footer) + "Marekerk" Bold 24 / "gemeente" Light Italic 17 **onder elkaar**, als levende tekst. Nooit het logo als plaatje.
+  - Homepage-kop: "Welkom" Bold clamp(72px, 9vw, 112px) / 0.9 / −2 % met daaronder "bij de Marekerk gemeente" in Light Italic 0,32 × de kop. Subpagina's: label + H1 clamp(64px, 8vw, 96px) / 0.9 / −2 % + intro Regular, geen italic regel.
+  - Een sectie opent met één zin in Light Italic 24 / 1.3 (bijv. "In de Marekerk hebben we elke zondag twee keer een dienst."), de tekst erna Regular. Het citaat op het navy geloof-vlak is Light Italic. Lopende tekst en intro's nooit italic.
+- **Beeldmerk als silhouet**: alleen in de footer, navy 80 op navy, rechts, 360 px hoog, onderrand gelijk met de footer; de footer-inhoud eroverheen (`position: relative`).
+- **Tijdenstrook** (eerstvolgende zondag, Welkom): navy strip met gouden achthoek-datum 56, "Zondag" Bold 22 + datum Light Italic eronder, verticale hairline navy 80, tijden Bold 40 met "Morgendienst · Ds. [naam]" Light Italic 17 eronder, rechts een witte omlijnde knop "Kijk of luister live mee". Data komen uit de ICS-agenda zoals nu.
+- Font: Source Sans 3 met 400, 600, 700 **en 300 italic** (fontsource: ook `300-italic` importeren).
+- Letterspatiëring koppen −0,02 em (was −0,03/−0,04).
+- Afgewezen, niet bouwen: dubbele lijnen als motief, patronen op volle sterkte, merknaam op één regel, italic intro.
 - Goud alleen op navy (knop, label, onderstreping, marker) en op wit alleen als lijn/onderstreping — nooit als tekst of vlak op wit.
 - Letter: Source Sans 3, 400/600/700, geen italic. Kapitalen alleen in labels (13px, 600, letter-spacing .12em).
 - Achthoek alleen als marker: 10 (bullet), 24 (nummer/menu), 32 (sectienummer), 40 (icoon), 56 (datum). Foto's zijn gewone rechthoeken met bijschrift.
