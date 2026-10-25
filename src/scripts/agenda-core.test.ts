@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { horizon, lijstRijen, parseAgenda, stripStaat, voorganger } from './agenda-core.ts';
+import { dienstOmschrijving, horizon, lijstRijen, parseAgenda, stripStaat, voorganger } from './agenda-core.ts';
 
 const ics = readFileSync(new URL('./__fixtures__/agenda.ics', import.meta.url), 'utf8');
 const NU = new Date('2026-10-07T10:00:00Z'); // woensdag 7 oktober, 12.00 in Amsterdam
@@ -44,19 +44,23 @@ test('horizon: data-weeks begrenst de uitrol', () => {
 test('strip: eerstvolgende zondag met diensten en voorgangers', () => {
   assert.deepEqual(stripStaat(items(), NU), {
     staat: 'geladen',
-    datum: 'Zondag 11 oktober',
+    dag: '11',
+    maand: 'okt',
+    datum: '11 oktober',
     diensten: [
-      { tijd: '10.00', voorganger: 'Ds. T. Jacobs' },
-      { tijd: '17.00', voorganger: 'Ds. T. Jacobs' },
+      { tijd: '10.00', omschrijving: 'Morgendienst · Ds. T. Jacobs' },
+      { tijd: '17.00', omschrijving: 'Middagdienst · Ds. T. Jacobs' },
     ],
   });
   const naMiddag = new Date('2026-10-11T16:15:00Z'); // 18.15, middagdienst net afgelopen
   assert.deepEqual(stripStaat(items(naMiddag), naMiddag), {
     staat: 'geladen',
-    datum: 'Zondag 18 oktober',
+    dag: '18',
+    maand: 'okt',
+    datum: '18 oktober',
     diensten: [
-      { tijd: '10.00', voorganger: 'Ds. J. de Vries (Delft)' },
-      { tijd: '17.00', voorganger: 'Ds. T. Jacobs' },
+      { tijd: '10.00', omschrijving: 'Morgendienst · Ds. J. de Vries (Delft)' },
+      { tijd: '17.00', omschrijving: 'Middagdienst · Ds. T. Jacobs' },
     ],
   });
 });
@@ -72,13 +76,15 @@ test('strip: live vanaf 15 minuten voor begin tot het eind', () => {
   // 11.30: morgendienst voorbij; de strip toont wat er die zondag nog komt
   assert.deepEqual(op('2026-10-11T09:30:00Z'), {
     staat: 'geladen',
-    datum: 'Zondag 11 oktober',
-    diensten: [{ tijd: '17.00', voorganger: 'Ds. T. Jacobs' }],
+    dag: '11',
+    maand: 'okt',
+    datum: '11 oktober',
+    diensten: [{ tijd: '17.00', omschrijving: 'Middagdienst · Ds. T. Jacobs' }],
   });
   // 1 nov 16.50: middagdienst geschrapt (EXDATE), dus geen live en door naar 8 november
   const nov1 = op('2026-11-01T15:50:00Z');
   assert.equal(nov1?.staat, 'geladen');
-  assert.equal(nov1?.staat === 'geladen' && nov1.datum, 'Zondag 8 november');
+  assert.equal(nov1?.staat === 'geladen' && nov1.datum, '8 november');
   assert.deepEqual(op('2026-11-08T15:50:00Z'), { staat: 'live', tijd: '17.00', omschrijving: 'Middagdienst · Ds. T. Jacobs' });
 });
 
@@ -89,6 +95,13 @@ test('voorganger: dienstwoord en scheidingstekens eraf, anders de samenvatting',
   assert.equal(voorganger('MORGENDIENST: Prop. K. Smit'), 'Prop. K. Smit');
   assert.equal(voorganger('Morgendienst'), 'Morgendienst');
   assert.equal(voorganger('Jeugddienst'), 'Jeugddienst');
+});
+
+test('dienstomschrijving: dienstsoort · voorganger, anders de samenvatting', () => {
+  assert.equal(dienstOmschrijving('Morgendienst - Ds. T. Jacobs'), 'Morgendienst · Ds. T. Jacobs');
+  assert.equal(dienstOmschrijving('Ds. A. Bakker – middagdienst'), 'Middagdienst · Ds. A. Bakker');
+  assert.equal(dienstOmschrijving('Morgendienst'), 'Morgendienst');
+  assert.equal(dienstOmschrijving('Jeugddienst met de muziekgroep'), 'Jeugddienst met de muziekgroep');
 });
 
 test('lege en kapotte feeds', () => {

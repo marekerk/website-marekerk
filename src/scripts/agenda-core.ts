@@ -33,7 +33,16 @@ export interface LijstRij {
 
 export type StripStaat =
   | { staat: 'live'; tijd: string; omschrijving: string }
-  | { staat: 'geladen'; datum: string; diensten: { tijd: string; voorganger: string }[] };
+  | {
+      staat: 'geladen';
+      /** Achthoek-datum: "11" en "okt". */
+      dag: string;
+      maand: string;
+      /** Lockup-regel onder "Zondag": "11 oktober". */
+      datum: string;
+      /** "10.00" met "Morgendienst · Ds. J. de Vries". */
+      diensten: { tijd: string; omschrijving: string }[];
+    };
 
 const MINUUT = 60_000;
 const DAG = 24 * 60 * MINUUT;
@@ -208,15 +217,17 @@ const fDag = fmt({ day: 'numeric' });
 const fMaand = fmt({ month: 'short' });
 const fTijd = fmt({ hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 const fWeekdag = fmt({ weekday: 'long' });
-const fDatumLang = fmt({ weekday: 'long', day: 'numeric', month: 'long' });
+const fDagMaand = fmt({ day: 'numeric', month: 'long' });
 const fDagSleutel = fmt({ year: 'numeric', month: '2-digit', day: '2-digit' });
 
 const hoofdletter = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 /** "10.00" */
 export const tijd = (d: Date) => fTijd.format(d).replace(':', '.');
-/** "Zondag 12 oktober" */
-export const datumLang = (d: Date) => hoofdletter(fDatumLang.format(d).replace(',', ''));
+/** "12 oktober" */
+export const dagMaand = (d: Date) => fDagMaand.format(d);
+/** "okt" (zonder punt) */
+const maandKort = (d: Date) => fMaand.format(d).replace(/\.$/, '');
 const isZondag = (d: Date) => fWeekdag.format(d) === 'zondag';
 const dagSleutel = (d: Date) => fDagSleutel.format(d);
 
@@ -233,7 +244,7 @@ export function lijstRijen(items: AgendaItem[], nu: Date, limiet?: number): Lijs
   const komend = items.filter((i) => (i.heleDag ? i.end > nu : i.start >= nu));
   return komend.slice(0, limiet && limiet > 0 ? limiet : undefined).map((i) => ({
     dag: fDag.format(i.start),
-    maand: fMaand.format(i.start).replace(/\.$/, ''),
+    maand: maandKort(i.start),
     titel: i.titel,
     omschrijving: onderregel(i),
     tijd: i.heleDag ? 'hele dag' : tijd(i.start),
@@ -251,8 +262,8 @@ export function voorganger(samenvatting: string): string {
   return rest || samenvatting.trim();
 }
 
-/** "Morgendienst · Ds. J. de Vries" */
-function liveOmschrijving(samenvatting: string): string {
+/** "Morgendienst - Ds. J. de Vries" → "Morgendienst · Ds. J. de Vries"; zonder dienstsoort de samenvatting. */
+export function dienstOmschrijving(samenvatting: string): string {
   const soort = samenvatting.match(DIENSTSOORT);
   const vg = voorganger(samenvatting);
   return soort && vg !== samenvatting.trim() ? `${hoofdletter(soort[0].toLowerCase())} · ${vg}` : samenvatting.trim();
@@ -267,7 +278,7 @@ export function stripStaat(items: AgendaItem[], nu: Date): StripStaat | null {
   const t = nu.getTime();
 
   const live = diensten.find((i) => i.start.getTime() - 15 * MINUUT <= t && t < i.end.getTime());
-  if (live) return { staat: 'live', tijd: tijd(live.start), omschrijving: liveOmschrijving(live.titel) };
+  if (live) return { staat: 'live', tijd: tijd(live.start), omschrijving: dienstOmschrijving(live.titel) };
 
   // Eerstvolgende zondag met diensten; van vandaag alleen wat nog komt
   const zondag = diensten.filter((i) => isZondag(i.start) && i.end.getTime() > t);
@@ -276,10 +287,12 @@ export function stripStaat(items: AgendaItem[], nu: Date): StripStaat | null {
   const sleutel = dagSleutel(eerste.start);
   return {
     staat: 'geladen',
-    datum: datumLang(eerste.start),
+    dag: fDag.format(eerste.start),
+    maand: maandKort(eerste.start),
+    datum: dagMaand(eerste.start),
     diensten: zondag
       .filter((i) => dagSleutel(i.start) === sleutel)
-      .map((i) => ({ tijd: tijd(i.start), voorganger: voorganger(i.titel) })),
+      .map((i) => ({ tijd: tijd(i.start), omschrijving: dienstOmschrijving(i.titel) })),
   };
 }
 
