@@ -6,19 +6,25 @@
  *
  * <Prose block={hero} size={20} lineHeight={1.5} measure="28em" />
  * <Prose block={bakkerij} tone="light" />          (on navy)
+ * <Prose block={cursus} to={3} /> + <Prose block={cursus} from={3} />
+ *                                                  (body split over two columns: paragraphs 1–3 and the rest)
  */
 import { render } from 'astro:content';
-import type { Block } from '../lib/content';
+import { bodyParts, type Block } from '../lib/content';
 
 interface Props {
   block: Block;
-  tone?: 'ink' | 'muted' | 'light';
+  tone?: 'ink' | 'muted' | 'light' | 'white';
   size?: number;
   lineHeight?: number;
   measure?: string;
+  /** Only the paragraphs/lists from index `from` up to (not including) `to`. */
+  from?: number;
+  to?: number;
 }
 
-const { block, tone = 'ink', size, lineHeight, measure } = Astro.props;
+const { block, tone = 'ink', size, lineHeight, measure, from, to } = Astro.props;
+const sliced = from !== undefined || to !== undefined;
 const { Content } = await render(block);
 const vars = [
   size && `--prose-size: ${size}px`,
@@ -26,4 +32,6 @@ const vars = [
   measure && `--prose-measure: ${measure}`,
 ].filter(Boolean).join('; ');
 ---
-<div class:list={['prose', `prose-${tone}`]} style={vars || undefined}><Content /></div>
+<div class:list={['prose', `prose-${tone}`]} style={vars || undefined}>{sliced
+  ? <Fragment set:html={bodyParts(block).slice(from, to).join('\n')} />
+  : <Content />}</div>

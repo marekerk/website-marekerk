@@ -1,0 +1,22 @@
+---
+/**
+ * Merk als lockup: beeldmerk (de koepel) + "Marekerk" Bold met "gemeente" Light Italic
+ * eronder, als levende tekst. Nooit het logo als plaatje (design language v4).
+ *
+ * <Lockup />                 header: 46 px, 24/17 (mobiel 40 px, 20/15)
+ * <Lockup size="footer" />   footer: 44 px, 22/16, wit
+ *
+ * Kleur via `color` op de ouder (het beeldmerk vult met currentColor).
+ */
+import Beeldmerk from '../assets/beeldmerk.svg';
+
+interface Props {
+  size?: 'header' | 'footer';
+}
+
+const { size = 'header' } = Astro.props;
+---
+<span class:list={['lockup', `lockup-${size}`]}>
+  <Beeldmerk class="lockup-merk" aria-hidden="true" />
+  <span class="lockup-naam"><strong>Marekerk</strong><span>gemeente</span></span>
+</span>

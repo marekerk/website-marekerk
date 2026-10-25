@@ -1,6 +1,8 @@
 ---
 label: Op Palmpasen
 title: Belijdenis doen
+# Kaart over de volle breedte: label, kop en eerste alinea links, de rest en de knop rechts
+wide: true
 buttons:
   - text: Mail ds. Jacobs
     link: mailto:dstjacobs@gmail.com

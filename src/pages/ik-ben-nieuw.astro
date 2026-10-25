@@ -2,12 +2,13 @@
 import Base from '../layouts/Base.astro';
 import OctDate from '../components/OctDate.astro';
 import Placeholder from '../components/Placeholder.astro';
-import Ribben from '../components/Ribben.astro';
+import Patroon from '../components/Patroon.astro';
 import Prose from '../components/Prose.astro';
 import { href } from '../lib/url';
 import { block } from '../lib/content';
 
 const hero = await block('ik-ben-nieuw/hero');
+const welcome = await block('ik-ben-nieuw/welkom');
 const services = await block('ik-ben-nieuw/diensten');
 const evenings = await block('ik-ben-nieuw/welkomstavonden');
 const contact = await block('ik-ben-nieuw/contact');
@@ -16,13 +17,20 @@ const signUp = await block('ik-ben-nieuw/inschrijven');
 <Base title={hero.data.metaTitle ?? hero.data.title!} description={hero.data.description} current="nieuw">
   <section aria-labelledby="titel" class="container section" style="display: flex; flex-direction: column; gap: 20px">
     <nav aria-label="Kruimelpad" style="font-size: 14px; color: #4A5866"><a href={href('/')} style="color: #4A5866">Welkom</a> <span aria-hidden="true">/</span> Ik ben nieuw</nav>
-    <h1 id="titel" style="margin: 0; font-size: clamp(48px, 6vw, 72px); font-weight: 700; letter-spacing: -0.03em; line-height: 0.95">{hero.data.title}</h1>
-    <Prose block={hero} size={20} lineHeight={1.5} measure="30em" />
+    <h1 id="titel" class="h1">{hero.data.title}</h1>
+  </section>
+
+  <section aria-labelledby="welkom-kop" class="container section">
+    <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px; max-width: 34em">
+      <h2 id="welkom-kop" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">{welcome.data.title}</h2>
+      <Prose block={welcome} to={1} size={20} lineHeight={1.5} />
+      <Prose block={welcome} from={1} />
+    </div>
   </section>
 
   <section aria-label="Kerkdiensten" class="strip" style="margin-top: clamp(48px, 7vw, 96px)">
     <div class="strip-inner">
-      <p class="strip-tijden" style="gap: 8px 16px"><span class="label label-goud">{services.data.label}</span>{services.data.items.map((s) => <><strong class="strip-t">{s.title}</strong><span class="strip-s">{s.text}</span></>)}</p>
+      <p class="strip-tijden"><span class="label label-goud">{services.data.label}</span>{services.data.items.map((s) => <><strong class="strip-t">{s.title}</strong><span class="strip-s">{s.text}</span></>)}</p>
       {services.data.buttons.map((b) => <a href={href(b.link)} class="link-licht strip-link">{b.text}</a>)}
     </div>
   </section>
@@ -30,7 +38,6 @@ const signUp = await block('ik-ben-nieuw/inschrijven');
   <section aria-labelledby="avonden" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start">
     <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px">
       <h2 id="avonden" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; hyphens: auto; overflow-wrap: break-word">{evenings.data.title}</h2>
-      <Prose block={evenings} />
       <ul style="list-style: none; margin: 8px 0 0; padding: 0">
         {evenings.data.items.map((evening, i) => (
           <li style={`display: grid; grid-template-columns: 56px 1fr; gap: 16px; align-items: center; padding: 12px 0; border-top: 1px solid #D9DEE3${i === evenings.data.items.length - 1 ? "; border-bottom: 1px solid #D9DEE3" : ""}`}><OctDate day={evening.day ?? ''} month={evening.month ?? ''} /><span><strong>{evening.title}</strong><br><span style="font-size: 14px; color: #4A5866">{evening.text}</span></span></li>
@@ -41,7 +48,7 @@ const signUp = await block('ik-ben-nieuw/inschrijven');
   </section>
 
   <section aria-labelledby="contact" style="margin-top: clamp(48px, 7vw, 96px); background: #09283F; color: #FFFFFF; position: relative; overflow: hidden">
-    <Ribben />
+    <Patroon />
     <div style="position: relative; max-width: 1200px; margin: 0 auto; padding: clamp(56px, 8vw, 96px) clamp(20px, 4vw, 40px); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 48px">
       <div style="display: flex; flex-direction: column; gap: 12px; max-width: 34em">
         <h2 id="contact" class="label label-goud" style="margin: 0">{contact.data.label}</h2>

@@ -1,5 +1,9 @@
 ---
 title: Alphacursus
+# Op Kerkdiensten staat de laatste alinea met deze knop in het kader rechts
+buttons:
+  - text: Laat het ons weten
+    link: mailto:marekerkmissionair@gmail.com?subject=Alphacursus
 ---
 
 Alpha is een serie bijeenkomsten waarin je samen met anderen het christelijk geloof ontdekt. Een of twee keer per jaar organiseert de Marekerk deze cursus samen met andere Leidse kerken.

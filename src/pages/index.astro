@@ -3,8 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import AgendaStrip from '../components/AgendaStrip.astro';
 import AgendaList from '../components/AgendaList.astro';
-import Ribben from '../components/Ribben.astro';
-import Placeholder from '../components/Placeholder.astro';
+import Patroon from '../components/Patroon.astro';
 import Prose from '../components/Prose.astro';
 import { href } from '../lib/url';
 import { block } from '../lib/content';
@@ -13,14 +12,30 @@ import kerkzaal from '../assets/photos/kerkzaal.jpg';
 import gevel from '../assets/photos/gevel.jpg';
 
 const hero = await block('welkom/hero');
-const services = await block('welkom/kerkdiensten');
 const faith = await block('welkom/geloof');
 const meet = await block('welkom/kennismaken');
+const services = await block('welkom/kerkdiensten');
 const contact = await block('welkom/contact');
 const building = await block('welkom/gebouw');
+// Volledige teksten uit Kerkdiensten (concept 0.3: dezelfde teksten op de homepage)
+const servicesPage = await block('kerkdiensten/hero');
+const children = await block('kerkdiensten/kinderen');
+const faithIntro = await block('kerkdiensten/kennismaken');
+const alphaServices = await block('kerkdiensten/alphadiensten');
+const alphaCourse = await block('kerkdiensten/alphacursus');
 
 const halfWidths = [480, 720, 960, 1280];
 const halfSizes = '(min-width: 1000px) 556px, 100vw';
+
+// Modules onder "Kennis maken?", in de volgorde en kleur van het ontwerp
+const lightModule = 'background: #FFFFFF; border: 1px solid #D9DEE3';
+const tintModule = 'background: #E6EBF0';
+const modules = [
+  { entry: services, style: lightModule },
+  { entry: children, style: tintModule },
+  { entry: faithIntro, style: tintModule },
+  { entry: alphaServices, style: lightModule },
+];
 ---
 <Base
   title={hero.data.metaTitle ?? hero.data.title!}
@@ -30,8 +45,7 @@ const halfSizes = '(min-width: 1000px) 556px, 100vw';
 >
   <section aria-labelledby="welkom" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: center">
     <div style="display: flex; flex-direction: column; gap: 24px">
-      <p class="label" style="margin: 0">{hero.data.label}</p>
-      <h1 id="welkom" style="margin: 0; font-size: clamp(56px, 7vw, 72px); font-weight: 700; letter-spacing: -0.03em; line-height: 0.95">{hero.data.title}</h1>
+      <h1 id="welkom" class="h1-welkom">{hero.data.title}{hero.data.subtitle && <span>{hero.data.subtitle}</span>}</h1>
       <Prose block={hero} size={20} lineHeight={1.5} measure="28em" />
       <div style="display: flex; flex-wrap: wrap; gap: 12px">{hero.data.buttons.map((b, i) => <a href={href(b.link)} class:list={['btn', i === 0 ? 'btn-primary' : 'btn-outline']}>{b.text}</a>)}</div>
     </div>
@@ -43,20 +57,19 @@ const halfSizes = '(min-width: 1000px) 556px, 100vw';
 
   <AgendaStrip />
 
-  <section aria-labelledby="agenda" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px">
-    <AgendaList heading="Agenda" headingId="agenda" limit={4} moreHref={href('/kerkdiensten/#agenda')} subscribe={false} />
-    <div style="display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #09283F; padding-top: 16px">
-      <span class="label">{services.data.label}</span>
-      <h3 style="margin: 0; font-size: 22px; font-weight: 700; line-height: 1.25">{services.data.title}</h3>
-      <Prose block={services} />
-    </div>
+  <section aria-labelledby="agenda" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start">
+    <AgendaList heading="Agenda" headingId="agenda" limit={5} moreHref={href('/kerkdiensten/#agenda')} subscribe={false} />
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
+      <Image src={kerkzaal} width={1280} widths={halfWidths} sizes={halfSizes} alt="De kerkzaal met zuilen, galerij en banken" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; display: block" />
+      <figcaption style="font-size: 14px; color: #4A5866">{servicesPage.data.caption}</figcaption>
+    </figure>
   </section>
 
   <section aria-labelledby="geloof" style="margin-top: clamp(48px, 7vw, 96px); background: #09283F; color: #FFFFFF; position: relative; overflow: hidden">
-    <Ribben />
+    <Patroon stand="aangesneden" />
     <div style="position: relative; margin: 0 auto; padding: clamp(56px, 8vw, 112px) clamp(20px, 4vw, 40px); display: flex; flex-direction: column; gap: 20px; max-width: min(1200px, 100%); box-sizing: border-box">
       <h2 id="geloof" class="label label-goud" style="margin: 0">{faith.data.label}</h2>
-      <p style="margin: 0; font-size: clamp(28px, 3.6vw, 44px); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; max-width: 20em">{faith.data.title}</p>
+      <p style="margin: 0; font-size: clamp(28px, 3.6vw, 44px); font-weight: 300; font-style: italic; line-height: 1.15; max-width: 22em">{faith.data.title}</p>
       <Prose block={faith} tone="light" size={18} measure="34em" />
       {faith.data.buttons.map((b) => <a href={href(b.link)} class="link-licht" style="align-self: flex-start; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">{b.text}</a>)}
     </div>
@@ -64,23 +77,25 @@ const halfSizes = '(min-width: 1000px) 556px, 100vw';
 
   <section aria-labelledby="kennis" class="container section" style="display: flex; flex-direction: column; gap: 24px">
     <h2 id="kennis" style="margin: 0; font-size: clamp(36px, 4vw, 48px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">{meet.data.title}</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr)); grid-auto-rows: minmax(220px, auto); gap: 8px">
-      {meet.data.items.map((tile, i) => (
-        <a href={href(tile.link ?? '')} class="module-link" style={i % 2 === 1 ? 'background: #E6EBF0' : 'background: #FFFFFF; border: 1px solid #D9DEE3'}>
-          <span class="module-link-tekst"><strong>{tile.title}</strong><span>{tile.text}</span></span>
-          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
-        </a>
-      ))}
-      <Placeholder label="koffie na de dienst" />
-      <div style="position: relative; overflow: hidden; min-height: 220px">
-        <Image src={kerkzaal} width={800} widths={[400, 600, 800]} sizes="(min-width: 900px) 300px, 100vw" alt="De kerkzaal met zuilen, galerij en banken" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block" />
-      </div>
-      <div style="grid-column: 1 / -1; background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 16px">
-        <span class="label label-goud">{contact.data.label}</span>
-        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
-          <div style="display: flex; flex-direction: column; gap: 2px"><strong style="font-size: 22px">{contact.data.title}</strong><Prose block={contact} tone="light" /></div>
-          {contact.data.buttons.map((b) => <a href={href(b.link)} class="btn btn-goud" style="flex: none">{b.text}</a>)}
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 8px">
+      {modules.map(({ entry, style }) => (
+        <div style={`${style}; padding: 28px; display: flex; flex-direction: column; gap: 12px`}>
+          <h3 class="module-kop">{entry.data.title}</h3>
+          <Prose block={entry} />
         </div>
+      ))}
+      <div style={`grid-column: 1 / -1; ${lightModule}; padding: 28px; display: flex; flex-direction: column; gap: 12px`}>
+        <h3 class="module-kop">{alphaCourse.data.title}</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 12px 40px">
+          <Prose block={alphaCourse} />
+        </div>
+      </div>
+      <div style="grid-column: 1 / -1; background: #09283F; color: #FFFFFF; padding: 28px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 32px">
+        <div style="display: flex; flex-direction: column; gap: 10px; max-width: 36em">
+          <h3 class="label label-goud" style="margin: 0">{contact.data.label}</h3>
+          <Prose block={contact} tone="white" size={20} lineHeight={1.4} />
+        </div>
+        {contact.data.buttons.map((b) => <a href={href(b.link)} class="btn btn-goud" style="flex: none">{b.text}</a>)}
       </div>
     </div>
   </section>
@@ -90,7 +105,7 @@ const halfSizes = '(min-width: 1000px) 556px, 100vw';
     <div style="display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #09283F; padding-top: 20px">
       <span class="label">{building.data.label}</span>
       <span style="font-size: clamp(72px, 9vw, 104px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.85; border-bottom: 3px solid #C9A13B; align-self: flex-start; padding-bottom: 8px">{building.data.highlight}</span>
-      <h2 id="gebouw" style="margin: 0; font-size: 22px; font-weight: 700; line-height: 1.25">{building.data.title}</h2>
+      <h2 id="gebouw" class="regel">{building.data.title}</h2>
       <Prose block={building} />
       {building.data.buttons.map((b) => <a href={href(b.link)} style="font-weight: 700; display: inline-flex; align-items: center; gap: 8px; min-height: 44px">{b.text} <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>)}
     </div>

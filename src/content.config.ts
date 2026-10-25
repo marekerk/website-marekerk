@@ -32,6 +32,8 @@ const blocks = defineCollection({
     description: z.string().optional(),
     label: z.string().optional(),
     title: z.string().optional(),
+    /** Light Italic line under the title, as in the logo lockup (homepage: "bij de Marekerk gemeente"). */
+    subtitle: z.string().optional(),
     /** Large number or short phrase that stands out (e.g. a year). */
     highlight: z.string().optional(),
     /** Lead text shown apart from the body (e.g. the left column of a two-column section). */
