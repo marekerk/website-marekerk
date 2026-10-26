@@ -1,7 +1,7 @@
 ---
 /**
- * Sticky "Op deze pagina"-navigatie met scroll-spy.
- * Het eerste item is actief bij laden; daarna volgt aria-current="true" de sectie in beeld.
+ * Sticky "Op deze pagina" navigation with scroll spy.
+ * The first item is active on load; after that aria-current="true" follows the section in view.
  *
  * <Subnav items={[{ href: '#missie', label: 'Missie en visie' }, …]} />
  */
@@ -37,7 +37,7 @@ const { items } = Astro.props;
         const active = link.hash === `#${id}`;
         if (active) {
           link.setAttribute('aria-current', 'true');
-          // Op mobiel het actieve item in de horizontale rij in beeld houden
+          // On mobile, keep the active item visible in the horizontal row
           const x = link.offsetLeft - nav.offsetLeft;
           if (x < nav.scrollLeft || x + link.offsetWidth > nav.scrollLeft + nav.clientWidth) {
             nav.scrollTo({ left: Math.max(0, x - 20), behavior: 'smooth' });
@@ -57,11 +57,11 @@ const { items } = Astro.props;
           if (entry.isIntersecting) visible.add(el);
           else visible.delete(el);
         }
-        // De bovenste sectie die in de zone onder de balk valt, is actief
+        // The topmost section within the zone below the bar is active
         const first = targets.find((t) => visible.has(t));
         if (first) setActive(first.id);
       },
-      // Zone: van onder de sticky balk tot 60 % van het scherm
+      // Zone: from below the sticky bar to 60 % of the screen
       { rootMargin: `-${barHeight}px 0px -40% 0px` },
     );
     targets.forEach((t) => observer.observe(t));

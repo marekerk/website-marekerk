@@ -1,41 +1,41 @@
 ---
 /**
- * Agendalijst (Welkom en Kerkdiensten). Statisch: kop, skeleton, templates en abonneerregel.
- * De agenda-runtime vervangt de inhoud van [data-agenda-slot="body"] in de container
- * [data-agenda="list"] door óf een <ul class="agenda-list"> met klonen van "rij", óf "leeg"/"fout":
+ * Agenda list (home and Kerkdiensten). Static: heading, skeleton, templates and subscribe line.
+ * The agenda runtime replaces the content of [data-agenda-slot="body"] in the container
+ * [data-agenda="list"] with either a <ul class="agenda-list"> of "row" clones, or "empty"/"error":
  *
- *   data-template="rij"   <li> met [data-field="dag"], [data-field="maand"], [data-field="titel"],
- *                         [data-field="omschrijving"], [data-field="tijd"]
- *   data-template="leeg"  leegstaat
- *   data-template="basis" alleen de vaste diensttijden (geen feed-URL ingesteld)
- *   data-template="fout"  foutstaat met [data-action="opnieuw"]-knop
+ *   data-template="row"     <li> with [data-field="day"], [data-field="month"], [data-field="title"],
+ *                           [data-field="subtitle"], [data-field="time"]
+ *   data-template="empty"   empty state
+ *   data-template="default" only the fixed service times (no feed URL configured)
+ *   data-template="error"   error state with a [data-action="retry"] button
  *
- * Instellingen staan als data-attributen op de container: data-limit, data-weeks.
- * Zonder JS: geen skeleton (html:not(.js)), wél de leegstaat uit <noscript>.
- * Tijdens laden: aria-busy="true" op de body; de runtime haalt dat weg. De body is een
- * aria-live-regio en krijgt na een geslaagde "Probeer opnieuw" de focus (tabindex="-1").
- * Staten: design/Agenda-staten.dc.html, sectie 2 en 3.
+ * Settings are data attributes on the container: data-limit, data-weeks.
+ * Without JS: no skeleton (html:not(.js)), but the empty state from <noscript>.
+ * While loading: aria-busy="true" on the body; the runtime removes it. The body is an
+ * aria-live region and gets focus after a successful "Probeer opnieuw" (tabindex="-1").
+ * States: design/Agenda-staten.dc.html, sections 2 and 3.
  */
-import { AGENDA_EXTERN_URL, AGENDA_WEBCAL_URL } from '../lib/links';
+import { AGENDA_EXTERNAL_URL, AGENDA_WEBCAL_URL } from '../lib/links';
 
 interface Props {
-  /** Kop boven de lijst. */
+  /** Heading above the list. */
   heading?: string;
-  /** id van de h2 (voor aria-labelledby). */
+  /** id of the h2 (for aria-labelledby). */
   headingId?: string;
-  /** Kopgrootte: 32 (Welkom) of 40 (Kerkdiensten). */
+  /** Heading size: 32 (home) or 40 (Kerkdiensten). */
   headingSize?: 32 | 40;
-  /** Maximaal aantal items (Welkom: 4). */
+  /** Maximum number of items (home: 4). */
   limit?: number;
-  /** Aantal skeleton-rijen tijdens laden (standaard `limit`, anders 3; Kerkdiensten: 6). */
+  /** Number of skeleton rows while loading (default `limit`, otherwise 3; Kerkdiensten: 6). */
   skeletonRows?: number;
-  /** Periode in weken (Kerkdiensten: 6). */
+  /** Period in weeks (Kerkdiensten: 6). */
   weeks?: number;
-  /** Link "Hele agenda" rechts in de kop. Zonder: "Diensten en activiteiten". */
+  /** "Hele agenda" link on the right of the heading. Without: "Diensten en activiteiten". */
   moreHref?: string;
-  /** Abonneerregel onder de lijst tonen. */
+  /** Show the subscribe line below the list. */
   subscribe?: boolean;
-  /** id op de abonneerlink (Kerkdiensten: "ics"). */
+  /** id on the subscribe link (Kerkdiensten: "ics"). */
   subscribeId?: string;
 }
 
@@ -51,7 +51,7 @@ const {
   subscribeId,
 } = Astro.props;
 
-// Breedtes uit het ontwerp, zodat de skeleton niet als een blok oogt
+// Widths from the design, so the skeleton doesn't look like one block
 const widths = [
   ['55%', '35%'],
   ['40%', '50%'],
@@ -81,27 +81,27 @@ const widths = [
   </ul>
   </div>
   <noscript>
-    <div class="agenda-melding"><strong>Er staat nu niets in de agenda.</strong><span>Elke zondag zijn er diensten om 10.00 en 17.00.</span></div>
+    <div class="agenda-message"><strong>Er staat nu niets in de agenda.</strong><span>Elke zondag zijn er diensten om 10.00 en 17.00.</span></div>
   </noscript>
 
-  <template data-template="rij">
-    <li class="agenda-row"><span class="oct oct-56 oct-navy oct-date"><strong data-field="dag">[DD]</strong><span data-field="maand">[mnd]</span></span><span><strong data-field="titel"></strong><br><span class="agenda-sub" data-field="omschrijving"></span></span><strong data-field="tijd"></strong></li>
+  <template data-template="row">
+    <li class="agenda-row"><span class="oct oct-56 oct-navy oct-date"><strong data-field="day">[DD]</strong><span data-field="month">[mnd]</span></span><span><strong data-field="title"></strong><br><span class="agenda-sub" data-field="subtitle"></span></span><strong data-field="time"></strong></li>
   </template>
 
-  <template data-template="leeg">
-    <div class="agenda-melding"><strong>Er staat nu niets in de agenda.</strong><span>Elke zondag zijn er diensten om 10.00 en 17.00.</span></div>
+  <template data-template="empty">
+    <div class="agenda-message"><strong>Er staat nu niets in de agenda.</strong><span>Elke zondag zijn er diensten om 10.00 en 17.00.</span></div>
   </template>
 
-  <template data-template="basis">
-    <div class="agenda-melding"><span>Elke zondag zijn er diensten om 10.00 en 17.00.</span></div>
+  <template data-template="default">
+    <div class="agenda-message"><span>Elke zondag zijn er diensten om 10.00 en 17.00.</span></div>
   </template>
 
-  <template data-template="fout">
-    <div class="agenda-melding"><strong>De agenda kon niet worden geladen.</strong><span>Elke zondag zijn er diensten om 10.00 en 17.00.</span><div class="agenda-melding-acties"><button type="button" class="btn btn-outline" data-action="opnieuw">Probeer opnieuw</button><a href={AGENDA_EXTERN_URL}>Open de agenda</a></div></div>
+  <template data-template="error">
+    <div class="agenda-message"><strong>De agenda kon niet worden geladen.</strong><span>Elke zondag zijn er diensten om 10.00 en 17.00.</span><div class="agenda-message-actions"><button type="button" class="btn btn-outline" data-action="retry">Probeer opnieuw</button><a href={AGENDA_EXTERNAL_URL}>Open de agenda</a></div></div>
   </template>
 
   {subscribe && (
-    <div class="agenda-abo">
+    <div class="agenda-subscribe">
       <a id={subscribeId} href={AGENDA_WEBCAL_URL}><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>Zet de agenda in je eigen agenda-app</a>
       <span>Diensten en activiteiten uit de kerkelijke agenda</span>
     </div>
@@ -109,6 +109,6 @@ const widths = [
 </div>
 
 <script>
-  // Agenda-runtime (ICS in de browser); Astro bundelt en dedupliceert dit script.
+  // Agenda runtime (ICS in the browser); Astro bundles and deduplicates this script.
   import '../scripts/agenda.ts';
 </script>

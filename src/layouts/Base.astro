@@ -5,12 +5,12 @@ import Footer, { type PhotoKey } from '../components/Footer.astro';
 import { href } from '../lib/url';
 
 interface Props {
-  /** Paginatitel zonder sitenaam; wordt "<title> – Marekerk". */
+  /** Page title without the site name; becomes "<title> – Marekerk". */
   title: string;
   description?: string;
-  /** Actief item in het hoofdmenu. */
+  /** Active item in the main menu. */
   current?: NavKey;
-  /** Foto's op deze pagina voor de credits-regel in de footer (sleutels uit credits.json). */
+  /** Photos on this page for the credit line in the footer (keys from credits.json). */
   photos?: PhotoKey[];
 }
 

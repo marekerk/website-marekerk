@@ -1,7 +1,7 @@
 /**
- * Pure agenda-logica (geen DOM): ICS parsen, herhalingen uitrollen, en de gegevens
- * voor de agendalijst en de tijdenstrip afleiden. Alle tijden in Europe/Amsterdam.
- * Getest met node:test (npm test); de DOM-kant staat in agenda.ts.
+ * Pure agenda logic (no DOM): parse ICS, expand recurrences, and derive the data
+ * for the agenda list and the service-times strip. All times in Europe/Amsterdam.
+ * Tested with node:test (npm test); the DOM side lives in agenda.ts.
  */
 import ICAL from 'ical.js';
 
@@ -9,49 +9,49 @@ type IcalTime = InstanceType<typeof ICAL.Time>;
 type IcalEvent = InstanceType<typeof ICAL.Event>;
 type IcalComponent = InstanceType<typeof ICAL.Component>;
 
-export const TIJDZONE = 'Europe/Amsterdam';
+export const TIME_ZONE = 'Europe/Amsterdam';
 
 export interface AgendaItem {
   start: Date;
   end: Date;
   /** ICS SUMMARY */
-  titel: string;
+  title: string;
   /** ICS LOCATION */
-  locatie: string;
+  location: string;
   /** ICS DESCRIPTION */
-  omschrijving: string;
-  heleDag: boolean;
+  description: string;
+  allDay: boolean;
 }
 
-export interface LijstRij {
-  dag: string;
-  maand: string;
-  titel: string;
-  omschrijving: string;
-  tijd: string;
+export interface ListRow {
+  day: string;
+  month: string;
+  title: string;
+  subtitle: string;
+  time: string;
 }
 
-export type StripStaat =
-  | { staat: 'live'; tijd: string; omschrijving: string }
+export type StripState =
+  | { state: 'live'; time: string; description: string }
   | {
-      staat: 'geladen';
-      /** Achthoek-datum: "11" en "okt". */
-      dag: string;
-      maand: string;
-      /** Lockup-regel onder "Zondag": "11 oktober". */
-      datum: string;
-      /** "10.00" met "Morgendienst · Ds. J. de Vries". */
-      diensten: { tijd: string; omschrijving: string }[];
+      state: 'loaded';
+      /** Octagon date: "11" and "okt". */
+      day: string;
+      month: string;
+      /** Lockup line below "Zondag": "11 oktober". */
+      date: string;
+      /** "10.00" with "Morgendienst · Ds. J. de Vries". */
+      services: { time: string; description: string }[];
     };
 
-const MINUUT = 60_000;
-const DAG = 24 * 60 * MINUUT;
-/** Veiligheidsgrens per terugkerende afspraak (exemplaren vanaf het begin van het venster). */
-const MAX_HERHALINGEN = 5000;
-/** Harde bovengrens op iteraties, ook vóór het venster (tegen pathologische regels zoals FREQ=MINUTELY). */
-const MAX_ITERATIES = 100000;
+const MINUTE = 60_000;
+const DAY = 24 * 60 * MINUTE;
+/** Safety limit per recurring event (occurrences from the start of the window). */
+const MAX_OCCURRENCES = 5000;
+/** Hard upper bound on iterations, also before the window (against pathological rules such as FREQ=MINUTELY). */
+const MAX_ITERATIONS = 100000;
 
-// Feeds die naar Europe/Amsterdam verwijzen zonder VTIMEZONE mee te sturen, toch goed lezen.
+// Read feeds correctly that refer to Europe/Amsterdam without including a VTIMEZONE.
 const AMSTERDAM_VTIMEZONE = [
   'BEGIN:VCALENDAR',
   'BEGIN:VTIMEZONE',
@@ -74,16 +74,16 @@ const AMSTERDAM_VTIMEZONE = [
   'END:VCALENDAR',
 ].join('\r\n');
 
-let tzGeregistreerd = false;
-function registreerAmsterdam(): void {
-  if (tzGeregistreerd || ICAL.TimezoneService.has(TIJDZONE)) return;
+let tzRegistered = false;
+function registerAmsterdam(): void {
+  if (tzRegistered || ICAL.TimezoneService.has(TIME_ZONE)) return;
   const vtz = new ICAL.Component(ICAL.parse(AMSTERDAM_VTIMEZONE)).getFirstSubcomponent('vtimezone');
   if (vtz) ICAL.TimezoneService.register(vtz);
-  tzGeregistreerd = true;
+  tzRegistered = true;
 }
 
-/** UTC-offset (ms) van `tz` op tijdstip `ms`. */
-function offset(ms: number, tz = TIJDZONE): number {
+/** UTC offset (ms) of `tz` at instant `ms`. */
+function offset(ms: number, tz = TIME_ZONE): number {
   const p = Object.fromEntries(
     new Intl.DateTimeFormat('en-US', {
       timeZone: tz,
@@ -98,203 +98,204 @@ function offset(ms: number, tz = TIJDZONE): number {
       .formatToParts(new Date(ms))
       .map((x) => [x.type, Number(x.value)]),
   );
-  const alsUtc = Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second);
-  return alsUtc - Math.floor(ms / 1000) * 1000;
+  const asUtc = Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second);
+  return asUtc - Math.floor(ms / 1000) * 1000;
 }
 
-/** Wandkloktijd in Amsterdam → Date. */
-export function amsterdamTijd(j: number, m: number, d: number, u = 0, min = 0, s = 0): Date {
-  const gok = Date.UTC(j, m - 1, d, u, min, s);
-  const o1 = offset(gok - offset(gok));
-  return new Date(gok - o1);
+/** Wall-clock time in Amsterdam → Date. */
+export function amsterdamTime(y: number, mo: number, d: number, h = 0, min = 0, s = 0): Date {
+  const guess = Date.UTC(y, mo - 1, d, h, min, s);
+  const o1 = offset(guess - offset(guess));
+  return new Date(guess - o1);
 }
 
-function naarDate(t: IcalTime): Date {
-  // Hele dag en zwevende tijden (of een onbekende TZID) gelden als Amsterdamse wandkloktijd.
+function toDate(t: IcalTime): Date {
+  // All-day and floating times (or an unknown TZID) count as Amsterdam wall-clock time.
   if (t.isDate || t.zone === ICAL.Timezone.localTimezone) {
-    return amsterdamTijd(t.year, t.month, t.day, t.hour, t.minute, t.second);
+    return amsterdamTime(t.year, t.month, t.day, t.hour, t.minute, t.second);
   }
   return t.toJSDate();
 }
 
-function tekst(e: IcalEvent, veld: 'location' | 'description'): string {
-  const v = e[veld];
+function text(e: IcalEvent, field: 'location' | 'description'): string {
+  const v = e[field];
   return typeof v === 'string' ? v.trim() : '';
 }
 
-function maakItem(e: IcalEvent, start: IcalTime, eind: IcalTime): AgendaItem {
-  const s = naarDate(start);
-  let en = naarDate(eind);
-  // Zonder (geldig) eind: hele dag = één dag, anders 90 minuten (lengte van een dienst)
-  if (en.getTime() <= s.getTime()) en = new Date(s.getTime() + (start.isDate ? DAG : 90 * MINUUT));
+function createItem(e: IcalEvent, start: IcalTime, end: IcalTime): AgendaItem {
+  const s = toDate(start);
+  let en = toDate(end);
+  // Without a (valid) end: all day = one day, otherwise 90 minutes (length of a service)
+  if (en.getTime() <= s.getTime()) en = new Date(s.getTime() + (start.isDate ? DAY : 90 * MINUTE));
   return {
     start: s,
     end: en,
-    titel: (e.summary ?? '').trim(),
-    locatie: tekst(e, 'location'),
-    omschrijving: tekst(e, 'description'),
-    heleDag: start.isDate,
+    title: (e.summary ?? '').trim(),
+    location: text(e, 'location'),
+    description: text(e, 'description'),
+    allDay: start.isDate,
   };
 }
 
-function geannuleerd(c: IcalComponent): boolean {
+function isCancelled(c: IcalComponent): boolean {
   return String(c.getFirstPropertyValue('status') ?? '').toUpperCase() === 'CANCELLED';
 }
 
 /**
- * Parse een ICS-tekst en geef alle (uitgerolde) afspraken die overlappen met [van, tot),
- * gesorteerd op begin. Gooit bij ongeldige ICS.
+ * Parse ICS text and return all (expanded) events that overlap [from, to),
+ * sorted by start. Throws on invalid ICS.
  */
-export function parseAgenda(ics: string, van: Date, tot: Date): AgendaItem[] {
-  registreerAmsterdam();
-  const kal = new ICAL.Component(ICAL.parse(ics));
-  const vevents = kal.getAllSubcomponents('vevent');
+export function parseAgenda(ics: string, from: Date, to: Date): AgendaItem[] {
+  registerAmsterdam();
+  const calendar = new ICAL.Component(ICAL.parse(ics));
+  const vevents = calendar.getAllSubcomponents('vevent');
 
-  // Uitzonderingen (RECURRENCE-ID) koppelen aan hun reeks
-  const reeksen = new Map<string, IcalEvent>();
-  const losse: IcalEvent[] = [];
-  const uitzonderingen: IcalEvent[] = [];
+  // Link exceptions (RECURRENCE-ID) to their series
+  const series = new Map<string, IcalEvent>();
+  const single: IcalEvent[] = [];
+  const exceptions: IcalEvent[] = [];
   for (const c of vevents) {
-    // Lege exceptions: anders koppelt ical.js álle RECURRENCE-ID's in de feed, ongeacht UID
+    // Empty exceptions: otherwise ical.js links ALL RECURRENCE-IDs in the feed, regardless of UID
     const e = new ICAL.Event(c, { exceptions: [], strictExceptions: true });
-    if (e.isRecurrenceException()) uitzonderingen.push(e);
+    if (e.isRecurrenceException()) exceptions.push(e);
     else {
-      if (geannuleerd(c)) continue;
-      if (e.isRecurring()) reeksen.set(e.uid, e);
-      else losse.push(e);
+      if (isCancelled(c)) continue;
+      if (e.isRecurring()) series.set(e.uid, e);
+      else single.push(e);
     }
   }
-  for (const u of uitzonderingen) {
-    const reeks = reeksen.get(u.uid);
-    if (reeks) reeks.relateException(u);
-    else if (!geannuleerd(u.component)) losse.push(u);
+  for (const x of exceptions) {
+    const parent = series.get(x.uid);
+    if (parent) parent.relateException(x);
+    else if (!isCancelled(x.component)) single.push(x);
   }
 
-  const vanMs = van.getTime();
-  const totMs = tot.getTime();
+  const fromMs = from.getTime();
+  const toMs = to.getTime();
   const items: AgendaItem[] = [];
-  const binnen = (i: AgendaItem) => i.end.getTime() > vanMs && i.start.getTime() < totMs;
+  const inWindow = (i: AgendaItem) => i.end.getTime() > fromMs && i.start.getTime() < toMs;
 
-  for (const e of losse) {
+  for (const e of single) {
     if (!e.startDate) continue;
-    const i = maakItem(e, e.startDate, e.endDate ?? e.startDate);
-    if (binnen(i)) items.push(i);
+    const i = createItem(e, e.startDate, e.endDate ?? e.startDate);
+    if (inWindow(i)) items.push(i);
   }
 
-  for (const e of reeksen.values()) {
-    const verwerkt = new Set<IcalEvent>();
-    // Niet iterator(van): dat verankert de regel opnieuw op `van` (COUNT/INTERVAL kloppen dan niet)
+  for (const e of series.values()) {
+    const handled = new Set<IcalEvent>();
+    // Not iterator(from): that re-anchors the rule on `from` (COUNT/INTERVAL would be off)
     const it = e.iterator();
     let n = 0;
-    let iteraties = 0;
-    for (let volgende = it.next(); volgende && n < MAX_HERHALINGEN && iteraties++ < MAX_ITERATIES; volgende = it.next()) {
-      // Afbreken op de oorspronkelijke datum; een verplaatst exemplaar telt op zijn eigen datum
-      const ms = naarDate(volgende).getTime();
-      if (ms >= totMs) break;
-      // Alleen exemplaren vanaf `van` tellen voor de grens, anders vallen oude reeksen weg
-      if (ms >= vanMs) n++;
-      const d = e.getOccurrenceDetails(volgende);
-      if (d.item !== e) verwerkt.add(d.item);
-      if (geannuleerd(d.item.component)) continue;
-      const i = maakItem(d.item, d.startDate, d.endDate);
-      if (binnen(i)) items.push(i);
+    let iterations = 0;
+    for (let next = it.next(); next && n < MAX_OCCURRENCES && iterations++ < MAX_ITERATIONS; next = it.next()) {
+      // Stop on the original date; a moved occurrence counts on its own date
+      const ms = toDate(next).getTime();
+      if (ms >= toMs) break;
+      // Only occurrences from `from` count towards the limit, otherwise old series drop out
+      if (ms >= fromMs) n++;
+      const d = e.getOccurrenceDetails(next);
+      if (d.item !== e) handled.add(d.item);
+      if (isCancelled(d.item.component)) continue;
+      const i = createItem(d.item, d.startDate, d.endDate);
+      if (inWindow(i)) items.push(i);
     }
-    // Exemplaren die van voorbij de horizon naar binnen de horizon zijn verplaatst
-    for (const u of Object.values(e.exceptions) as IcalEvent[]) {
-      if (verwerkt.has(u) || geannuleerd(u.component) || !u.startDate) continue;
-      const i = maakItem(u, u.startDate, u.endDate ?? u.startDate);
-      if (binnen(i)) items.push(i);
+    // Occurrences moved from beyond the horizon to within it
+    for (const x of Object.values(e.exceptions) as IcalEvent[]) {
+      if (handled.has(x) || isCancelled(x.component) || !x.startDate) continue;
+      const i = createItem(x, x.startDate, x.endDate ?? x.startDate);
+      if (inWindow(i)) items.push(i);
     }
   }
 
   return items.sort((a, b) => a.start.getTime() - b.start.getTime());
 }
 
-/* ---------- Formatteren (nl-NL, Amsterdam) ---------- */
+/* ---------- Formatting (nl-NL, Amsterdam) ---------- */
 
-const fmt = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat('nl-NL', { timeZone: TIJDZONE, ...o });
-const fDag = fmt({ day: 'numeric' });
-const fMaand = fmt({ month: 'short' });
-const fTijd = fmt({ hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
-const fWeekdag = fmt({ weekday: 'long' });
-const fDagMaand = fmt({ day: 'numeric', month: 'long' });
-const fDagSleutel = fmt({ year: 'numeric', month: '2-digit', day: '2-digit' });
+const fmt = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat('nl-NL', { timeZone: TIME_ZONE, ...o });
+const fDay = fmt({ day: 'numeric' });
+const fMonth = fmt({ month: 'short' });
+const fTime = fmt({ hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+const fWeekday = fmt({ weekday: 'long' });
+const fDayMonth = fmt({ day: 'numeric', month: 'long' });
+const fDayKey = fmt({ year: 'numeric', month: '2-digit', day: '2-digit' });
 
-const hoofdletter = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 /** "10.00" */
-export const tijd = (d: Date) => fTijd.format(d).replace(':', '.');
+export const formatTime = (d: Date) => fTime.format(d).replace(':', '.');
 /** "12 oktober" */
-export const dagMaand = (d: Date) => fDagMaand.format(d);
-/** "okt" (zonder punt) */
-const maandKort = (d: Date) => fMaand.format(d).replace(/\.$/, '');
-const isZondag = (d: Date) => fWeekdag.format(d) === 'zondag';
-const dagSleutel = (d: Date) => fDagSleutel.format(d);
+export const formatDayMonth = (d: Date) => fDayMonth.format(d);
+/** "okt" (without the period) */
+const shortMonth = (d: Date) => fMonth.format(d).replace(/\.$/, '');
+const isSunday = (d: Date) => fWeekday.format(d) === 'zondag';
+const dayKey = (d: Date) => fDayKey.format(d);
 
-/** Locatie, anders de eerste niet-lege regel van de omschrijving. */
-function onderregel(i: AgendaItem): string {
-  if (i.locatie) return i.locatie;
-  return i.omschrijving.split(/\r?\n/).map((r) => r.trim()).find(Boolean) ?? '';
+/** Location, otherwise the first non-empty line of the description. */
+function subtitle(i: AgendaItem): string {
+  if (i.location) return i.location;
+  return i.description.split(/\r?\n/).map((r) => r.trim()).find(Boolean) ?? '';
 }
 
-/* ---------- Lijst ---------- */
+/* ---------- List ---------- */
 
-/** Komende items (begin vanaf nu; hele-dag-items van vandaag tellen mee), max `limiet`. */
-export function lijstRijen(items: AgendaItem[], nu: Date, limiet?: number): LijstRij[] {
-  const komend = items.filter((i) => (i.heleDag ? i.end > nu : i.start >= nu));
-  return komend.slice(0, limiet && limiet > 0 ? limiet : undefined).map((i) => ({
-    dag: fDag.format(i.start),
-    maand: maandKort(i.start),
-    titel: i.titel,
-    omschrijving: onderregel(i),
-    tijd: i.heleDag ? 'hele dag' : tijd(i.start),
+/** Upcoming items (starting from now; today's all-day items count), at most `limit`. */
+export function listRows(items: AgendaItem[], now: Date, limit?: number): ListRow[] {
+  const upcoming = items.filter((i) => (i.allDay ? i.end > now : i.start >= now));
+  return upcoming.slice(0, limit && limit > 0 ? limit : undefined).map((i) => ({
+    day: fDay.format(i.start),
+    month: shortMonth(i.start),
+    title: i.title,
+    subtitle: subtitle(i),
+    time: i.allDay ? 'hele dag' : formatTime(i.start),
   }));
 }
 
 /* ---------- Strip ---------- */
 
-const DIENSTSOORT = /\b(morgen|middag)dienst\b/i;
-const RAND = /^[\s\-–—·•:|,/]+|[\s\-–—·•:|,/]+$/g;
+// Matches the Dutch service names in the feed ("morgendienst", "middagdienst")
+const SERVICE_KIND = /\b(morgen|middag)dienst\b/i;
+const EDGE = /^[\s\-–—·•:|,/]+|[\s\-–—·•:|,/]+$/g;
 
-/** "Morgendienst - Ds. J. de Vries" → "Ds. J. de Vries"; blijft er niets over, dan de samenvatting. */
-export function voorganger(samenvatting: string): string {
-  const rest = samenvatting.replace(new RegExp(DIENSTSOORT.source, 'gi'), ' ').replace(RAND, '').replace(/\s{2,}/g, ' ');
-  return rest || samenvatting.trim();
+/** "Morgendienst - Ds. J. de Vries" → "Ds. J. de Vries"; if nothing is left, the summary. */
+export function preacher(summary: string): string {
+  const rest = summary.replace(new RegExp(SERVICE_KIND.source, 'gi'), ' ').replace(EDGE, '').replace(/\s{2,}/g, ' ');
+  return rest || summary.trim();
 }
 
-/** "Morgendienst - Ds. J. de Vries" → "Morgendienst · Ds. J. de Vries"; zonder dienstsoort de samenvatting. */
-export function dienstOmschrijving(samenvatting: string): string {
-  const soort = samenvatting.match(DIENSTSOORT);
-  const vg = voorganger(samenvatting);
-  return soort && vg !== samenvatting.trim() ? `${hoofdletter(soort[0].toLowerCase())} · ${vg}` : samenvatting.trim();
+/** "Morgendienst - Ds. J. de Vries" → "Morgendienst · Ds. J. de Vries"; without a service kind, the summary. */
+export function serviceDescription(summary: string): string {
+  const kind = summary.match(SERVICE_KIND);
+  const name = preacher(summary);
+  return kind && name !== summary.trim() ? `${capitalize(kind[0].toLowerCase())} · ${name}` : summary.trim();
 }
 
 /**
- * Staat van de tijdenstrip: "live" als nu een dienst bezig is (begin − 15 min tot eind),
- * anders de (resterende) diensten van de eerstvolgende zondag, of null (basis blijft staan).
+ * State of the service-times strip: "live" while a service is on (start − 15 min until end),
+ * otherwise the (remaining) services of the next Sunday, or null (the static base stays).
  */
-export function stripStaat(items: AgendaItem[], nu: Date): StripStaat | null {
-  const diensten = items.filter((i) => !i.heleDag && /dienst/i.test(i.titel));
-  const t = nu.getTime();
+export function stripState(items: AgendaItem[], now: Date): StripState | null {
+  const services = items.filter((i) => !i.allDay && /dienst/i.test(i.title));
+  const t = now.getTime();
 
-  const live = diensten.find((i) => i.start.getTime() - 15 * MINUUT <= t && t < i.end.getTime());
-  if (live) return { staat: 'live', tijd: tijd(live.start), omschrijving: dienstOmschrijving(live.titel) };
+  const live = services.find((i) => i.start.getTime() - 15 * MINUTE <= t && t < i.end.getTime());
+  if (live) return { state: 'live', time: formatTime(live.start), description: serviceDescription(live.title) };
 
-  // Eerstvolgende zondag met diensten; van vandaag alleen wat nog komt
-  const zondag = diensten.filter((i) => isZondag(i.start) && i.end.getTime() > t);
-  const eerste = zondag[0];
-  if (!eerste) return null;
-  const sleutel = dagSleutel(eerste.start);
+  // Next Sunday with services; for today only what is still to come
+  const sunday = services.filter((i) => isSunday(i.start) && i.end.getTime() > t);
+  const first = sunday[0];
+  if (!first) return null;
+  const key = dayKey(first.start);
   return {
-    staat: 'geladen',
-    dag: fDag.format(eerste.start),
-    maand: maandKort(eerste.start),
-    datum: dagMaand(eerste.start),
-    diensten: zondag
-      .filter((i) => dagSleutel(i.start) === sleutel)
-      .map((i) => ({ tijd: tijd(i.start), omschrijving: dienstOmschrijving(i.titel) })),
+    state: 'loaded',
+    day: fDay.format(first.start),
+    month: shortMonth(first.start),
+    date: formatDayMonth(first.start),
+    services: sunday
+      .filter((i) => dayKey(i.start) === key)
+      .map((i) => ({ time: formatTime(i.start), description: serviceDescription(i.title) })),
   };
 }
 
-/** Horizon in ms voor `weken` weken. */
-export const horizon = (nu: Date, weken: number) => new Date(nu.getTime() + weken * 7 * DAG);
+/** Horizon `weeks` weeks after `now`. */
+export const horizon = (now: Date, weeks: number) => new Date(now.getTime() + weeks * 7 * DAY);

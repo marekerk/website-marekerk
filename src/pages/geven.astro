@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import Patroon from '../components/Patroon.astro';
+import Pattern from '../components/Pattern.astro';
 import Prose from '../components/Prose.astro';
 import { href } from '../lib/url';
 import { block, blocksIn } from '../lib/content';
@@ -11,7 +11,7 @@ const contactCards = await blocksIn('geven/contact');
 const open = await block('geven/open');
 const [collection, churchBalance, account] = hero.data.items;
 ---
-<Base title={hero.data.metaTitle ?? hero.data.title!} description={hero.data.description} current="geven">
+<Base title={hero.data.metaTitle ?? hero.data.title!} description={hero.data.description} current="giving">
   <section aria-labelledby="titel" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start">
     <div style="display: flex; flex-direction: column; gap: 20px">
       <nav aria-label="Kruimelpad" style="font-size: 14px; color: #4A5866"><a href={href('/')} style="color: #4A5866">Welkom</a> <span aria-hidden="true">/</span> Geven</nav>
@@ -21,16 +21,16 @@ const [collection, churchBalance, account] = hero.data.items;
     <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(180px, auto); gap: 8px">
       <div style="background: #E6EBF0; padding: 24px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px"><strong style="font-size: 22px; line-height: 1.15">{collection?.title}</strong><span style="font-size: 15px; color: #1A2733">{collection?.text}</span></div>
       <div style="background: #FFFFFF; border: 1px solid #D9DEE3; padding: 24px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px"><strong style="font-size: 22px; line-height: 1.15">{churchBalance?.title}</strong><span style="font-size: 15px; color: #1A2733">{churchBalance?.text}</span></div>
-      <div style="grid-column: span 2; background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px"><span class="label label-goud">{account?.label}</span><strong style="font-size: 26px; line-height: 1.15">{account?.title}</strong><span style="font-size: 15px; color: #DCE6EF">{account?.text}</span></div>
+      <div style="grid-column: span 2; background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px"><span class="label label-gold">{account?.label}</span><strong style="font-size: 26px; line-height: 1.15">{account?.title}</strong><span style="font-size: 15px; color: #DCE6EF">{account?.text}</span></div>
     </div>
   </section>
 
   <section aria-labelledby="contact" style="margin-top: clamp(48px, 7vw, 96px); background: #09283F; color: #FFFFFF; position: relative; overflow: hidden">
-    <Patroon stand="hoek-ver" />
+    <Pattern position="corner-far" />
     <div style="position: relative; max-width: 1200px; margin: 0 auto; padding: clamp(56px, 8vw, 96px) clamp(20px, 4vw, 40px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 32px 48px">
       <div style="display: flex; flex-direction: column; gap: 10px">
         {/* scroll-margin: on /geven/#contact (footer) show the navy block from its top */}
-        <h2 id="contact" class="label label-goud" style="margin: 0; scroll-margin-top: clamp(56px, 8vw, 96px)">{contact.data.label}</h2>
+        <h2 id="contact" class="label label-gold" style="margin: 0; scroll-margin-top: clamp(56px, 8vw, 96px)">{contact.data.label}</h2>
         <p style="margin: 0; font-size: clamp(26px, 3vw, 36px); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em">{contact.data.title}</p>
       </div>
       {contactCards.map((card) => (

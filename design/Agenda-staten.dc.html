@@ -96,7 +96,7 @@ a{color:#09283F;text-decoration-color:#09283F;text-decoration-thickness:2px;text
 
 <section style="display: flex; flex-direction: column; gap: 8px; background: #E6EBF0; padding: 24px">
 <span class="lbl">Techniek voor de bouw</span>
-<p style="margin: 0; color: #1A2733; max-width: 60em">De ICS-feed wordt bij elk bezoek opgehaald. Omdat agenda-aanbieders geen CORS-headers sturen, gaat dat via een kleine proxy (bijv. een gratis Cloudflare Worker die de feed doorgeeft en een paar minuten cachet). Zonder JavaScript blijft de basisstaat staan; de pagina's zijn dus nooit leeg.</p>
+<p style="margin: 0; color: #1A2733; max-width: 60em">De ICS-feed wordt bij elk bezoek opgehaald. Omdat agenda-aanbieders geen CORS-headers sturen, gaat dat via een Azure Function op <code>/api/agenda</code> die de feed doorgeeft en een paar minuten cachet. Zonder JavaScript blijft de basisstaat staan; de pagina's zijn dus nooit leeg.</p>
 </section>
 
 </div>

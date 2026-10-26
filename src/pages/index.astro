@@ -3,13 +3,13 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import AgendaStrip from '../components/AgendaStrip.astro';
 import AgendaList from '../components/AgendaList.astro';
-import Patroon from '../components/Patroon.astro';
+import Pattern from '../components/Pattern.astro';
 import Prose from '../components/Prose.astro';
 import { href } from '../lib/url';
 import { block } from '../lib/content';
-import gracht from '../assets/photos/gracht.jpg';
-import kerkzaal from '../assets/photos/kerkzaal.jpg';
-import gevel from '../assets/photos/gevel.jpg';
+import canal from '../assets/photos/canal.jpg';
+import nave from '../assets/photos/nave.jpg';
+import facade from '../assets/photos/facade.jpg';
 
 const hero = await block('welkom/hero');
 const faith = await block('welkom/geloof');
@@ -17,7 +17,7 @@ const meet = await block('welkom/kennismaken');
 const services = await block('welkom/kerkdiensten');
 const contact = await block('welkom/contact');
 const building = await block('welkom/gebouw');
-// Volledige teksten uit Kerkdiensten (concept 0.3: dezelfde teksten op de homepage)
+// Full texts from Kerkdiensten (concept 0.3: the same texts on the home page)
 const servicesPage = await block('kerkdiensten/hero');
 const children = await block('kerkdiensten/kinderen');
 const faithIntro = await block('kerkdiensten/kennismaken');
@@ -27,7 +27,7 @@ const alphaCourse = await block('kerkdiensten/alphacursus');
 const halfWidths = [480, 720, 960, 1280];
 const halfSizes = '(min-width: 1000px) 556px, 100vw';
 
-// Modules onder "Kennis maken?", in de volgorde en kleur van het ontwerp
+// Modules under "Kennis maken?", in the order and colour of the design
 const lightModule = 'background: #FFFFFF; border: 1px solid #D9DEE3';
 const tintModule = 'background: #E6EBF0';
 const modules = [
@@ -40,17 +40,17 @@ const modules = [
 <Base
   title={hero.data.metaTitle ?? hero.data.title!}
   description={hero.data.description}
-  current="welkom"
-  photos={['gracht', 'gevel', 'kerkzaal']}
+  current="home"
+  photos={['canal', 'facade', 'nave']}
 >
   <section aria-labelledby="welkom" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: center">
     <div style="display: flex; flex-direction: column; gap: 24px">
-      <h1 id="welkom" class="h1-welkom">{hero.data.title}{hero.data.subtitle && <span>{hero.data.subtitle}</span>}</h1>
+      <h1 id="welkom" class="h1-home">{hero.data.title}{hero.data.subtitle && <span>{hero.data.subtitle}</span>}</h1>
       <Prose block={hero} size={20} lineHeight={1.5} measure="28em" />
       <div style="display: flex; flex-wrap: wrap; gap: 12px">{hero.data.buttons.map((b, i) => <a href={href(b.link)} class:list={['btn', i === 0 ? 'btn-primary' : 'btn-outline']}>{b.text}</a>)}</div>
     </div>
     <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
-      <Image src={gracht} width={1280} widths={halfWidths} sizes={halfSizes} loading="eager" fetchpriority="high" alt="De Marekerk met haar koepel boven de gracht in de Leidse binnenstad" style="width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; object-position: 50% 42%; display: block" />
+      <Image src={canal} width={1280} widths={halfWidths} sizes={halfSizes} loading="eager" fetchpriority="high" alt="De Marekerk met haar koepel boven de gracht in de Leidse binnenstad" style="width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; object-position: 50% 42%; display: block" />
       <figcaption style="font-size: 14px; color: #4A5866">{hero.data.caption}</figcaption>
     </figure>
   </section>
@@ -60,18 +60,18 @@ const modules = [
   <section aria-labelledby="agenda" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start">
     <AgendaList heading="Agenda" headingId="agenda" limit={5} moreHref={href('/kerkdiensten/#agenda')} subscribe={false} />
     <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
-      <Image src={kerkzaal} width={1280} widths={halfWidths} sizes={halfSizes} alt="De kerkzaal met zuilen, galerij en banken" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; display: block" />
+      <Image src={nave} width={1280} widths={halfWidths} sizes={halfSizes} alt="De kerkzaal met zuilen, galerij en banken" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; display: block" />
       <figcaption style="font-size: 14px; color: #4A5866">{servicesPage.data.caption}</figcaption>
     </figure>
   </section>
 
   <section aria-labelledby="geloof" style="margin-top: clamp(48px, 7vw, 96px); background: #09283F; color: #FFFFFF; position: relative; overflow: hidden">
-    <Patroon stand="aangesneden" />
+    <Pattern position="cropped" />
     <div style="position: relative; margin: 0 auto; padding: clamp(56px, 8vw, 112px) clamp(20px, 4vw, 40px); display: flex; flex-direction: column; gap: 20px; max-width: min(1200px, 100%); box-sizing: border-box">
-      <h2 id="geloof" class="label label-goud" style="margin: 0">{faith.data.label}</h2>
+      <h2 id="geloof" class="label label-gold" style="margin: 0">{faith.data.label}</h2>
       <p style="margin: 0; font-size: clamp(28px, 3.6vw, 44px); font-weight: 300; font-style: italic; line-height: 1.15; max-width: 22em">{faith.data.title}</p>
       <Prose block={faith} tone="light" size={18} measure="34em" />
-      {faith.data.buttons.map((b) => <a href={href(b.link)} class="link-licht" style="align-self: flex-start; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">{b.text}</a>)}
+      {faith.data.buttons.map((b) => <a href={href(b.link)} class="link-light" style="align-self: flex-start; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">{b.text}</a>)}
     </div>
   </section>
 
@@ -80,32 +80,32 @@ const modules = [
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 8px">
       {modules.map(({ entry, style }) => (
         <div style={`${style}; padding: 28px; display: flex; flex-direction: column; gap: 12px`}>
-          <h3 class="module-kop">{entry.data.title}</h3>
+          <h3 class="module-heading">{entry.data.title}</h3>
           <Prose block={entry} />
         </div>
       ))}
       <div style={`grid-column: 1 / -1; ${lightModule}; padding: 28px; display: flex; flex-direction: column; gap: 12px`}>
-        <h3 class="module-kop">{alphaCourse.data.title}</h3>
+        <h3 class="module-heading">{alphaCourse.data.title}</h3>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 12px 40px">
           <Prose block={alphaCourse} />
         </div>
       </div>
       <div style="grid-column: 1 / -1; background: #09283F; color: #FFFFFF; padding: 28px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 32px">
         <div style="display: flex; flex-direction: column; gap: 10px; max-width: 36em">
-          <h3 class="label label-goud" style="margin: 0">{contact.data.label}</h3>
+          <h3 class="label label-gold" style="margin: 0">{contact.data.label}</h3>
           <Prose block={contact} tone="white" size={20} lineHeight={1.4} />
         </div>
-        {contact.data.buttons.map((b) => <a href={href(b.link)} class="btn btn-goud" style="flex: none">{b.text}</a>)}
+        {contact.data.buttons.map((b) => <a href={href(b.link)} class="btn btn-gold" style="flex: none">{b.text}</a>)}
       </div>
     </div>
   </section>
 
   <section aria-labelledby="gebouw" class="container section section-end" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: center">
-    <Image src={gevel} width={1280} widths={halfWidths} sizes={halfSizes} alt="De achtkantige gevel van de Marekerk met koepel en lantaarn" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; display: block" />
+    <Image src={facade} width={1280} widths={halfWidths} sizes={halfSizes} alt="De achtkantige gevel van de Marekerk met koepel en lantaarn" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; display: block" />
     <div style="display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #09283F; padding-top: 20px">
       <span class="label">{building.data.label}</span>
       <span style="font-size: clamp(72px, 9vw, 104px); font-weight: 700; letter-spacing: -0.04em; line-height: 0.85; border-bottom: 3px solid #C9A13B; align-self: flex-start; padding-bottom: 8px">{building.data.highlight}</span>
-      <h2 id="gebouw" class="regel">{building.data.title}</h2>
+      <h2 id="gebouw" class="section-line">{building.data.title}</h2>
       <Prose block={building} />
       {building.data.buttons.map((b) => <a href={href(b.link)} style="font-weight: 700; display: inline-flex; align-items: center; gap: 8px; min-height: 44px">{b.text} <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>)}
     </div>

@@ -7,7 +7,7 @@ import { block } from '../lib/content';
 
 const page = await block('404/hero');
 ---
-<Base title={page.data.metaTitle ?? page.data.title!} description={page.data.description} photos={['preekstoel', 'orgel']}>
+<Base title={page.data.metaTitle ?? page.data.title!} description={page.data.description} photos={['pulpit', 'organ']}>
   <section aria-labelledby="titel" class="container section section-end" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 48px; align-items: start">
     <div style="display: flex; flex-direction: column; gap: 20px">
       <span class="label">{page.data.label}</span>
