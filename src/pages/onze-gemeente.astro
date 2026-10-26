@@ -4,12 +4,12 @@ import Base from '../layouts/Base.astro';
 import Subnav from '../components/Subnav.astro';
 import SectionHead from '../components/SectionHead.astro';
 import Oct from '../components/Oct.astro';
-import Patroon from '../components/Patroon.astro';
+import Pattern from '../components/Pattern.astro';
 import Prose from '../components/Prose.astro';
 import { href } from '../lib/url';
 import { block, blocksIn } from '../lib/content';
-import preekstoel from '../assets/photos/preekstoel.jpg';
-import orgel from '../assets/photos/orgel.jpg';
+import pulpit from '../assets/photos/pulpit.jpg';
+import organ from '../assets/photos/organ.jpg';
 
 const hero = await block('onze-gemeente/hero');
 const mission = await block('onze-gemeente/missie');
@@ -32,8 +32,8 @@ const tintCard = 'background: #E6EBF0';
 <Base
   title={hero.data.metaTitle ?? hero.data.title!}
   description={hero.data.description}
-  current="gemeente"
-  photos={['preekstoel', 'orgel']}
+  current="congregation"
+  photos={['pulpit', 'organ']}
 >
   <section aria-labelledby="titel" class="container section" style="display: flex; flex-direction: column; gap: 20px">
     <nav aria-label="Kruimelpad" style="font-size: 14px; color: #4A5866"><a href={href('/')} style="color: #4A5866">Welkom</a> <span aria-hidden="true">/</span> Onze gemeente</nav>
@@ -57,7 +57,7 @@ const tintCard = 'background: #E6EBF0';
         <Prose block={mission} />
       </div>
       <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
-        <Image src={preekstoel} width={1280} widths={halfWidths} sizes={halfSizes} alt="De preekstoel uit 1649 met de opengeslagen Bijbel" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; display: block" />
+        <Image src={pulpit} width={1280} widths={halfWidths} sizes={halfSizes} alt="De preekstoel uit 1649 met de opengeslagen Bijbel" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; display: block" />
         <figcaption style="font-size: 14px; color: #4A5866">{mission.data.caption}</figcaption>
       </figure>
     </div>
@@ -66,7 +66,7 @@ const tintCard = 'background: #E6EBF0';
         <li style={i % 2 === 1
           ? 'background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px'
           : 'background: #E6EBF0; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px'}>
-          <Oct size={24} tone={i % 2 === 1 ? 'goud' : 'navy'}>{i + 1}</Oct>
+          <Oct size={24} tone={i % 2 === 1 ? 'gold' : 'navy'}>{i + 1}</Oct>
           <strong style="font-size: 20px; line-height: 1.2">{pillar.text}</strong>
         </li>
       ))}
@@ -89,15 +89,15 @@ const tintCard = 'background: #E6EBF0';
   </section>
 
   <section id="bakkerij" aria-labelledby="bakkerij-kop" style="margin-top: clamp(48px, 7vw, 96px); background: #09283F; color: #FFFFFF; position: relative; overflow: hidden">
-    <Patroon stand="hoek-ver" />
+    <Pattern position="corner-far" />
     <div style="position: relative; max-width: 1200px; margin: 0 auto; padding: clamp(56px, 8vw, 96px) clamp(20px, 4vw, 40px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 32px 48px; align-items: start">
       <div style="display: flex; flex-direction: column; gap: 14px">
-        <SectionHead number={3} id="bakkerij-kop" tone="goud">{bakery.data.title}</SectionHead>
+        <SectionHead number={3} id="bakkerij-kop" tone="gold">{bakery.data.title}</SectionHead>
         <p style="margin: 0; color: #DCE6EF">{bakery.data.intro}</p>
       </div>
       <div style="display: flex; flex-direction: column; gap: 14px">
         <Prose block={bakery} tone="light" />
-        {bakery.data.buttons.map((b) => <a href={href(b.link)} class="link-licht" style="align-self: flex-start; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">{b.text}</a>)}
+        {bakery.data.buttons.map((b) => <a href={href(b.link)} class="link-light" style="align-self: flex-start; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">{b.text}</a>)}
       </div>
     </div>
   </section>
@@ -124,10 +124,10 @@ const tintCard = 'background: #E6EBF0';
     </div>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); grid-auto-rows: minmax(240px, auto); gap: 8px">
       <div style="position: relative; overflow: hidden; min-height: 240px">
-        <Image src={orgel} width={800} widths={[400, 600, 800]} sizes="(min-width: 1000px) 280px, 100vw" alt="Het Garrelsorgel" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; display: block" />
+        <Image src={organ} width={800} widths={[400, 600, 800]} sizes="(min-width: 1000px) 280px, 100vw" alt="Het Garrelsorgel" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; display: block" />
       </div>
       {musicCards.map((card, i) => card.data.buttons.length ? (
-        <div style="background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px"><div style="display: flex; flex-direction: column"><strong style="font-size: 22px; line-height: 1.15">{card.data.title}</strong><Prose block={card} tone="light" size={15} /></div>{card.data.buttons.map((b) => <a href={href(b.link)} class="link-licht" style="font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">{b.text}</a>)}</div>
+        <div style="background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px"><div style="display: flex; flex-direction: column"><strong style="font-size: 22px; line-height: 1.15">{card.data.title}</strong><Prose block={card} tone="light" size={15} /></div>{card.data.buttons.map((b) => <a href={href(b.link)} class="link-light" style="font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">{b.text}</a>)}</div>
       ) : (
         <div style={`${i % 2 === 1 ? tintCard : lightCard}; padding: 24px; display: flex; flex-direction: column; gap: 8px`}><strong style="font-size: 22px; line-height: 1.15">{card.data.title}</strong><Prose block={card} size={15} /></div>
       ))}
@@ -136,7 +136,7 @@ const tintCard = 'background: #E6EBF0';
 
   <section id="vieringen" aria-labelledby="vieringen-kop" class="container section section-end" style="display: flex; flex-direction: column; gap: 24px">
     <SectionHead number={6} id="vieringen-kop" rule>{celebrations.data.title}</SectionHead>
-    {/* Brede kaart in een eigen rij, zodat auto-fit de lege kolom van de gewone kaarten laat vallen (zoals bij Activiteiten) */}
+    {/* Wide card in its own row, so auto-fit drops the empty column of the normal cards (as with Activiteiten) */}
     <div style="display: flex; flex-direction: column; gap: 8px">
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 8px">
         {celebrationCards.map((card, i) => !card.data.wide && (
@@ -144,7 +144,7 @@ const tintCard = 'background: #E6EBF0';
         ))}
       </div>
       {celebrationCards.map((card) => card.data.wide && (
-        /* Belijdenis doen: label, kop en eerste alinea links; de rest en de knop rechts */
+        /* Belijdenis doen: label, heading and first paragraph on the left; the rest and the button on the right */
         <div style="background: #E6EBF0; padding: clamp(24px, 4vw, 40px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 24px 48px; align-items: start">
           <div style="display: flex; flex-direction: column; gap: 10px">
             {card.data.label && <span class="label">{card.data.label}</span>}

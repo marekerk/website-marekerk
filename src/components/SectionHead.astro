@@ -1,18 +1,18 @@
 ---
 /**
- * Genummerde sectiekop: achthoek 32 + h2 (40px), zoals in Gemeente/Gebouw.
+ * Numbered section heading: octagon 32 + h2 (40px), as on Gemeente/Gebouw.
  *
  * <SectionHead number={1} id="missie-kop">Missie en visie</SectionHead>
- * <SectionHead number={3} id="bakkerij-kop" tone="goud">…</SectionHead>   (op navy)
- * <SectionHead number={4} id="activiteiten-kop" rule>…</SectionHead>      (met lijn erboven)
+ * <SectionHead number={3} id="bakkerij-kop" tone="gold">…</SectionHead>   (on navy)
+ * <SectionHead number={4} id="activiteiten-kop" rule>…</SectionHead>      (with a rule above)
  *
- * `id` komt op de h2 (voor aria-labelledby op de <section>).
+ * `id` goes on the h2 (for aria-labelledby on the <section>).
  */
 interface Props {
   number: number | string;
   id: string;
-  tone?: 'navy' | 'goud';
-  /** 1px navy lijn erboven + 20px lucht (als de kop zelf de sectie opent). */
+  tone?: 'navy' | 'gold';
+  /** 1px navy rule above + 20px space (when the heading itself opens the section). */
   rule?: boolean;
 }
 

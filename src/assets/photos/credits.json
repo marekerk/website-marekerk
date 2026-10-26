@@ -1,37 +1,37 @@
 {
- "gevel": {
+ "facade": {
   "artist": "Zairon",
   "license": "CC BY-SA 4.0",
   "source": "https://commons.wikimedia.org/wiki/File:Leiden_Marekerk_2.jpg"
  },
- "koepelplafond": {
+ "dome-ceiling": {
   "artist": "Marion Golsteijn",
   "license": "CC BY-SA 3.0",
   "source": "https://commons.wikimedia.org/wiki/File:Interieur_Marekerk.JPG"
  },
- "gracht": {
+ "canal": {
   "artist": "Johan Bakker",
   "license": "CC BY-SA 4.0",
   "source": "https://commons.wikimedia.org/wiki/File:De_Marekerk_te_Leiden.jpg"
  },
- "kerkzaal": {
+ "nave": {
   "artist": "Gerard Dukker",
   "license": "CC BY-SA 4.0",
   "source": "https://commons.wikimedia.org/wiki/File:Interieur,_overzicht_naar_het_koor_-_Leiden_-_20362259_-_RCE.jpg",
   "credit": "Gerard Dukker (RCE)"
  },
- "orgel": {
+ "organ": {
   "artist": "Gerard Dukker",
   "license": "CC BY-SA 4.0",
   "source": "https://commons.wikimedia.org/wiki/File:Interieur,_aanzicht_orgel,_orgelnummer_855_-_Leiden_-_20359389_-_RCE.jpg",
   "credit": "Gerard Dukker (RCE)"
  },
- "preekstoel": {
+ "pulpit": {
   "artist": "Marion Golsteijn",
   "license": "CC BY-SA 3.0",
   "source": "https://commons.wikimedia.org/wiki/File:Preekstoel_Marekerk.JPG"
  },
- "koepel-buiten": {
+ "dome-exterior": {
   "artist": "C messier",
   "license": "CC BY-SA 4.0",
   "source": "https://commons.wikimedia.org/wiki/File:Marekerk_6881.jpg"

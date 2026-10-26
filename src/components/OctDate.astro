@@ -1,6 +1,6 @@
 ---
 /**
- * Datum in achthoek 56: dag + maand.
+ * Date in octagon 56: day + month.
  * <OctDate day="19" month="okt" />
  */
 import type { HTMLAttributes } from 'astro/types';
@@ -8,7 +8,7 @@ import type { HTMLAttributes } from 'astro/types';
 interface Props extends HTMLAttributes<'span'> {
   day: string | number;
   month: string;
-  tone?: 'navy' | 'goud' | 'wit';
+  tone?: 'navy' | 'gold' | 'white';
 }
 
 const { day, month, tone = 'navy', class: className, ...rest } = Astro.props;

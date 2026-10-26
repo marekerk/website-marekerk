@@ -3,13 +3,13 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Subnav from '../components/Subnav.astro';
 import AgendaList from '../components/AgendaList.astro';
-import Patroon from '../components/Patroon.astro';
+import Pattern from '../components/Pattern.astro';
 import Placeholder from '../components/Placeholder.astro';
 import Prose from '../components/Prose.astro';
 import { href } from '../lib/url';
 import { block } from '../lib/content';
-import kerkzaal from '../assets/photos/kerkzaal.jpg';
-import preekstoel from '../assets/photos/preekstoel.jpg';
+import nave from '../assets/photos/nave.jpg';
+import pulpit from '../assets/photos/pulpit.jpg';
 
 const hero = await block('kerkdiensten/hero');
 const times = await block('kerkdiensten/tijden');
@@ -25,8 +25,8 @@ const halfSizes = '(min-width: 1000px) 576px, 100vw';
 <Base
   title={hero.data.metaTitle ?? hero.data.title!}
   description={hero.data.description}
-  current="kerkdiensten"
-  photos={['kerkzaal', 'preekstoel']}
+  current="services"
+  photos={['nave', 'pulpit']}
 >
   <section aria-labelledby="titel" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: end">
     <div style="display: flex; flex-direction: column; gap: 20px">
@@ -35,7 +35,7 @@ const halfSizes = '(min-width: 1000px) 576px, 100vw';
       <Prose block={hero} size={20} lineHeight={1.5} measure="28em" />
     </div>
     <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
-      <Image src={kerkzaal} width={1280} widths={halfWidths} sizes={halfSizes} loading="eager" fetchpriority="high" alt="De kerkzaal met zuilen, galerij en banken" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; display: block" />
+      <Image src={nave} width={1280} widths={halfWidths} sizes={halfSizes} loading="eager" fetchpriority="high" alt="De kerkzaal met zuilen, galerij en banken" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; display: block" />
       <figcaption style="font-size: 14px; color: #4A5866">{hero.data.caption}</figcaption>
     </figure>
   </section>
@@ -54,9 +54,9 @@ const halfSizes = '(min-width: 1000px) 576px, 100vw';
   <section id="live" aria-label="Diensttijden en live" style="background: #09283F; color: #FFFFFF">
     <div class="container" style="padding-block: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 24px 48px; align-items: center">
       {times.data.items.map((t) => (
-        <div style="display: flex; flex-direction: column; gap: 4px"><span class="label label-goud">{t.label}</span><strong style="font-size: 48px; line-height: 1; letter-spacing: -0.02em">{t.title}</strong></div>
+        <div style="display: flex; flex-direction: column; gap: 4px"><span class="label label-gold">{t.label}</span><strong style="font-size: 48px; line-height: 1; letter-spacing: -0.02em">{t.title}</strong></div>
       ))}
-      <div style="display: flex; flex-direction: column; gap: 6px"><span class="label label-goud">{times.data.label}</span><Prose block={times} tone="light" /></div>
+      <div style="display: flex; flex-direction: column; gap: 6px"><span class="label label-gold">{times.data.label}</span><Prose block={times} tone="light" /></div>
     </div>
   </section>
 
@@ -72,7 +72,7 @@ const halfSizes = '(min-width: 1000px) 576px, 100vw';
     </div>
     <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(180px, auto); gap: 8px; align-content: start">
       {children.data.items.map((card, i) => i % 2 === 1 ? (
-        <div style="background: #09283F; color: #FFFFFF; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px"><span class="label label-goud">{card.label}</span><span><strong style="font-size: 22px; line-height: 1.1; display: block">{card.title}</strong><span style="font-size: 15px; color: #DCE6EF">{card.text}</span></span></div>
+        <div style="background: #09283F; color: #FFFFFF; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px"><span class="label label-gold">{card.label}</span><span><strong style="font-size: 22px; line-height: 1.1; display: block">{card.title}</strong><span style="font-size: 15px; color: #DCE6EF">{card.text}</span></span></div>
       ) : (
         <div style="background: #E6EBF0; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px"><span class="label">{card.label}</span><span><strong style="font-size: 22px; line-height: 1.1; display: block">{card.title}</strong><span style="font-size: 15px; color: #1A2733">{card.text}</span></span></div>
       ))}
@@ -81,14 +81,14 @@ const halfSizes = '(min-width: 1000px) 576px, 100vw';
   </section>
 
   <section id="contact" aria-labelledby="contact-kop" style="margin-top: clamp(48px, 7vw, 96px); background: #09283F; color: #FFFFFF; position: relative; overflow: hidden">
-    <Patroon />
+    <Pattern />
     <div class="container" style="position: relative; padding-block: clamp(56px, 8vw, 96px); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 48px">
       <div style="display: flex; flex-direction: column; gap: 12px; max-width: 34em">
-        <h2 id="contact-kop" class="label label-goud" style="margin: 0">{contact.data.label}</h2>
+        <h2 id="contact-kop" class="label label-gold" style="margin: 0">{contact.data.label}</h2>
         <p style="margin: 0; font-size: clamp(26px, 3vw, 36px); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em">{contact.data.title}</p>
         <Prose block={contact} tone="light" />
       </div>
-      {contact.data.buttons.map((b) => <a href={href(b.link)} class="btn btn-goud">{b.text}</a>)}
+      {contact.data.buttons.map((b) => <a href={href(b.link)} class="btn btn-gold">{b.text}</a>)}
     </div>
   </section>
 
@@ -106,10 +106,10 @@ const halfSizes = '(min-width: 1000px) 576px, 100vw';
         <h2 id="alpha-kop" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">{alphaServices.data.title}</h2>
         <Prose block={alphaServices} />
       </div>
-      <Image src={preekstoel} width={1280} widths={halfWidths} sizes={halfSizes} alt="De preekstoel uit 1649 met klankbord" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; display: block" />
+      <Image src={pulpit} width={1280} widths={halfWidths} sizes={halfSizes} alt="De preekstoel uit 1649 met klankbord" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; display: block" />
     </div>
 
-    {/* Laatste alinea ("Heb je interesse?") met de knop in het kader rechts */}
+    {/* Last paragraph ("Heb je interesse?") with the button in the box on the right */}
     <div id="alphacursus" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start">
       <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px">
         <h2 id="alphacursus-kop" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">{alphaCourse.data.title}</h2>

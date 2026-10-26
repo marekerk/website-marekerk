@@ -1,54 +1,54 @@
 ---
 /**
- * Tijdenstrook (Welkom), variant A uit design/Main.dc.html: gouden achthoek-datum,
- * "Zondag"-lockup, hairline, tijden 40 px met de dienst in Light Italic eronder en
- * een witte omlijnde knop. Rendert statisch de basisstaat ("Elke zondag", zonder datum);
- * de agenda-runtime vervangt de inhoud van [data-agenda-slot="content"] door een kloon
- * van een template:
+ * Service bar (home), variant A from design/Main.dc.html: gold octagon date,
+ * "Zondag" lockup, hairline, 40 px times with the service in Light Italic below and
+ * a white outlined button. Renders the base state statically ("Elke zondag", without a date);
+ * the agenda runtime replaces the content of [data-agenda-slot="content"] with a clone
+ * of a template:
  *
- *   data-template="geladen"  [data-field="dag"], [data-field="maand"], [data-field="datum"]
- *                            + container [data-agenda-slot="diensten"] die gevuld wordt met
- *                            klonen van data-template="dienst" ([data-field="tijd"],
- *                            [data-field="omschrijving"])
- *   data-template="live"     [data-field="tijd"], [data-field="omschrijving"]
+ *   data-template="loaded"   [data-field="day"], [data-field="month"], [data-field="date"]
+ *                            + container [data-agenda-slot="services"] which is filled with
+ *                            clones of data-template="service" ([data-field="time"],
+ *                            [data-field="description"])
+ *   data-template="live"     [data-field="time"], [data-field="description"]
  *
- * Bij een fout blijft de basisstaat staan (geen foutmelding op Welkom).
- * Staten: design/Agenda-staten.dc.html, sectie 1 (in de vorm van variant A).
+ * On an error the base state stays (no error message on the home page).
+ * States: design/Agenda-staten.dc.html, section 1 (in the form of variant A).
  */
 import { href } from '../lib/url';
 import { YOUTUBE_URL } from '../lib/links';
 
 const liveHref = href('/kerkdiensten/#live');
 ---
-<section aria-label="Eerstvolgende zondag" class="strook" data-agenda="strip">
-  <div class="strook-inner" data-agenda-slot="content">
-    <span class="strook-dag"><span class="strook-dag-naam"><strong>Elke zondag</strong></span></span>
-    <span class="strook-lijn" aria-hidden="true"></span>
-    <span class="strook-dienst"><strong>10.00</strong><span>Morgendienst</span></span>
-    <span class="strook-dienst"><strong>17.00</strong><span>Middagdienst</span></span>
-    <a href={liveHref} class="btn btn-wit strook-knop">Kijk of luister live mee</a>
+<section aria-label="Eerstvolgende zondag" class="service-bar" data-agenda="strip">
+  <div class="service-bar-inner" data-agenda-slot="content">
+    <span class="service-bar-day"><span class="service-bar-day-name"><strong>Elke zondag</strong></span></span>
+    <span class="service-bar-rule" aria-hidden="true"></span>
+    <span class="service-bar-service"><strong>10.00</strong><span>Morgendienst</span></span>
+    <span class="service-bar-service"><strong>17.00</strong><span>Middagdienst</span></span>
+    <a href={liveHref} class="btn btn-white service-bar-button">Kijk of luister live mee</a>
   </div>
 
-  <template data-template="geladen">
-    <span class="strook-dag"><span aria-hidden="true" class="oct oct-56 oct-goud oct-date"><strong data-field="dag">[DD]</strong><span data-field="maand">[mnd]</span></span><span class="strook-dag-naam"><strong>Zondag</strong><span data-field="datum">[DD maand]</span></span></span>
-    <span class="strook-lijn" aria-hidden="true"></span>
-    <span data-agenda-slot="diensten" style="display: contents"></span>
-    <a href={liveHref} class="btn btn-wit strook-knop">Kijk of luister live mee</a>
+  <template data-template="loaded">
+    <span class="service-bar-day"><span aria-hidden="true" class="oct oct-56 oct-gold oct-date"><strong data-field="day">[DD]</strong><span data-field="month">[mnd]</span></span><span class="service-bar-day-name"><strong>Zondag</strong><span data-field="date">[DD maand]</span></span></span>
+    <span class="service-bar-rule" aria-hidden="true"></span>
+    <span data-agenda-slot="services" style="display: contents"></span>
+    <a href={liveHref} class="btn btn-white service-bar-button">Kijk of luister live mee</a>
   </template>
 
-  <template data-template="dienst">
-    <span class="strook-dienst"><strong data-field="tijd">10.00</strong><span data-field="omschrijving">Morgendienst · Ds. [naam]</span></span>
+  <template data-template="service">
+    <span class="service-bar-service"><strong data-field="time">10.00</strong><span data-field="description">Morgendienst · Ds. [naam]</span></span>
   </template>
 
   <template data-template="live">
-    <span class="strook-dag"><span class="label label-goud strook-live"><span aria-hidden="true" class="oct oct-10 oct-goud"></span>Nu live</span></span>
-    <span class="strook-lijn" aria-hidden="true"></span>
-    <span class="strook-dienst"><strong data-field="tijd">10.00</strong><span data-field="omschrijving">Morgendienst · Ds. [naam]</span></span>
-    <a href={YOUTUBE_URL} class="btn btn-goud strook-knop">Kijk live mee</a>
+    <span class="service-bar-day"><span class="label label-gold service-bar-live"><span aria-hidden="true" class="oct oct-10 oct-gold"></span>Nu live</span></span>
+    <span class="service-bar-rule" aria-hidden="true"></span>
+    <span class="service-bar-service"><strong data-field="time">10.00</strong><span data-field="description">Morgendienst · Ds. [naam]</span></span>
+    <a href={YOUTUBE_URL} class="btn btn-gold service-bar-button">Kijk live mee</a>
   </template>
 </section>
 
 <script>
-  // Agenda-runtime (ICS in de browser); Astro bundelt en dedupliceert dit script.
+  // Agenda runtime (ICS in the browser); Astro bundles and deduplicates this script.
   import '../scripts/agenda.ts';
 </script>

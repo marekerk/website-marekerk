@@ -1,6 +1,6 @@
 ---
 import credits from '../assets/photos/credits.json';
-import Beeldmerk from '../assets/beeldmerk.svg';
+import Emblem from '../assets/emblem.svg';
 import Lockup from './Lockup.astro';
 import { href } from '../lib/url';
 import { AGENDA_WEBCAL_URL, CONTACT, KERKOMROEP_URL, YOUTUBE_URL } from '../lib/links';
@@ -8,48 +8,48 @@ import { AGENDA_WEBCAL_URL, CONTACT, KERKOMROEP_URL, YOUTUBE_URL } from '../lib/
 export type PhotoKey = keyof typeof credits;
 
 interface Props {
-  /** Foto's op deze pagina (sleutels uit credits.json), in de volgorde van de credits-regel. */
+  /** Photos on this page (keys from credits.json), in the order of the credit line. */
   photos?: PhotoKey[];
 }
 
 const { photos = [] } = Astro.props;
 
-// Credits-regel: naam (credit of artist) met licentie; één licentie voor alles → één keer achteraan
-const fotos = photos.map((key) => {
+// Credit line: name (credit or artist) with license; one license for all → once at the end
+const photoCredits = photos.map((key) => {
   const c: { artist: string; credit?: string; license: string } = credits[key];
-  return { naam: c.credit ?? c.artist, licentie: c.license };
+  return { name: c.credit ?? c.artist, license: c.license };
 });
-const licenties = [...new Set(fotos.map((f) => f.licentie))];
-const names = [...new Set(fotos.map((f) => (licenties.length > 1 ? `${f.naam} (${f.licentie})` : f.naam)))];
+const licenses = [...new Set(photoCredits.map((f) => f.license))];
+const names = [...new Set(photoCredits.map((f) => (licenses.length > 1 ? `${f.name} (${f.license})` : f.name)))];
 const creditLine = names.length
-  ? `Foto's: ${names.join(', ')}${licenties.length === 1 ? ` (${licenties[0]})` : ''}, via Wikimedia Commons`
+  ? `Foto's: ${names.join(', ')}${licenses.length === 1 ? ` (${licenses[0]})` : ''}, via Wikimedia Commons`
   : '';
 ---
 <footer class="site-footer">
-  <Beeldmerk class="site-footer-silhouet" aria-hidden="true" />
+  <Emblem class="site-footer-silhouette" aria-hidden="true" />
   <div class="site-footer-cols">
     <div style="display: flex; flex-direction: column; gap: 12px">
       <Lockup size="footer" />
       <p style="margin: 0">[Adres], Leiden<br>Protestantse Gemeente Leiden</p>
     </div>
     <div class="site-footer-col">
-      <span class="label label-goud">Kerkdiensten</span>
+      <span class="label label-gold">Kerkdiensten</span>
       <span>Zondag 10.00 en 17.00</span>
-      <a href={YOUTUBE_URL} class="link-licht">YouTube</a>
-      <a href={KERKOMROEP_URL} class="link-licht">Kerkomroep</a>
-      <a href={AGENDA_WEBCAL_URL} class="link-licht">Agenda abonneren</a>
+      <a href={YOUTUBE_URL} class="link-light">YouTube</a>
+      <a href={KERKOMROEP_URL} class="link-light">Kerkomroep</a>
+      <a href={AGENDA_WEBCAL_URL} class="link-light">Agenda abonneren</a>
     </div>
     <div class="site-footer-col">
-      <span class="label label-goud">Bezoeken</span>
+      <span class="label label-gold">Bezoeken</span>
       <span>Zaterdag 14.00–16.00</span>
-      <a href={href('/gebouw/#huren')} class="link-licht">Huren</a>
+      <a href={href('/gebouw/#huren')} class="link-light">Huren</a>
     </div>
     <div class="site-footer-col">
-      <span class="label label-goud">Contact</span>
-      <a href={`mailto:${CONTACT.email}`} class="link-licht">{CONTACT.email}</a>
-      <a href={CONTACT.telefoonHref} class="link-licht">{CONTACT.telefoon}</a>
-      <a href={href('/geven/#contact')} class="link-licht">Alle contactgegevens</a>
-      <a href={href('/geven/')} class="btn btn-goud" style="align-self: flex-start; min-height: 40px; padding: 0 16px; font-size: 14px; margin-top: 6px">Geven</a>
+      <span class="label label-gold">Contact</span>
+      <a href={`mailto:${CONTACT.email}`} class="link-light">{CONTACT.email}</a>
+      <a href={CONTACT.phoneHref} class="link-light">{CONTACT.phone}</a>
+      <a href={href('/geven/#contact')} class="link-light">Alle contactgegevens</a>
+      <a href={href('/geven/')} class="btn btn-gold" style="align-self: flex-start; min-height: 40px; padding: 0 16px; font-size: 14px; margin-top: 6px">Geven</a>
     </div>
   </div>
   <div class="site-footer-bottom">

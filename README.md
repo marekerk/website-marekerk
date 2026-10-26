@@ -58,9 +58,9 @@ content/                alle paginateksten (Markdown), zie content/README.md
 design/                 ontwerpen (*.dc.html) + brief; bron voor de bouw
 public/                 favicon, staticwebapp.config.json (404, headers, Node-versie API)
 src/
-  assets/               beeldmerk, patronen (kroonluchter, plafond, ramen), logo, app-icoon,
+  assets/               emblem, patterns (chandelier, ceiling, windows), logo, app icon,
                         foto's (+ photos/credits.json)
-  components/           Header, Footer, Lockup, Patroon, Oct, OctDate, Subnav, SectionHead,
+  components/           Header, Footer, Lockup, Pattern, Oct, OctDate, Subnav, SectionHead,
                         Placeholder, Prose, AgendaStrip, AgendaList
   content.config.ts     content-collectie `blocks` (leest content/)
   lib/content.ts        block(), blocksIn() en bodyParts(): teksten ophalen per pagina

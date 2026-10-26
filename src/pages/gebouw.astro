@@ -3,14 +3,14 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Subnav from '../components/Subnav.astro';
 import SectionHead from '../components/SectionHead.astro';
-import Patroon from '../components/Patroon.astro';
+import Pattern from '../components/Pattern.astro';
 import Prose from '../components/Prose.astro';
 import { href } from '../lib/url';
 import { block } from '../lib/content';
-import gevel from '../assets/photos/gevel.jpg';
-import orgel from '../assets/photos/orgel.jpg';
-import koepelplafond from '../assets/photos/koepelplafond.jpg';
-import koepelBuiten from '../assets/photos/koepel-buiten.jpg';
+import facade from '../assets/photos/facade.jpg';
+import organPhoto from '../assets/photos/organ.jpg';
+import domeCeiling from '../assets/photos/dome-ceiling.jpg';
+import domeExterior from '../assets/photos/dome-exterior.jpg';
 
 const halfWidths = [480, 720, 960, 1280];
 const halfSizes = '(min-width: 1000px) 556px, 100vw';
@@ -29,8 +29,8 @@ const navyTime = 0;
 <Base
   title={hero.data.metaTitle ?? hero.data.title!}
   description={hero.data.description}
-  current="gebouw"
-  photos={['gevel', 'orgel', 'koepelplafond', 'koepel-buiten']}
+  current="building"
+  photos={['facade', 'organ', 'dome-ceiling', 'dome-exterior']}
 >
   <section aria-labelledby="titel" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: end">
     <div style="display: flex; flex-direction: column; gap: 20px">
@@ -39,7 +39,7 @@ const navyTime = 0;
       <Prose block={hero} size={20} lineHeight={1.5} measure="28em" />
     </div>
     <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
-      <Image src={gevel} width={1280} widths={halfWidths} sizes={halfSizes} loading="eager" fetchpriority="high" alt="De achtkantige gevel van de Marekerk met koepel en lantaarn" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; display: block" />
+      <Image src={facade} width={1280} widths={halfWidths} sizes={halfSizes} loading="eager" fetchpriority="high" alt="De achtkantige gevel van de Marekerk met koepel en lantaarn" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; display: block" />
       <figcaption style="font-size: 14px; color: #4A5866">{hero.data.caption}</figcaption>
     </figure>
   </section>
@@ -64,14 +64,14 @@ const navyTime = 0;
   </section>
 
   <section id="orgel" aria-labelledby="orgel-kop" style="margin-top: clamp(48px, 7vw, 96px); background: #09283F; color: #FFFFFF; position: relative; overflow: hidden">
-    <Patroon patroon="plafond" />
+    <Pattern pattern="ceiling" />
     <div style="position: relative; max-width: 1200px; margin: 0 auto; padding: clamp(56px, 8vw, 96px) clamp(20px, 4vw, 40px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 32px 48px; align-items: center">
       <div style="display: flex; flex-direction: column; gap: 14px">
-        <SectionHead number={2} id="orgel-kop" tone="goud">{organ.data.title}</SectionHead>
+        <SectionHead number={2} id="orgel-kop" tone="gold">{organ.data.title}</SectionHead>
         <Prose block={organ} tone="light" />
-        {organ.data.buttons.map((b) => <a href={href(b.link)} class="link-licht" style="align-self: flex-start; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">{b.text}</a>)}
+        {organ.data.buttons.map((b) => <a href={href(b.link)} class="link-light" style="align-self: flex-start; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">{b.text}</a>)}
       </div>
-      <Image src={orgel} width={1280} widths={halfWidths} sizes={halfSizes} alt="Het Garrelsorgel" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 25%; display: block" />
+      <Image src={organPhoto} width={1280} widths={halfWidths} sizes={halfSizes} alt="Het Garrelsorgel" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 25%; display: block" />
     </div>
   </section>
 
@@ -81,7 +81,7 @@ const navyTime = 0;
       <Prose block={art} />
       {art.data.buttons.map((b) => <a href={href(b.link)} style="align-self: flex-start; font-weight: 700; min-height: 44px; display: inline-flex; align-items: center">{b.text}</a>)}
     </div>
-    <Image src={koepelplafond} width={1280} widths={halfWidths} sizes={halfSizes} alt="Het achtkantige koepelplafond met de rozet" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; display: block" />
+    <Image src={domeCeiling} width={1280} widths={halfWidths} sizes={halfSizes} alt="Het achtkantige koepelplafond met de rozet" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; display: block" />
   </section>
 
   <section id="bezoeken" aria-labelledby="bezoeken-kop" class="container section" style="display: flex; flex-direction: column; gap: 24px">
@@ -91,7 +91,7 @@ const navyTime = 0;
         <div style={i === navyTime
           ? 'background: #09283F; color: #FFFFFF; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px'
           : 'background: #E6EBF0; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px'}>
-          <span class:list={['label', { 'label-goud': i === navyTime }]}>{t.label}</span>
+          <span class:list={['label', { 'label-gold': i === navyTime }]}>{t.label}</span>
           <span><strong style="font-size: 36px; letter-spacing: -0.02em; line-height: 1; display: block">{t.title}</strong><span style={`font-size: 15px; color: ${i === navyTime ? '#DCE6EF' : '#1A2733'}`}>{t.text}</span></span>
         </div>
       ))}
@@ -99,7 +99,7 @@ const navyTime = 0;
   </section>
 
   <section id="huren" aria-labelledby="huren-kop" class="container section section-end" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start">
-    <Image src={koepelBuiten} width={1280} widths={halfWidths} sizes={halfSizes} alt="De koepel van de Marekerk met lantaarn en klok" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; display: block" />
+    <Image src={domeExterior} width={1280} widths={halfWidths} sizes={halfSizes} alt="De koepel van de Marekerk met lantaarn en klok" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; display: block" />
     <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px">
       <SectionHead number={5} id="huren-kop">{rent.data.title}</SectionHead>
       <Prose block={rent} />

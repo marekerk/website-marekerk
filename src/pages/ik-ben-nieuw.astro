@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import OctDate from '../components/OctDate.astro';
 import Placeholder from '../components/Placeholder.astro';
-import Patroon from '../components/Patroon.astro';
+import Pattern from '../components/Pattern.astro';
 import Prose from '../components/Prose.astro';
 import { href } from '../lib/url';
 import { block } from '../lib/content';
@@ -14,7 +14,7 @@ const evenings = await block('ik-ben-nieuw/welkomstavonden');
 const contact = await block('ik-ben-nieuw/contact');
 const signUp = await block('ik-ben-nieuw/inschrijven');
 ---
-<Base title={hero.data.metaTitle ?? hero.data.title!} description={hero.data.description} current="nieuw">
+<Base title={hero.data.metaTitle ?? hero.data.title!} description={hero.data.description} current="new">
   <section aria-labelledby="titel" class="container section" style="display: flex; flex-direction: column; gap: 20px">
     <nav aria-label="Kruimelpad" style="font-size: 14px; color: #4A5866"><a href={href('/')} style="color: #4A5866">Welkom</a> <span aria-hidden="true">/</span> Ik ben nieuw</nav>
     <h1 id="titel" class="h1">{hero.data.title}</h1>
@@ -30,8 +30,8 @@ const signUp = await block('ik-ben-nieuw/inschrijven');
 
   <section aria-label="Kerkdiensten" class="strip" style="margin-top: clamp(48px, 7vw, 96px)">
     <div class="strip-inner">
-      <p class="strip-tijden"><span class="label label-goud">{services.data.label}</span>{services.data.items.map((s) => <><strong class="strip-t">{s.title}</strong><span class="strip-s">{s.text}</span></>)}</p>
-      {services.data.buttons.map((b) => <a href={href(b.link)} class="link-licht strip-link">{b.text}</a>)}
+      <p class="strip-times"><span class="label label-gold">{services.data.label}</span>{services.data.items.map((s) => <><strong class="strip-time">{s.title}</strong><span class="strip-sub">{s.text}</span></>)}</p>
+      {services.data.buttons.map((b) => <a href={href(b.link)} class="link-light strip-link">{b.text}</a>)}
     </div>
   </section>
 
@@ -48,14 +48,14 @@ const signUp = await block('ik-ben-nieuw/inschrijven');
   </section>
 
   <section aria-labelledby="contact" style="margin-top: clamp(48px, 7vw, 96px); background: #09283F; color: #FFFFFF; position: relative; overflow: hidden">
-    <Patroon />
+    <Pattern />
     <div style="position: relative; max-width: 1200px; margin: 0 auto; padding: clamp(56px, 8vw, 96px) clamp(20px, 4vw, 40px); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 48px">
       <div style="display: flex; flex-direction: column; gap: 12px; max-width: 34em">
-        <h2 id="contact" class="label label-goud" style="margin: 0">{contact.data.label}</h2>
+        <h2 id="contact" class="label label-gold" style="margin: 0">{contact.data.label}</h2>
         <p style="margin: 0; font-size: clamp(26px, 3vw, 36px); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em">{contact.data.title}</p>
         <Prose block={contact} tone="light" />
       </div>
-      {contact.data.buttons.map((b) => <a href={href(b.link)} class="btn btn-goud">{b.text}</a>)}
+      {contact.data.buttons.map((b) => <a href={href(b.link)} class="btn btn-gold">{b.text}</a>)}
     </div>
   </section>
 

@@ -1,0 +1,27 @@
+---
+/**
+ * Pattern from the building, gold at 45 % and partly out of view. One pattern per page,
+ * only on a navy block. The parent has `position: relative; overflow: hidden`,
+ * the content above it `position: relative`. Sizes: design/DL-Patronen.dc.html.
+ *
+ * <Pattern />                          chandelier, corner (Kerkdiensten, Ik ben nieuw)
+ * <Pattern position="corner-far" />    chandelier, 100 px further out of view (text column on the right)
+ * <Pattern position="cropped" />       chandelier, large (home, faith block)
+ * <Pattern pattern="ceiling" />        dome ceiling, cropped (Gebouw)
+ *
+ * Mobile (≤ 760 px) at 60 % of the size (global.css).
+ */
+import Chandelier from '../assets/chandelier.svg';
+import Ceiling from '../assets/ceiling-wide.svg';
+
+interface Props {
+  pattern?: 'chandelier' | 'ceiling';
+  /** Only for the chandelier; the ceiling is always cropped. */
+  position?: 'corner' | 'corner-far' | 'cropped';
+}
+
+const { pattern = 'chandelier', position = 'corner' } = Astro.props;
+const Svg = pattern === 'ceiling' ? Ceiling : Chandelier;
+const variant = pattern === 'ceiling' ? 'ceiling' : `chandelier-${position}`;
+---
+<Svg class={`pattern pattern-${variant}`} aria-hidden="true" />

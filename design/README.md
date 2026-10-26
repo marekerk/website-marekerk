@@ -37,7 +37,7 @@ Fotocredits staan in `src/assets/photos/credits.json` en moeten in de footer bli
 
 - Kleuren: **grond off-white `#F8F7F3`**; wit `#FFFFFF` voor de menubalk en witte modules; navy `#09283F`, navy 80 `#1F4566`, navy 10 `#E6EBF0`, lijn `#D9DEE3`, inkt `#1A2733`, inkt 2 `#4A5866`, goud `#C9A13B`, goud licht `#ECDFB3` (hover), tekst op navy `#DCE6EF`, footer-klein `#B9CDE0`.
 - **Lockup uit het logo** (het ordenend principe): een Bold woord met een Light Italic (300) regel eronder.
-  - Merk in header en footer: beeldmerk (`src/assets/beeldmerk.svg`, de koepel; 46 px hoog in de header, 44 in de footer) + "Marekerk" Bold 24 / "gemeente" Light Italic 17 **onder elkaar**, als levende tekst. Nooit het logo als plaatje.
+  - Merk in header en footer: beeldmerk (`src/assets/emblem.svg`, de koepel; 46 px hoog in de header, 44 in de footer) + "Marekerk" Bold 24 / "gemeente" Light Italic 17 **onder elkaar**, als levende tekst. Nooit het logo als plaatje.
   - Homepage-kop: "Welkom" Bold clamp(72px, 9vw, 112px) / 0.9 / −2 % met daaronder "bij de Marekerk gemeente" in Light Italic 0,32 × de kop. Subpagina's: label + H1 clamp(64px, 8vw, 96px) / 0.9 / −2 % + intro Regular, geen italic regel.
   - Een sectie opent met één zin in Light Italic 24 / 1.3 (bijv. "In de Marekerk hebben we elke zondag twee keer een dienst."), de tekst erna Regular. Het citaat op het navy geloof-vlak is Light Italic. Lopende tekst en intro's nooit italic.
 - **Beeldmerk als silhouet**: alleen in de footer, navy 80 op navy, rechts, 360 px hoog, onderrand gelijk met de footer; de footer-inhoud eroverheen (`position: relative`).
