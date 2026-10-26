@@ -1,4 +1,7 @@
-name: Deploy Astro site to GitHub Pages
+name: Deploy to Azure Static Web Apps
+
+# On every push to main: update infra (Bicep), build the site and upload it with the functions in api/.
+# One-time setup (resource group, identity, secrets): see README, "Eerste keer".
 
 on:
   push:
@@ -7,40 +10,69 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
+  id-token: write # OIDC login to Azure, no password stored in GitHub
 
 concurrency:
-  group: pages
-  cancel-in-progress: true
+  group: deploy
+  cancel-in-progress: false
+
+env:
+  RESOURCE_GROUP: rg-marekerk-website
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Build Astro site
-        uses: withastro/action@v6
-        with:
-          node-version: 22
-        env:
-          # Optional: set this repository secret/variable for a custom domain.
-          # SITE_URL: https://example.com
-          # Agenda: repository variables (Settings → Secrets and variables → Actions → Variables).
-          # Niet gezet = leeg; de agendalijst toont dan alleen de vaste diensttijden.
-          PUBLIC_AGENDA_PROXY_URL: ${{ vars.PUBLIC_AGENDA_PROXY_URL }}
-          PUBLIC_AGENDA_ICS_URL: ${{ vars.PUBLIC_AGENDA_ICS_URL }}
-          PUBLIC_AGENDA_WEBCAL_URL: ${{ vars.PUBLIC_AGENDA_WEBCAL_URL }}
-
   deploy:
-    needs: build
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Test
+        run: |
+          npm ci
+          npm test
+          npm test --prefix api
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy infra (Bicep)
+        id: infra
+        env:
+          ICS_URL: ${{ secrets.ICS_URL }}
+          CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN }}
+        run: |
+          name=$(az deployment group create \
+            --resource-group "$RESOURCE_GROUP" \
+            --parameters infra/main.bicepparam \
+            --query properties.outputs.name.value -o tsv)
+          hostname=$(az staticwebapp show --name "$name" --query defaultHostname -o tsv)
+          token=$(az staticwebapp secrets list --name "$name" --query properties.apiKey -o tsv)
+          echo "::add-mask::$token"
+          echo "hostname=$hostname" >> "$GITHUB_OUTPUT"
+          echo "token=$token" >> "$GITHUB_OUTPUT"
+
+      - name: Build site
+        env:
+          SITE_URL: ${{ vars.SITE_URL || format('https://{0}', steps.infra.outputs.hostname) }}
+          # Same domain as the site, so no CORS; see api/src/functions/agenda.js
+          PUBLIC_AGENDA_PROXY_URL: /api/agenda
+          PUBLIC_AGENDA_WEBCAL_URL: ${{ vars.PUBLIC_AGENDA_WEBCAL_URL }}
+        run: npm run build
+
+      - name: Upload to Static Web App
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ steps.infra.outputs.token }}
+          action: upload
+          app_location: dist
+          api_location: api
+          output_location: ''
+          skip_app_build: true

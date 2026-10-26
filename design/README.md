@@ -56,4 +56,4 @@ Fotocredits staan in `src/assets/photos/credits.json` en moeten in de footer bli
 
 ## Agenda (ICS, client-side)
 
-De kerkelijke agenda verandert vaak, dus **niet tijdens de build** inladen. De pagina bevat altijd de statische basis ("Elke zondag 10.00 en 17.00"); JavaScript haalt de ICS-feed op en vult aan. Staten in `Agenda-staten.dc.html`. Feed-URL via `PUBLIC_AGENDA_ICS_URL`; omdat agenda-aanbieders geen CORS-headers sturen loopt het via een kleine proxy (Cloudflare Worker in `proxy/`, URL via `PUBLIC_AGENDA_PROXY_URL`). Abonneerlink (webcal) via `PUBLIC_AGENDA_WEBCAL_URL`.
+De kerkelijke agenda verandert vaak, dus **niet tijdens de build** inladen. De pagina bevat altijd de statische basis ("Elke zondag 10.00 en 17.00"); JavaScript haalt de ICS-feed op en vult aan. Staten in `Agenda-staten.dc.html`. Feed-URL via `PUBLIC_AGENDA_ICS_URL`; omdat agenda-aanbieders geen CORS-headers sturen loopt het via een kleine proxy (Azure Function `api/src/functions/agenda.js` op `/api/agenda`, URL via `PUBLIC_AGENDA_PROXY_URL`). Abonneerlink (webcal) via `PUBLIC_AGENDA_WEBCAL_URL`.

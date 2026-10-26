@@ -1,12 +1,12 @@
 /**
- * Interne link of asset-pad met de Astro `base` ervoor, zodat de site ook werkt
- * onder een submap (bijv. https://marekerk.github.io/website-marekerk/).
+ * Internal link or asset path prefixed with the Astro `base`. On Azure Static Web Apps
+ * `base` is empty; going through href() keeps the site working if it ever moves under a subpath.
  *
- *   href('/')                   -> '/website-marekerk/'
- *   href('/kerkdiensten/#live') -> '/website-marekerk/kerkdiensten/#live'
+ *   href('/')                   -> '/'          (with base '/sub': '/sub/')
+ *   href('/kerkdiensten/#live') -> '/kerkdiensten/#live'
  *
- * Geef paden altijd met een leidende slash en (voor pagina's) een slash aan het eind.
- * Externe links, mailto:, tel: en losse #ankers gaan ongewijzigd terug.
+ * Always pass paths with a leading slash and (for pages) a trailing slash.
+ * External links, mailto:, tel: and bare #anchors are returned unchanged.
  */
 export function href(path: string): string {
   if (!path.startsWith('/')) return path;
