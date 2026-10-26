@@ -3,32 +3,40 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Subnav from '../components/Subnav.astro';
 import AgendaList from '../components/AgendaList.astro';
-import Oct from '../components/Oct.astro';
 import Ribben from '../components/Ribben.astro';
 import Placeholder from '../components/Placeholder.astro';
+import Prose from '../components/Prose.astro';
 import { href } from '../lib/url';
-import { CONTACT, KERKOMROEP_URL, YOUTUBE_URL } from '../lib/links';
+import { block } from '../lib/content';
 import kerkzaal from '../assets/photos/kerkzaal.jpg';
 import preekstoel from '../assets/photos/preekstoel.jpg';
+
+const hero = await block('kerkdiensten/hero');
+const times = await block('kerkdiensten/tijden');
+const children = await block('kerkdiensten/kinderen');
+const contact = await block('kerkdiensten/contact');
+const faith = await block('kerkdiensten/kennismaken');
+const alphaServices = await block('kerkdiensten/alphadiensten');
+const alphaCourse = await block('kerkdiensten/alphacursus');
 
 const halfWidths = [480, 720, 960, 1280];
 const halfSizes = '(min-width: 1000px) 576px, 100vw';
 ---
 <Base
-  title="Kerkdiensten"
-  description="In de Marekerk hebben we elke zondag twee keer een dienst. De morgendienst is om 10.00 uur en de middagdienst om 17.00 uur."
+  title={hero.data.metaTitle ?? hero.data.title!}
+  description={hero.data.description}
   current="kerkdiensten"
   photos={['kerkzaal', 'preekstoel']}
 >
   <section aria-labelledby="titel" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: end">
     <div style="display: flex; flex-direction: column; gap: 20px">
       <nav aria-label="Kruimelpad" style="font-size: 14px; color: #4A5866"><a href={href('/')} style="color: #4A5866">Welkom</a> <span aria-hidden="true">/</span> Kerkdiensten</nav>
-      <h1 id="titel" style="margin: 0; font-size: clamp(48px, 6vw, 72px); font-weight: 700; letter-spacing: -0.03em; line-height: 0.95">Zo zien onze kerkdiensten eruit</h1>
-      <p style="margin: 0; font-size: 20px; line-height: 1.5; color: #1A2733; max-width: 28em">In de Marekerk hebben we elke zondag twee keer een dienst. De morgendienst is om 10.00 uur en de middagdienst om 17.00 uur. Loop gerust eens binnen als je benieuwd hiernaar bent. Tijdens de morgendienst staan bij de ingang gemeenteleden waar je al je vragen aan kunt stellen.</p>
+      <h1 id="titel" style="margin: 0; font-size: clamp(48px, 6vw, 72px); font-weight: 700; letter-spacing: -0.03em; line-height: 0.95">{hero.data.title}</h1>
+      <Prose block={hero} size={20} lineHeight={1.5} measure="28em" />
     </div>
     <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px">
       <Image src={kerkzaal} width={1280} widths={halfWidths} sizes={halfSizes} loading="eager" fetchpriority="high" alt="De kerkzaal met zuilen, galerij en banken" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; display: block" />
-      <figcaption style="font-size: 14px; color: #4A5866">De kerkzaal</figcaption>
+      <figcaption style="font-size: 14px; color: #4A5866">{hero.data.caption}</figcaption>
     </figure>
   </section>
 
@@ -38,15 +46,18 @@ const halfSizes = '(min-width: 1000px) 576px, 100vw';
       { href: '#agenda', label: 'Agenda' },
       { href: '#kinderen', label: 'Creche en kinderkerk' },
       { href: '#contact', label: 'Contact' },
+      { href: '#kennismaken', label: 'Kennismaken' },
       { href: '#alpha', label: 'Alphadiensten' },
+      { href: '#alphacursus', label: 'Alphacursus' },
     ]}
   />
 
   <section id="live" aria-label="Diensttijden en live" style="background: #09283F; color: #FFFFFF">
     <div class="container" style="padding-block: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 24px 48px; align-items: center">
-      <div style="display: flex; flex-direction: column; gap: 4px"><span class="label label-goud">Morgendienst</span><strong style="font-size: 48px; line-height: 1; letter-spacing: -0.02em">10.00</strong></div>
-      <div style="display: flex; flex-direction: column; gap: 4px"><span class="label label-goud">Middagdienst</span><strong style="font-size: 48px; line-height: 1; letter-spacing: -0.02em">17.00</strong></div>
-      <div style="display: flex; flex-direction: column; gap: 6px"><span class="label label-goud">Thuis meekijken</span><span style="color: #DCE6EF">Live en naderhand via <a href={YOUTUBE_URL} class="link-licht">YouTube</a>, beluisteren via <a href={KERKOMROEP_URL} class="link-licht">Kerkomroep</a>.</span></div>
+      {times.data.items.map((t) => (
+        <div style="display: flex; flex-direction: column; gap: 4px"><span class="label label-goud">{t.label}</span><strong style="font-size: 48px; line-height: 1; letter-spacing: -0.02em">{t.title}</strong></div>
+      ))}
+      <div style="display: flex; flex-direction: column; gap: 6px"><span class="label label-goud">{times.data.label}</span><Prose block={times} tone="light" /></div>
     </div>
   </section>
 
@@ -56,19 +67,16 @@ const halfSizes = '(min-width: 1000px) 576px, 100vw';
 
   <section aria-labelledby="kinderen" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px">
     <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px">
-      <span class="label">Tijdens de morgendienst</span>
-      <h2 id="kinderen" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">Creche en kinderkerk</h2>
-      <p style="margin: 0; color: #1A2733">Tijdens de morgendienst is voor kinderen van 0-4 creche in het marehuis. Er is een babygroep (0-1 jaar) en een peutergroep (2-3 jaar). De groepen vind je in het Marehuis (ingang onder het orgel).</p>
-      <p style="margin: 0; color: #1A2733">Tijdens de morgendienst is er voor kinderen van de basisschool kinderkerk. Na het lezen van de Bijbel is er in de kerk een kindermoment en daarna gaan de kinderen naar hun eigen kinderkerk. Voor de zegen komen ze terug in de kerk. De kinderkerk is er in 3 groepen (in de zomervakantie twee groepen):</p>
-      <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
-        <li style="display: flex; gap: 10px; align-items: center"><Oct size={10} />Onderbouw (groep 1 en 2 basisschool)</li>
-        <li style="display: flex; gap: 10px; align-items: center"><Oct size={10} />Middenbouw (groep 3, 4 en 5 basisschool)</li>
-        <li style="display: flex; gap: 10px; align-items: center"><Oct size={10} />Bovenbouw (groep 6, 7 en 8 basisschool)</li>
-      </ul>
+      <span class="label">{children.data.label}</span>
+      <h2 id="kinderen" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">{children.data.title}</h2>
+      <Prose block={children} />
     </div>
     <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(180px, auto); gap: 8px; align-content: start">
-      <div style="background: #E6EBF0; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px"><span class="label">Creche</span><span><strong style="font-size: 22px; line-height: 1.1; display: block">0–4 jaar</strong><span style="font-size: 15px; color: #1A2733">Babygroep 0–1 · peutergroep 2–3 · Marehuis</span></span></div>
-      <div style="background: #09283F; color: #FFFFFF; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px"><span class="label label-goud">Kinderkerk</span><span><strong style="font-size: 22px; line-height: 1.1; display: block">Basisschool</strong><span style="font-size: 15px; color: #DCE6EF">Drie groepen, in de zomervakantie twee</span></span></div>
+      {children.data.items.map((card, i) => i % 2 === 1 ? (
+        <div style="background: #09283F; color: #FFFFFF; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px"><span class="label label-goud">{card.label}</span><span><strong style="font-size: 22px; line-height: 1.1; display: block">{card.title}</strong><span style="font-size: 15px; color: #DCE6EF">{card.text}</span></span></div>
+      ) : (
+        <div style="background: #E6EBF0; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px"><span class="label">{card.label}</span><span><strong style="font-size: 22px; line-height: 1.1; display: block">{card.title}</strong><span style="font-size: 15px; color: #1A2733">{card.text}</span></span></div>
+      ))}
       <Placeholder label="kinderkerk" style="grid-column: span 2; min-height: 200px; padding: 20px" />
     </div>
   </section>
@@ -77,20 +85,34 @@ const halfSizes = '(min-width: 1000px) 576px, 100vw';
     <Ribben />
     <div class="container" style="position: relative; padding-block: clamp(56px, 8vw, 96px); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 48px">
       <div style="display: flex; flex-direction: column; gap: 12px; max-width: 34em">
-        <h2 id="contact-kop" class="label label-goud" style="margin: 0">Neem gerust contact op</h2>
-        <p style="margin: 0; font-size: clamp(26px, 3vw, 36px); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em">Heb je een vraag over onze gemeente of over het christelijk geloof?</p>
-        <p style="margin: 0; color: #DCE6EF">Neem gerust contact op met onze predikant, Ton Jacobs. Dat kan via <a href={`mailto:${CONTACT.email}`} class="link-licht">{CONTACT.email}</a> of <a href={CONTACT.telefoonHref} class="link-licht">{CONTACT.telefoon}</a>.</p>
+        <h2 id="contact-kop" class="label label-goud" style="margin: 0">{contact.data.label}</h2>
+        <p style="margin: 0; font-size: clamp(26px, 3vw, 36px); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em">{contact.data.title}</p>
+        <Prose block={contact} tone="light" />
       </div>
-      <a href={href('/ik-ben-nieuw/')} class="btn btn-goud">Meer informatie voor als je nieuw bent</a>
+      {contact.data.buttons.map((b) => <a href={href(b.link)} class="btn btn-goud">{b.text}</a>)}
     </div>
   </section>
 
-  <section id="alpha" aria-labelledby="alpha-kop" class="container section section-end" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start">
+  <section id="kennismaken" aria-labelledby="kennismaken-kop" class="container section">
     <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px">
-      <span class="label">Acht keer per seizoen</span>
-      <h2 id="alpha-kop" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">Alphadiensten</h2>
-      <p style="margin: 0; color: #1A2733">Acht keer per seizoen is er een Alphadienst. Dit zijn laagdrempelige diensten om kennis te maken met het geloof en met de gemeente.</p>
+      <h2 id="kennismaken-kop" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; max-width: 20em">{faith.data.title}</h2>
+      <Prose block={faith} measure="40em" />
+    </div>
+  </section>
+
+  <section id="alpha" aria-labelledby="alpha-kop" class="container section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px; align-items: start">
+    <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px">
+      <span class="label">{alphaServices.data.label}</span>
+      <h2 id="alpha-kop" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">{alphaServices.data.title}</h2>
+      <Prose block={alphaServices} />
     </div>
     <Image src={preekstoel} width={1280} widths={halfWidths} sizes={halfSizes} alt="De preekstoel uit 1649 met klankbord" style="width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; display: block" />
+  </section>
+
+  <section id="alphacursus" aria-labelledby="alphacursus-kop" class="container section section-end">
+    <div style="display: flex; flex-direction: column; gap: 14px; border-top: 1px solid #09283F; padding-top: 20px">
+      <h2 id="alphacursus-kop" style="margin: 0; font-size: 40px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05">{alphaCourse.data.title}</h2>
+      <Prose block={alphaCourse} measure="40em" />
+    </div>
   </section>
 </Base>
