@@ -17,3 +17,12 @@ export async function blocksIn(folder: string): Promise<Block[]> {
   return entries.sort((a: Block, b: Block) => a.id.localeCompare(b.id, 'en', { numeric: true }));
 }
 
+
+/**
+ * The top-level paragraphs and lists of a block body as HTML, in order.
+ * For sections that spread one body over two columns (see <Prose from to>).
+ */
+export function bodyParts(entry: Block): string[] {
+  const html = entry.rendered?.html ?? '';
+  return html.match(/<(p|ul|ol|blockquote|h[1-6])\b[\s\S]*?<\/\1>/g) ?? [];
+}

@@ -134,7 +134,7 @@ function startStrip(root: HTMLElement): void {
       const geladen = kloon(root, 'geladen');
       const lijst = geladen?.querySelector('[data-agenda-slot="diensten"]');
       if (!geladen || !lijst) return;
-      vul(geladen, { datum: staat.datum });
+      vul(geladen, { dag: staat.dag, maand: staat.maand, datum: staat.datum });
       for (const d of staat.diensten) {
         const dienst = kloon(root, 'dienst');
         if (!dienst) continue;

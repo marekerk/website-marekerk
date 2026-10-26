@@ -5,7 +5,9 @@
  * (.container = 1200px inhoud + zijmarge).
  */
 
-/* Source Sans 3, zelf gehost (latin + latin-ext), 400/600/700 */
+/* Source Sans 3, zelf gehost (latin + latin-ext), 400/600/700 + 300 italic (alleen lockup-regels) */
+@import '@fontsource/source-sans-3/latin-300-italic.css';
+@import '@fontsource/source-sans-3/latin-ext-300-italic.css';
 @import '@fontsource/source-sans-3/latin-400.css';
 @import '@fontsource/source-sans-3/latin-ext-400.css';
 @import '@fontsource/source-sans-3/latin-600.css';
@@ -15,6 +17,7 @@
 
 :root {
   /* Kleur */
+  --grond: #F8F7F3; /* off-white grond; wit voor menubalk en witte modules */
   --wit: #FFFFFF;
   --navy: #09283F;
   --navy-80: #1F4566;
@@ -50,7 +53,7 @@ body {
   min-height: 100vh;
   font-family: var(--font);
   color: var(--navy);
-  background: var(--wit);
+  background: var(--grond);
   font-size: 17px;
   line-height: 1.6;
 }
@@ -131,6 +134,84 @@ img {
   color: var(--goud);
 }
 
+/* ---------- Koppen en lockup-regels ---------- */
+/* H1 subpagina's: 64–96 / 0.9 / −2 % */
+.h1 {
+  margin: 0;
+  font-size: clamp(64px, 8vw, 96px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  /* Lange woorden ("kerkdiensten") passen anders niet op 390 px */
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+/* Homepage: "Welkom" 72–112 met de lockup-regel eronder (0,32 × de kop) */
+.h1-welkom {
+  margin: 0;
+  font-size: clamp(72px, 9vw, 112px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+}
+.h1-welkom span {
+  display: block;
+  font-size: 0.32em;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0;
+  line-height: 1.2;
+  margin-top: 0.08em;
+}
+/* Sectie-regel: één openingszin in Light Italic 24 / 1.3 */
+.regel {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+/* ---------- Merk (lockup) ---------- */
+.lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.lockup-merk {
+  display: block;
+  width: auto;
+  height: 46px;
+  flex: none;
+}
+.lockup-naam {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.lockup-naam strong {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.lockup-naam span {
+  font-size: 17px;
+  font-weight: 300;
+  font-style: italic;
+  margin-top: 1px;
+}
+.lockup-footer {
+  color: var(--wit);
+}
+.lockup-footer .lockup-merk { height: 44px; }
+.lockup-footer .lockup-naam strong { font-size: 22px; }
+.lockup-footer .lockup-naam span { font-size: 16px; }
+@media (max-width: 760px) {
+  .lockup-header .lockup-merk { height: 40px; }
+  .lockup-header .lockup-naam strong { font-size: 20px; }
+  .lockup-header .lockup-naam span { font-size: 15px; }
+}
+
 /* ---------- Knoppen (48px, recht) ---------- */
 .btn {
   display: inline-flex;
@@ -171,6 +252,15 @@ button.btn-outline {
   background: var(--goud-licht);
   color: var(--navy);
 }
+/* Wit omlijnd, op navy (tijdenstrook) */
+.btn-wit {
+  border: 1.5px solid var(--wit);
+  color: var(--wit);
+}
+.btn-wit:hover {
+  background: var(--navy-10);
+  color: var(--navy);
+}
 
 /* ---------- Achthoek (alleen als marker) ---------- */
 .oct {
@@ -194,17 +284,37 @@ button.btn-outline {
 .oct-date strong { font-size: 20px; }
 .oct-date span { font-size: 11px; font-weight: 600; }
 
-/* ---------- Ribben (8 lijnen uit één punt) ---------- */
-.ribben {
+/* ---------- Patronen (Patroon.astro; maten uit DL-Patronen) ---------- */
+.patroon {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  opacity: 0.45;
+  color: var(--goud);
+  pointer-events: none;
+}
+.patroon-kroon-aangesneden { right: -300px; bottom: -420px; width: 900px; height: 900px; }
+.patroon-kroon-hoek { right: -240px; top: -300px; width: 600px; height: 600px; }
+.patroon-kroon-hoek-ver { right: -340px; top: -400px; width: 600px; height: 600px; }
+.patroon-plafond { right: -180px; top: -260px; width: 925px; height: 925px; }
+/* Mobiel 60 % */
+@media (max-width: 760px) {
+  .patroon-kroon-aangesneden { right: -180px; bottom: -252px; width: 540px; height: 540px; }
+  .patroon-kroon-hoek,
+  .patroon-kroon-hoek-ver { right: -204px; top: -240px; width: 360px; height: 360px; }
+  .patroon-plafond { right: -108px; top: -156px; width: 555px; height: 555px; }
 }
 
 /* ---------- Hoofdmenu ---------- */
 .site-header {
   border-bottom: 1px solid var(--lijn);
+  background: var(--wit);
+}
+.site-header-merk {
+  display: block;
+  text-decoration: none;
+  color: var(--navy);
+}
+.site-header-merk:hover {
+  color: var(--navy);
 }
 .site-header-inner {
   max-width: var(--container);
@@ -277,7 +387,35 @@ button.btn-outline {
     background: var(--wit);
   }
   html.js .nav-list.open { display: flex; }
-  .nav-list a { min-height: 48px; }
+  /* DL-Elementen: lijnen tussen de items, actief item met gouden achthoek, knop over de volle breedte */
+  .nav-list a {
+    min-height: 48px;
+    padding-left: 20px;
+    border-top: 1px solid var(--lijn);
+    font-size: 17px;
+  }
+  .nav-list a:first-child { border-top: 0; }
+  .nav-list a[aria-current='page'] {
+    box-shadow: none;
+    padding-left: 0;
+    gap: 10px;
+  }
+  .nav-list a[aria-current='page']::before {
+    content: '';
+    flex: none;
+    width: var(--oct-10);
+    height: var(--oct-10);
+    clip-path: var(--oct);
+    background: var(--goud);
+  }
+  .nav-list a[aria-current='page'] + a { border-top: 1px solid var(--lijn); }
+  .nav-list a.btn {
+    margin: 10px 0 8px;
+    padding: 0 20px;
+    border-top: 0;
+    justify-content: center;
+  }
+  .nav-list a.btn[aria-current='page']::before { display: none; }
 }
 
 /* ---------- Op deze pagina (sticky) ---------- */
@@ -340,34 +478,12 @@ html:has(.subnav) main [id] {
   line-height: 1.05;
 }
 
-/* ---------- Module als link (titel + tekst + pijl), zoals "Kennis maken?" ---------- */
-.module-link,
-.module-link:hover {
-  color: var(--navy);
-}
-.module-link {
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 16px;
-  text-decoration: none;
-}
-.module-link > svg {
-  align-self: flex-end;
-}
-.module-link-tekst {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.module-link-tekst strong {
-  font-size: 22px;
+/* ---------- Module met volledige tekst (Welkom, "Kennis maken?") ---------- */
+.module-kop {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
   line-height: 1.15;
-}
-.module-link-tekst span {
-  font-size: 15px;
-  color: var(--inkt);
 }
 
 /* ---------- Plaatshouder voor foto ---------- */
@@ -383,7 +499,7 @@ html:has(.subnav) main [id] {
   color: var(--inkt-2);
 }
 
-/* ---------- Agenda: strip ---------- */
+/* ---------- Tijden: strip (Ik ben nieuw) ---------- */
 .strip {
   background: var(--navy);
   color: var(--wit);
@@ -403,12 +519,7 @@ html:has(.subnav) main [id] {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 8px 20px;
-}
-.strip-dienst {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
+  gap: 8px 16px;
 }
 .strip-t {
   font-size: 28px;
@@ -418,16 +529,75 @@ html:has(.subnav) main [id] {
 .strip-s {
   color: var(--tekst-op-navy);
 }
-.strip-live-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
 .strip-link {
   font-weight: 700;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
+}
+
+/* ---------- Agenda: tijdenstrook (Welkom, variant A) ---------- */
+.strook {
+  margin-top: var(--section-y);
+  background: var(--navy);
+  color: var(--wit);
+}
+.strook-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 20px var(--gutter);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 40px;
+}
+.strook-dag {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.strook-dag-naam {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.strook-dag-naam strong {
+  font-size: 22px;
+}
+.strook-dag-naam span,
+.strook-dienst span {
+  font-size: 17px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--tekst-op-navy);
+}
+.strook-lijn {
+  width: 1px;
+  height: 56px;
+  background: var(--navy-80);
+}
+.strook-dienst {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1;
+}
+.strook-dienst strong {
+  font-size: 40px;
+  letter-spacing: -0.02em;
+}
+.strook-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.strook-knop {
+  margin-left: auto;
+}
+@media (max-width: 760px) {
+  .strook-inner { gap: 16px 32px; }
+  .strook-lijn { display: none; }
+  .strook-knop { margin-left: 0; }
 }
 
 /* ---------- Agenda: lijst ---------- */
@@ -539,8 +709,21 @@ html:not(.js) .js-only {
   background: var(--navy);
   color: var(--tekst-op-navy);
   font-size: 15px;
+  position: relative;
+  overflow: hidden;
+}
+/* Beeldmerk als silhouet: navy 80, rechts, 360 px, onderrand gelijk met de footer */
+.site-footer-silhouet {
+  position: absolute;
+  right: clamp(16px, 4vw, 40px);
+  bottom: -8px;
+  width: auto;
+  height: 360px;
+  color: var(--navy-80);
+  pointer-events: none;
 }
 .site-footer-cols {
+  position: relative;
   max-width: var(--container);
   margin: 0 auto;
   padding: 48px var(--gutter) 24px;
@@ -557,6 +740,7 @@ html:not(.js) .js-only {
   font-size: 12px;
 }
 .site-footer-bottom {
+  position: relative;
   max-width: var(--container);
   margin: 0 auto;
   padding: 14px var(--gutter) 28px;
@@ -577,6 +761,7 @@ html:not(.js) .js-only {
 }
 .prose-muted { --prose-color: var(--inkt-2); }
 .prose-light { --prose-color: var(--tekst-op-navy); }
+.prose-white { --prose-color: var(--wit); }
 .prose p,
 .prose ul,
 .prose ol {
@@ -607,13 +792,17 @@ html:not(.js) .js-only {
   background: var(--navy);
 }
 .prose-light a,
-.prose-light a:hover {
+.prose-light a:hover,
+.prose-white a,
+.prose-white a:hover {
   color: var(--wit);
 }
-.prose-light a {
+.prose-light a,
+.prose-white a {
   text-decoration-color: var(--goud);
 }
-.prose-light a:hover {
+.prose-light a:hover,
+.prose-white a:hover {
   text-decoration-color: var(--wit);
 }
 .prose-light ul li::before {

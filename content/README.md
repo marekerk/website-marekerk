@@ -46,12 +46,14 @@ Velden in het kopblok (tussen de `---`):
 | `intro` | losse inleiding (bijv. de linkerkolom bij De Bakkerij) |
 | `caption` | bijschrift onder de foto |
 | `highlight` | groot getal (het jaartal op Welkom) |
+| `subtitle` | regel in licht cursief onder de kop (alleen Welkom: "bij de Marekerk gemeente") |
 | `metaTitle`, `description` | titel in het browsertabblad en omschrijving voor zoekmachines (alleen in `hero.md`) |
 | `wide` | `true`: kaart over de volle breedte |
 
 ## Afspraken
 
 - **Links naar eigen pagina's alleen in `buttons` of `items`**, met een schuine streep ervoor: `/kerkdiensten/`. In de lopende tekst alleen `mailto:`, `tel:`, `#anker` of volledige adressen (`https://…`). Anders werkt de link niet op de testomgeving.
+- Sommige secties verdelen de alinea's over twee kolommen: Alphacursus op Kerkdiensten (laatste alinea in het kader met de knop), Belijdenis doen (eerste alinea links) en Welkom op Ik ben nieuw (eerste alinea groter). Houd daar de volgorde van de alinea's aan.
 - Tekst tussen `[ ]` zonder link erachter is een plaatshouder en komt zo op de site; vervang hem zodra de tekst bekend is.
 - Waarden met alleen cijfers of met een `:` erin tussen aanhalingstekens zetten: `title: "10.00"`.
 - YouTube en Kerkomroep staan nog als `#youtube` / `#kerkomroep` in de tekst; vervang die ook in `src/lib/links.ts` (footer) als de echte adressen bekend zijn.

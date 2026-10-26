@@ -36,11 +36,12 @@ design/                 ontwerpen (*.dc.html) + brief; bron voor de bouw
 proxy/                  Cloudflare Worker die de agenda-feed met CORS doorgeeft
 public/                 favicon
 src/
-  assets/               logo, app-icoon, foto's (+ photos/credits.json)
-  components/           Header, Footer, Oct, OctDate, Ribben, Subnav, SectionHead,
+  assets/               beeldmerk, patronen (kroonluchter, plafond, ramen), logo, app-icoon,
+                        foto's (+ photos/credits.json)
+  components/           Header, Footer, Lockup, Patroon, Oct, OctDate, Subnav, SectionHead,
                         Placeholder, Prose, AgendaStrip, AgendaList
   content.config.ts     content-collectie `blocks` (leest content/)
-  lib/content.ts        block() en blocksIn(): teksten ophalen per pagina
+  lib/content.ts        block(), blocksIn() en bodyParts(): teksten ophalen per pagina
   layouts/Base.astro    html-skelet, skip-link, header, main, footer
   lib/url.ts            href(): interne links met de base ervoor
   lib/links.ts          externe links en contactgegevens die vaker terugkomen

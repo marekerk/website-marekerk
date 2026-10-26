@@ -11,7 +11,7 @@ const page = await block('404/hero');
   <section aria-labelledby="titel" class="container section section-end" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 48px; align-items: start">
     <div style="display: flex; flex-direction: column; gap: 20px">
       <span class="label">{page.data.label}</span>
-      <h1 id="titel" style="margin: 0; font-size: clamp(48px, 6vw, 72px); font-weight: 700; letter-spacing: -0.03em; line-height: 0.95">{page.data.title}</h1>
+      <h1 id="titel" class="h1">{page.data.title}</h1>
       <Prose block={page} size={20} lineHeight={1.5} measure="28em" />
       {page.data.buttons.map((b) => <a href={href(b.link)} class="btn btn-primary" style="align-self: flex-start">{b.text}</a>)}
     </div>
